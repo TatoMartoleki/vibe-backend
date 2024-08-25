@@ -6,6 +6,8 @@ import { AuthorModule } from './author/author.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AlbumModule } from './album/album.module';
 import { SearchModule } from './search/search.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { SearchModule } from './search/search.module';
       synchronize: true,
     }),
     SearchModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
