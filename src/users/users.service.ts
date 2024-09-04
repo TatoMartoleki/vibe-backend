@@ -8,9 +8,14 @@ export class UsersService {
 
   constructor(private readonly usersRepository: UsersRepository){}
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
+    const existingUser = await this.usersRepository.findByEmail(createUserDto.email);
+    if (existingUser) {
+      throw new BadRequestException('Email is already in use.');
+    }
+
     if(createUserDto.confirmPassword !== createUserDto.password){
-       throw new BadRequestException("P assword doesn't match")
+       throw new BadRequestException("Password doesn't match")
     }
     return this.usersRepository.create(createUserDto);
   }

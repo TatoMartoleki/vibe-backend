@@ -13,14 +13,10 @@ export class UsersRepository {
     private readonly userRepository: Repository<UserEntity>){}
 
   async create(createUserDto: CreateUserDto) {
-    //return this.userRepository.save(createUserDto)
 
     console.log(createUserDto);
 
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10)
-
-    //console.log(hashedPassword);
-    
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 10)    
 
     const newUser = new UserEntity()
     newUser.firstName = createUserDto.firstName;
@@ -32,7 +28,7 @@ export class UsersRepository {
  
   }
 
-  fidByEmail(email: string ){
+  findByEmail(email: string ){
     return this.userRepository.findOne({
        where: { email: email },
   } )
