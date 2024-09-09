@@ -6,9 +6,11 @@ import { AuthorModule } from './author/author.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AlbumModule } from './album/album.module';
 import { SearchModule } from './search/search.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     MusicModule,
     AuthorModule,
     AlbumModule,
