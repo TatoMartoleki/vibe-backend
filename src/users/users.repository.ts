@@ -28,16 +28,41 @@ export class UsersRepository {
  
   }
 
+  async findAll() {
+    return await this.userRepository.find();
+  }
+
+  async findOne(id: number) {
+    return await this.userRepository.findOne({ where: { id } });
+  }
+
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    return await this.userRepository.update(id, updateUserDto);
+  }
+
+  async remove(id: number) {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (user) {
+      await this.userRepository.remove(user);
+    }
+  }
+
   findByEmail(email: string ){
     return this.userRepository.findOne({
-       where: { email: email },
+       where: { email: email }
   } )
 }
 
   findByEmailAndReturnPassword(email: string ){
     return this.userRepository.findOne({
        where: { email: email },
-       select: {email: true, password: true}})
+       select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true, 
+        password: true, 
+        }})
   }
 
   

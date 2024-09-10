@@ -8,6 +8,8 @@ import { AlbumModule } from './album/album.module';
 import { SearchModule } from './search/search.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from './auth/constants';
 
 @Module({
   imports: [
@@ -24,6 +26,14 @@ import { AuthModule } from './auth/auth.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    JwtModule.register(
+      {secret: jwtConstants .secret,
+        global: true
+      }
+    ),
+    MusicModule,
+    AuthorModule,
+    AlbumModule,
     SearchModule,
     UsersModule,
     AuthModule,
