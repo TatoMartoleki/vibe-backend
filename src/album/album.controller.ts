@@ -9,7 +9,7 @@ import { AdminGuard } from 'src/auth/guards/auth.adminGuard';
 export class AlbumController {
   constructor(private readonly albumService: AlbumService) {}
 
-  @UseGuards(AdminGuard)
+  @UseGuards(AuthGuard)
   @Post()
   async create(@Body() createAlbumDto: CreateAlbumDto) {
     return await this.albumService.create(createAlbumDto);
