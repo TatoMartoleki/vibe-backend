@@ -53,7 +53,7 @@ export class AuthorRepository {
   async findByName(search: string){
     return await this.authorRepositoy
     .createQueryBuilder('author')
-    .where('author.firstName LIKE  :search', {search: `%${search}%`})
+    .where('author.firstName LIKE :search', {search: `%${search}%`})
     .getMany()
   }
 }
