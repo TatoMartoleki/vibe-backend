@@ -10,7 +10,7 @@ import { AuthGuard } from 'src/auth/guards/auth.userGuard';
 export class MusicController {
   constructor(private readonly musicService: MusicService) {}
 
-  @UseGuards(AdminGuard)
+  // @UseGuards(AdminGuard)
   @Post()
   async create(@Body() createMusicDto: CreateMusicDto) {
     return await this.musicService.create(createMusicDto);
@@ -22,7 +22,7 @@ export class MusicController {
     return await this.musicService.findAll();
   }
 
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.musicService.findOne(+id);
