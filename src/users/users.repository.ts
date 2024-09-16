@@ -14,8 +14,6 @@ export class UsersRepository {
 
   async create(createUserDto: CreateUserDto) {
 
-    console.log(createUserDto);
-
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10)    
 
     const newUser = new UserEntity()
@@ -24,7 +22,11 @@ export class UsersRepository {
     newUser.email = createUserDto.email;
     newUser.password = hashedPassword;
 
-    return this.userRepository.save(newUser);
+    const savedUser = await this.userRepository.save(newUser)
+
+    const { password, ...userWithoutPassword } = savedUser;
+    
+    return userWithoutPassword;
  
   }
 
