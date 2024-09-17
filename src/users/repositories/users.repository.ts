@@ -41,6 +41,7 @@ export class UsersRepository {
     return await this.userRepository.update(id, updateUserDto);
   }
 
+
   async remove(id: number) {
     const user = await this.userRepository.findOne({ where: { id } });
     if (user) {
