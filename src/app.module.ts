@@ -11,6 +11,8 @@ import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 
+
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -19,11 +21,11 @@ import { ConfigModule } from '@nestjs/config';
     AlbumModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'vibe-database.cvgmqio2ew9h.eu-north-1.rds.amazonaws.com',
-      port: 3306,
-      username: 'spacex',
-      password: 'novatori123',
-      database: 'vibedatabase',
+      host:process.env.DATABASE_HOST,
+      port:+process.env.DATABASE_PORT,
+      username:process.env.DATABASE_USERNAME,
+      password:process.env.DATABASE_PASSWORD,
+      database:process.env.DATABASE_NAME,
       autoLoadEntities: true,
       synchronize: true,
     }),

@@ -1,12 +1,14 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UsersRepository } from './users.repository';
+import { UsersRepository } from './repositories/users.repository';
+import { request } from 'http';
+import { Any } from 'typeorm';
 
 @Injectable()
 export class UsersService {
 
-  constructor(private readonly usersRepository: UsersRepository){}
+  constructor(private readonly usersRepository: UsersRepository) { }
 
   async create(createUserDto: CreateUserDto) {
     const existingUser = await this.usersRepository.findByEmail(createUserDto.email);
@@ -14,12 +16,18 @@ export class UsersService {
       throw new BadRequestException('Email is incorrect');
     }
 
-    if(createUserDto.confirmPassword !== createUserDto.password){
-       throw new BadRequestException("Password doesn't match")
+
+
+    if (createUserDto.confirmPassword !== createUserDto.password) {
+      throw new BadRequestException("Password doesn't match")
     }
     return this.usersRepository.create(createUserDto);
   }
-  
+
+  async findMe(myId : number) {
+    const myEmail = await this.usersRepository.findOne(myId)
+    return await this.usersRepository.findMe(myEmail)
+  }
 
   async findAll() {
     return await this.usersRepository.findAll();
@@ -36,6 +44,6 @@ export class UsersService {
   async remove(id: number) {
     return await this.usersRepository.remove(id);
 
-  } 
+  }
 
 }

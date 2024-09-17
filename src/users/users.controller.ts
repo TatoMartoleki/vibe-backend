@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from 'src/auth/guards/auth.userGuard';
 import { Admin } from 'typeorm';
 import { AdminGuard } from 'src/auth/guards/auth.adminGuard';
+import { request } from 'http';
 
 @Controller('users')
 export class UsersController {
@@ -14,6 +15,13 @@ export class UsersController {
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
+
+  @UseGuards(AuthGuard)
+  @Get('me')
+  async findMe(@Req() request){
+    return await this.usersService.findMe(request.user.payload.userId)
+  }
+
 
   @UseGuards(AdminGuard)
   @Get()
