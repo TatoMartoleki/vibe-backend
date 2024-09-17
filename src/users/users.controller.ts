@@ -16,7 +16,7 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Get('me')
   async findMe(@Req() request){
     return await this.usersService.findMe(request.user.payload.userId)
