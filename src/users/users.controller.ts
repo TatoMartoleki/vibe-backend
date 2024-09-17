@@ -6,6 +6,7 @@ import { AuthGuard } from 'src/auth/guards/auth.userGuard';
 import { Admin } from 'typeorm';
 import { AdminGuard } from 'src/auth/guards/auth.adminGuard';
 import { request } from 'http';
+import { log } from 'console';
 
 @Controller('users')
 export class UsersController {
@@ -16,9 +17,10 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Get('me')
   async findMe(@Req() request){
+    
     return await this.usersService.findMe(request.user.payload.userId)
   }
 
