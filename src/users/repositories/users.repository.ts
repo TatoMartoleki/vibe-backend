@@ -34,10 +34,7 @@ export class UsersRepository {
     return await this.userRepository.findOne({ where: { id } });
   }
 
-  async findMe(myEmail){
-    const {email, ...rest} = myEmail;
-    return email
-  }
+
 
 
   async update(id: number, updateUserDto: UpdateUserDto) {

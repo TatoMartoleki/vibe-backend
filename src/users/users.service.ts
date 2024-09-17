@@ -25,8 +25,8 @@ export class UsersService {
   }
 
   async findMe(myId : number) {
-    const myEmail = await this.usersRepository.findOne(myId)
-    return await this.usersRepository.findMe(myEmail)
+    return await this.usersRepository.findOne(myId)
+    
   }
 
   async findAll() {
