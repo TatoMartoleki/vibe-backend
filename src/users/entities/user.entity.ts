@@ -1,11 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-import { Role } from "../enum/roles.enum";
+import { ListenEntity } from "src/listen/entities/listen.entity";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 
 @Entity()
+
 export class UserEntity {
 
 @PrimaryGeneratedColumn()
 id: number;
+
+@Column()
+firstName: string
+
+@Column()
+lastName: string
 
 @Column()
 email: string
@@ -13,7 +20,9 @@ email: string
 @Column({select: false})
 password: string
 
-@Column({type: "enum", enum: Role, default: Role.User , nullable: true})
-role: Role;
+@OneToMany(() => ListenEntity, (listen) => listen.user)
+listens: ListenEntity;
+
+
 
 }

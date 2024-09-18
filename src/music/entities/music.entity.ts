@@ -1,8 +1,10 @@
+import { ListenEntity } from 'src/listen/entities/listen.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -20,6 +22,9 @@ export class MusicEntity {
 
   @Column({type: 'int'})
   duration: number;
+
+  @OneToMany(() => ListenEntity, (listenCounter) => listenCounter.music)
+  listenCounter: ListenEntity
 
   @CreateDateColumn()
   createdAt: Date;

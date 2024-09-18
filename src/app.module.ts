@@ -10,8 +10,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
-
-
+import { ListenModule } from './listen/listen.module';
 
 @Module({
   imports: [
@@ -21,11 +20,11 @@ import { ConfigModule } from '@nestjs/config';
     AlbumModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host:process.env.DATABASE_HOST,
-      port:+process.env.DATABASE_PORT,
-      username:process.env.DATABASE_USERNAME,
-      password:process.env.DATABASE_PASSWORD,
-      database:process.env.DATABASE_NAME,
+      host: process.env.DATABASE_HOST,
+      port: +process.env.DATABASE_PORT,
+      username: process.env.DATABASE_USERNAME,
+      password: process.env.DATABASE_PASSWORD,
+      database: process.env.DATABASE_NAME,
       autoLoadEntities: true,
       synchronize: true,
     }),
@@ -40,6 +39,7 @@ import { ConfigModule } from '@nestjs/config';
     SearchModule,
     UsersModule,
     AuthModule,
+    ListenModule,
   ],
   controllers: [AppController],
   providers: [AppService],
