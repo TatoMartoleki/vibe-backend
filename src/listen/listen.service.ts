@@ -1,30 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { CreateListenDto } from './dto/create-listen.dto';
 import { UpdateListenDto } from './dto/update-listen.dto';
-import { ListenReposiotry } from './repositories/listen.repository';
+import { listenRepository } from './repositories/listen.repository';
 
 @Injectable()
 export class ListenService {
 
-  constructor(private readonly listenRepository: ListenReposiotry){}
+  constructor(private readonly listenRepository: listenRepository){}
 
-  async create(createListenDto: CreateListenDto) {
-    return await this.listenRepository.create(createListenDto)
+  async create(userId: number, musicId: number) {
+    return await this.listenRepository.create(userId, musicId)
   }
 
   findAll() {
-    return `This action returns all listen`;
+    return this.listenRepository.findAll();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} listen`;
+    return this.listenRepository.findOne(id);
   }
 
   update(id: number, updateListenDto: UpdateListenDto) {
-    return `This action updates a #${id} listen`;
+    return this.listenRepository.update(id, updateListenDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} listen`;
+    return this.listenRepository.remove(id);
   }
 }

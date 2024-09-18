@@ -14,7 +14,7 @@ export class UsersRepository {
 
   async create(createUserDto: CreateUserDto) {
 
-    console.log(createUserDto);
+   
 
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10)    
 

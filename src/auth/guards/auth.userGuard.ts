@@ -26,6 +26,8 @@ import {
         );
 
         request['user'] = payload;
+  
+        
       } catch {
         throw new UnauthorizedException();
       }

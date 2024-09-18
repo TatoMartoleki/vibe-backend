@@ -1,16 +1,34 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { MusicEntity } from 'src/music/entities/music.entity';
+import { UserEntity } from 'src/users/entities/user.entity';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class ListenEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  musicId: number;
+  @ManyToOne(() => MusicEntity, (music) => music.listenCounter)
+  music: MusicEntity;
 
-  @Column({ default: 0 })
+  @Column()
+  musicId:number
+
+  @Column({default: 0})
   counter: number;
 
-  @Column({type: "timestamp", default: () => "CURRENT_TIMESTAMP", onUpdate: "CURRENT_TIMESTAMP"})
+  @ManyToOne(() => UserEntity, (user) => user.listens)
+  user: UserEntity
+
+  @Column()
+  userId:number
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  deleteAt: Date
+
 }

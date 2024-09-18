@@ -8,8 +8,8 @@ export class ListenController {
   constructor(private readonly listenService: ListenService) {}
 
   @Post()
-  async create(@Body() createListenDto: CreateListenDto) {
-    return await this.listenService.create(createListenDto);
+  async create(@Body() userId: number, musicId: number) {
+    return await this.listenService.create(userId, musicId);
   }
 
   @Get()

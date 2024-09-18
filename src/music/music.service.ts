@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { CreateMusicDto } from './dto/create-music.dto';
 import { UpdateMusicDto } from './dto/update-music.dto';
 import { MusicRepository } from './repositories/music.repository';
-import { ListenReposiotry } from 'src/listen/repositories/listen.repository';
+import { listenRepository } from 'src/listen/repositories/listen.repository';
 
 @Injectable()
 export class MusicService {
   constructor(
     private readonly musicReposiotry: MusicRepository,
-    private readonly listenRepository: ListenReposiotry,
+    private readonly listenRepository: listenRepository,
   ) {}
 
   async create(createMusicDto: CreateMusicDto) {
@@ -19,12 +19,13 @@ export class MusicService {
     return await this.musicReposiotry.findAll();
   }
 
-  async findOne(id: number) {
+  async findOne(id: number, userId: number, musicId: number) {
     const music = await this.musicReposiotry.findOne(id);
+   
     if (!music) {
       throw new Error('Music not found');
     } else {
-      await this.listenRepository.listenCounter(id);
+      await this.listenRepository.create(userId, musicId);
       return await this.musicReposiotry.findOne(id);
     }
   }
