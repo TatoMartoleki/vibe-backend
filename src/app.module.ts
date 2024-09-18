@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { ListenModule } from './listen/listen.module';
+import { PlaylistModule } from './playlist/playlist.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { ListenModule } from './listen/listen.module';
     UsersModule,
     AuthModule,
     ListenModule,
+    PlaylistModule,
   ],
   controllers: [AppController],
   providers: [AppService],
