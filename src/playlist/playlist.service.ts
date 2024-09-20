@@ -7,8 +7,8 @@ import { PlaylistRepository } from './repositories/playlist.repository';
 export class PlaylistService {
   constructor(private readonly playlistRepository: PlaylistRepository){}
 
-  async create(createPlaylistDto: CreatePlaylistDto) {
-    return await this.playlistRepository.create(createPlaylistDto);
+  async create(createPlaylistDto: CreatePlaylistDto, userId: number) {
+    return await this.playlistRepository.create(createPlaylistDto, userId);
   }
 
   async findAll() {
@@ -21,6 +21,14 @@ export class PlaylistService {
 
   async update(id: number, updatePlaylistDto: UpdatePlaylistDto) {
     return await this.playlistRepository.update(id, updatePlaylistDto);
+  }
+
+  async addMusic(PlaylistId: number, MusicId: number){
+    return await this.playlistRepository.addMusic(PlaylistId, MusicId)
+  }
+
+  async removeMusic(playlist: number, musicId: number){
+    return await this.playlistRepository.removeMusic(playlist, musicId)
   }
 
   async remove(id: number) {

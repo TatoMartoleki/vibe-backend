@@ -1,9 +1,11 @@
 import { ListenEntity } from 'src/listen/entities/listen.entity';
+import { PlaylistEntity } from 'src/playlist/entities/playlist.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -25,6 +27,9 @@ export class MusicEntity {
 
   @OneToMany(() => ListenEntity, (listenCounter) => listenCounter.music)
   listenCounter: ListenEntity
+
+  @ManyToMany(() => PlaylistEntity, (playlists) => playlists.musics)
+  playlists: PlaylistEntity[]
 
   @CreateDateColumn()
   createdAt: Date;
