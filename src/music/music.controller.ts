@@ -32,7 +32,7 @@ export class MusicController {
     return await this.musicService.findAll();
   }
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string, @Req() request) {
     const userId = request.user.payload.userId
