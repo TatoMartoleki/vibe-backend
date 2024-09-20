@@ -6,6 +6,7 @@ import {
   Entity,
   JoinColumn,
   OneToOne,
+
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -27,6 +28,9 @@ export class MusicEntity {
 
   @Column({type: 'int'})
   duration: number;
+
+  @OneToMany(() => ListenEntity, (listenCounter) => listenCounter.music)
+  listenCounter: ListenEntity
 
   @CreateDateColumn()
   createdAt: Date;

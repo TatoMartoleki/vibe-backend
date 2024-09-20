@@ -14,6 +14,7 @@ import { FilesModule } from './files/files.module';
 import { AwsModule } from './aws/aws.module';
 import { APP_GUARD } from '@nestjs/core';
 
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -22,11 +23,11 @@ import { APP_GUARD } from '@nestjs/core';
     AlbumModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'vibe-database.cvgmqio2ew9h.eu-north-1.rds.amazonaws.com',
-      port: 3306,
-      username: 'spacex',
-      password: 'novatori123',
-      database: 'vibedatabase',
+      host: process.env.DATABASE_HOST,
+      port: +process.env.DATABASE_PORT,
+      username: process.env.DATABASE_USERNAME,
+      password: process.env.DATABASE_PASSWORD,
+      database: process.env.DATABASE_NAME,
       autoLoadEntities: true,
       synchronize: true,
     }),
@@ -43,6 +44,7 @@ import { APP_GUARD } from '@nestjs/core';
     AuthModule,
     FilesModule,
     AwsModule,
+
   ],
   controllers: [AppController],
   providers: [AppService]
