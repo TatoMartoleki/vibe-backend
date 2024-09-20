@@ -1,26 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { AlbumService } from './album.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { AuthGuard } from 'src/auth/guards/auth.userGuard';
 import { AdminGuard } from 'src/auth/guards/auth.adminGuard';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { FilesService } from 'src/files/files.service';
-import { AlbumEntity } from './entities/album.entity';
-
 
 @Controller('album')
 export class AlbumController {
-  constructor(private readonly albumService: AlbumService, 
-              private readonly fileService: FilesService) {}
+  constructor(private readonly albumService: AlbumService) {}
 
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
-  async create(
-    @Body() createAlbumDto: CreateAlbumDto,
-    @UploadedFile() file: Express.Multer.File) {
-    const result = await this.fileService.uploadFile(file)
-    return await this.albumService.create(result, createAlbumDto);
+  @UseGuards(AdminGuard)
+  @Post()
+  async create(@Body() createAlbumDto: CreateAlbumDto) {
+    return await this.albumService.create(createAlbumDto);
   }
 
   @UseGuards(AuthGuard)
@@ -29,7 +21,7 @@ export class AlbumController {
     return await this.albumService.findAll();
   }
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.albumService.findOne(+id);

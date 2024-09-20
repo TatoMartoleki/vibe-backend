@@ -4,9 +4,6 @@ import { UpdateAuthorDto } from '../dto/update-author.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthorEntity } from '../entities/author.entity';
 import { Repository } from 'typeorm';
-import { CreateAlbumDto } from 'src/album/dto/create-album.dto';
-import { AlbumEntity } from 'src/album/entities/album.entity';
-import { FileEntity } from 'src/files/entities/file.entity';
 
 @Injectable()
 export class AuthorRepository {
@@ -15,21 +12,13 @@ export class AuthorRepository {
     private authorRepositoy: Repository<AuthorEntity>,
   ) {}
 
-  async create(file: FileEntity, createAuthorDto: CreateAuthorDto): Promise<AuthorEntity> {
-    const album = this.authorRepositoy.create({
-      ...createAuthorDto,
-      file: file
-    });
-    return await this.authorRepositoy.save(album);
+  async create(createAuthorDto: CreateAuthorDto) {
+    return await this.authorRepositoy
+      .createQueryBuilder()
+      .insert()
+      .values(createAuthorDto)
+      .execute();
   }
-
-  // async create(createAuthorDto: CreateAuthorDto) {
-  //   return await this.authorRepositoy
-  //     .createQueryBuilder()
-  //     .insert()
-  //     .values(createAuthorDto)
-  //     .execute();
-  // }
 
   async findAll() {
     return await this.authorRepositoy.createQueryBuilder().select().getMany();

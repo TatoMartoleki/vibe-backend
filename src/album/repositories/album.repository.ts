@@ -4,7 +4,7 @@ import { AlbumEntity } from '../entities/album.entity';
 import { Repository } from 'typeorm';
 import { CreateAlbumDto } from '../dto/create-album.dto';
 import { UpdateAlbumDto } from '../dto/update-album.dto';
-import { FileEntity } from 'src/files/entities/file.entity';
+import { title } from 'process';
 
 @Injectable()
 export class AlbumRepository {
@@ -13,12 +13,12 @@ export class AlbumRepository {
     private albumrepository: Repository<AlbumEntity>,
   ) {}
 
-  async create(file: FileEntity, createAlbumDto: CreateAlbumDto): Promise<AlbumEntity> {
-    const album = this.albumrepository.create({
-      ...createAlbumDto,
-      file: file
-    });
-    return await this.albumrepository.save(album);
+  async create(createAlbumDto: CreateAlbumDto) {
+    return await this.albumrepository
+      .createQueryBuilder('album')
+      .insert()
+      .values(createAlbumDto)
+      .execute();
   }
 
   async findAll() {

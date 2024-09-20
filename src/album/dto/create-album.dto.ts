@@ -1,4 +1,3 @@
-import { Type } from 'class-transformer';
 import { IsArray, IsNumber, IsString, IsUrl } from 'class-validator';
 
 export class CreateAlbumDto {
@@ -8,10 +7,10 @@ export class CreateAlbumDto {
   @IsString()
   releaseDate: string;
 
-  @Type(() => Number)
+  @IsArray()
+  @IsUrl({}, { each: true })
+  musics: string[];
+
   @IsNumber()
   artistId: number;
-
-
 }
-

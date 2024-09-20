@@ -2,37 +2,29 @@ import { Injectable } from '@nestjs/common';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { AlbumRepository } from './repositories/album.repository';
-import { FileEntity } from 'src/files/entities/file.entity';
-import { AlbumEntity } from 'src/album/entities/album.entity'; // Add this import
-
 
 @Injectable()
 export class AlbumService {
 
-  constructor(private readonly albumRepository: AlbumRepository){}
+  constructor(private readonly albumrepository: AlbumRepository){}
 
-  async create(file: FileEntity, createAlbumDto: CreateAlbumDto) {
-    //console.log('This is a file', file)
-    return await this.albumRepository.create(file, createAlbumDto);
+  async create(createAlbumDto: CreateAlbumDto) {
+    return await this.albumrepository.create(createAlbumDto);
   }
 
   async findAll() {
-    return await this.albumRepository.findAll();
+    return await this.albumrepository.findAll();
   }
 
   async findOne(id: number) {
-    return await this.albumRepository.findOne(id);
+    return await this.albumrepository.findOne(id);
   }
 
   async update(id: number, updateAlbumDto: UpdateAlbumDto) {
-    return await this.albumRepository.update(id, updateAlbumDto);
+    return await this.albumrepository.update(id, updateAlbumDto);
   }
 
   async remove(id: number) {
-    return await this.albumRepository.remove(id);
-  }
-
-  async uploadedFile(){
-
+    return await this.albumrepository.remove(id);
   }
 }
