@@ -16,24 +16,6 @@ export class AlbumService {
     return await this.albumRepository.create(file, createAlbumDto);
   }
 
-  // async create(file: Express.Multer.File, createAlbumDto: CreateAlbumDto): Promise<AlbumEntity> {
-  //   // Assume fileService.uploadFile returns an object with URL and other file details
-  //   const uploadedFile = await this.fileService.uploadFile(file);
-    
-  //   // Create a new FileEntity from the upload result
-  //   const fileEntity = new FileEntity();
-  //   fileEntity.url = uploadedFile.url; // Adjust according to actual properties
-  //   fileEntity.key = uploadedFile.key;
-  //   fileEntity.bucket = uploadedFile.bucket;
-  //   fileEntity.fileName = file.originalname;
-
-  //   // Save the file entity
-  //   const savedFile = await this.albumRepository.fileRepo.save(fileEntity);
-
-  //   // Create the album with the saved file
-  //   return await this.albumRepository.create(savedFile, createAlbumDto);
-  // }
-
   async findAll() {
     return await this.albumRepository.findAll();
   }

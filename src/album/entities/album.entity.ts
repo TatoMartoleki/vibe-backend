@@ -36,13 +36,6 @@ export class AlbumEntity {
   @JoinColumn()
   file: FileEntity;
 
-  // @OneToOne(() => FileEntity, (fileId) => fileId.albumPhotos)
-  // fileId: FileEntity
-
-  // @OneToOne(() => FileEntity)
-  // @JoinColumn()
-  // file: FileEntity;
-
   @CreateDateColumn()
   createdAt: Date;
 

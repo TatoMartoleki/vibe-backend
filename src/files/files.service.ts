@@ -11,6 +11,7 @@ export class FilesService {
 
    async uploadFile(file: Express.Multer.File){
 
+
         const fileName = file.originalname.split('.').slice(0, -1).join('.')
 
         const result = await this.s3Service.upload(file, fileName)

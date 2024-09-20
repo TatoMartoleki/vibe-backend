@@ -1,19 +1,28 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { AuthorService } from './author.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { AuthGuard } from 'src/auth/guards/auth.userGuard';
 import { AdminGuard } from 'src/auth/guards/auth.adminGuard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { CreateAlbumDto } from 'src/album/dto/create-album.dto';
+import { FilesService } from 'src/files/files.service';
 
 @Controller('author')
 export class AuthorController {
-  constructor(private readonly authorService: AuthorService) {}
+  constructor(private readonly authorService: AuthorService,
+              private readonly fileService: FilesService) {}
 
-  @UseGuards(AdminGuard)
-  @Post()
-  async create(@Body() createAuthorDto: CreateAuthorDto) {
-    return await this.authorService.create(createAuthorDto);
-  }
+    @Post('upload')
+    @UseInterceptors(FileInterceptor('file'))
+    async create(
+      @Body() createAuthorDto: CreateAuthorDto,
+      @UploadedFile() file: Express.Multer.File) {
+      const result = await this.fileService.uploadFile(file)
+      return await this.authorService.create(result, createAuthorDto);
+    }
+
+
 
   @UseGuards(AuthGuard)
   @Get()

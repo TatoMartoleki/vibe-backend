@@ -16,7 +16,6 @@ export class FilesController {
     }
 
     @Get('id')
-    @Public()
     getFile(@Param('id') id: number) {
         return this.filesServce.getFile(id)
     }

@@ -1,4 +1,5 @@
 import { AlbumEntity } from "src/album/entities/album.entity";
+import { MusicEntity } from "src/music/entities/music.entity";
 import { Column, Entity, JoinColumn, JoinTable, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: "files"})
@@ -10,13 +11,11 @@ export class FileEntity{
     @OneToOne(() => AlbumEntity, (album) => album.file)
     albumPhotos: AlbumEntity;
 
-    // @OneToOne(() => AlbumEntity, (album) => album.fileId)
-    // @JoinColumn()
-    // albumPhotos: AlbumEntity
+    @OneToOne(() => MusicEntity, (music) => music.file)
+    musicPhotos: MusicEntity;
 
-    // @OneToOne(() => AlbumEntity, (album) => album.file )
-    // @JoinTable()
-    // album: AlbumEntity;
+    @OneToOne(() => MusicEntity, (artist) => artist.file)
+    artistPhotos: MusicEntity;
 
     @Column()
     url: string

@@ -23,23 +23,13 @@ export class AlbumController {
     return await this.albumService.create(result, createAlbumDto);
   }
 
-  // @Post('upload')
-  // @UseInterceptors(FileInterceptor('file'))
-  // async create(
-  //   @Body() createAlbumDto: CreateAlbumDto,
-  //   @UploadedFile() file: Express.Multer.File // Correct type
-  // ): Promise<AlbumEntity> {
-  //   const uploadedFile = await this.fileService.uploadFile(file); // Handle file upload and get result
-  //   return await this.albumService.create(file, createAlbumDto); // Call service to create album
-  // }
-
   @UseGuards(AuthGuard)
   @Get()
   async findAll() {
     return await this.albumService.findAll();
   }
 
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.albumService.findOne(+id);
