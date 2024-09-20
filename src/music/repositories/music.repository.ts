@@ -11,7 +11,7 @@ export class MusicRepository {
   constructor(
     @InjectRepository(MusicEntity)
     private musicReposiotry: Repository<MusicEntity>,
-  ) {}
+  ) { }
 
   async create(file: FileEntity, createMusicDto: CreateMusicDto): Promise<MusicEntity> {
     const album = this.musicReposiotry.create({
@@ -24,9 +24,9 @@ export class MusicRepository {
 
   async findAll() {
     return await this.musicReposiotry
-    .createQueryBuilder()
-    .select()
-    .getMany();
+      .createQueryBuilder()
+      .select()
+      .getMany();
   }
 
   async findOne(id: number) {
@@ -57,10 +57,10 @@ export class MusicRepository {
   }
 
 
-  async findByName(search: string){
+  async findByName(search: string) {
     return await this.musicReposiotry
-    .createQueryBuilder('music')
-    .where('music.name LIKE :search', {search: `%${search}%`})
-    .getMany()
+      .createQueryBuilder('music')
+      .where('music.name LIKE :search', { search: `%${search}%` })
+      .getMany()
   }
 }
