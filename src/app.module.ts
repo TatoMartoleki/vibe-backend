@@ -10,7 +10,10 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
-import { ListenModule } from './listen/listen.module';
+import { FilesModule } from './files/files.module';
+import { AwsModule } from './aws/aws.module';
+import { APP_GUARD } from '@nestjs/core';
+
 
 @Module({
   imports: [
@@ -39,9 +42,11 @@ import { ListenModule } from './listen/listen.module';
     SearchModule,
     UsersModule,
     AuthModule,
-    ListenModule,
+    FilesModule,
+    AwsModule,
+
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService]
 })
 export class AppModule {}

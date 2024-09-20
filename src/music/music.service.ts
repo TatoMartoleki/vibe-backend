@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateMusicDto } from './dto/create-music.dto';
 import { UpdateMusicDto } from './dto/update-music.dto';
 import { MusicRepository } from './repositories/music.repository';
-import { listenRepository } from 'src/listen/repositories/listen.repository';
+import { FileEntity } from 'src/files/entities/file.entity';
 
 @Injectable()
 export class MusicService {
@@ -11,8 +11,8 @@ export class MusicService {
     private readonly listenRepository: listenRepository,
   ) {}
 
-  async create(createMusicDto: CreateMusicDto) {
-    return await this.musicReposiotry.create(createMusicDto);
+  async create(file: FileEntity, createMusicDto: CreateMusicDto) {
+    return await this.musicReposiotry.create(file, createMusicDto);
   }
 
   async findAll() {

@@ -4,6 +4,7 @@ import { UpdateMusicDto } from '../dto/update-music.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
 import { MusicEntity } from '../entities/music.entity';
+import { FileEntity } from 'src/files/entities/file.entity';
 
 @Injectable()
 export class MusicRepository {
@@ -12,12 +13,13 @@ export class MusicRepository {
     private musicReposiotry: Repository<MusicEntity>,
   ) {}
 
-  async create(createMusicDto: CreateMusicDto) {
-    return await this.musicReposiotry
-      .createQueryBuilder()
-      .insert()
-      .values(createMusicDto)
-      .execute();
+  async create(file: FileEntity, createMusicDto: CreateMusicDto): Promise<MusicEntity> {
+    const album = this.musicReposiotry.create({
+      ...createMusicDto,
+      file: file,
+      duration: Number(createMusicDto.duration)
+    });
+    return await this.musicReposiotry.save(album);
   }
 
   async findAll() {
