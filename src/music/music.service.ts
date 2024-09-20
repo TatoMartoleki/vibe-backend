@@ -3,6 +3,7 @@ import { CreateMusicDto } from './dto/create-music.dto';
 import { UpdateMusicDto } from './dto/update-music.dto';
 import { MusicRepository } from './repositories/music.repository';
 import { FileEntity } from 'src/files/entities/file.entity';
+import { listenRepository } from 'src/listen/repositories/listen.repository';
 
 @Injectable()
 export class MusicService {
