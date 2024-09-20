@@ -11,8 +11,8 @@ import { AlbumEntity } from './entities/album.entity';
 
 @Controller('album')
 export class AlbumController {
-  constructor(private readonly albumService: AlbumService, 
-              private readonly fileService: FilesService) {}
+  constructor(private readonly albumService: AlbumService,
+    private readonly fileService: FilesService) { }
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
