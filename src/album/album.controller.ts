@@ -11,8 +11,8 @@ import { AlbumEntity } from './entities/album.entity';
 
 @Controller('album')
 export class AlbumController {
-  constructor(private readonly albumService: AlbumService, 
-              private readonly fileService: FilesService) {}
+  constructor(private readonly albumService: AlbumService,
+    private readonly fileService: FilesService) { }
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
@@ -23,13 +23,13 @@ export class AlbumController {
     return await this.albumService.create(result, createAlbumDto);
   }
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Get()
   async findAll() {
     return await this.albumService.findAll();
   }
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.albumService.findOne(+id);

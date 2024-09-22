@@ -11,6 +11,6 @@ import { ListenModule } from 'src/listen/listen.module';
   imports: [TypeOrmModule.forFeature([MusicEntity]), FilesModule, ListenModule],
   controllers: [MusicController],
   providers: [MusicService, MusicRepository],
-  exports: [MusicRepository]
+  exports: [MusicRepository, MusicRepository]
 })
 export class MusicModule {}

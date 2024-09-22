@@ -13,6 +13,7 @@ export class MusicRepository {
     private musicRepository: Repository<MusicEntity>,
   ) {}
 
+
   async create(file: FileEntity, createMusicDto: CreateMusicDto): Promise<MusicEntity> {
     const album = this.musicRepository.create({
       ...createMusicDto,
@@ -63,4 +64,6 @@ export class MusicRepository {
     .where('music.name LIKE :search', {search: `%${search}%`})
     .getMany()
   }
+
 }
+
