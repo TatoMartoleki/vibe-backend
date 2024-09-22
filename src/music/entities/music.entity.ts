@@ -1,3 +1,4 @@
+import { FileEntity } from 'src/files/entities/file.entity';
 import { ListenEntity } from 'src/listen/entities/listen.entity';
 import { PlaylistEntity } from 'src/playlist/entities/playlist.entity';
 import {
@@ -5,8 +6,10 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   ManyToMany,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -15,6 +18,10 @@ import {
 export class MusicEntity {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @OneToOne(() => FileEntity)
+  @JoinColumn()
+  file: FileEntity;
 
   @Column({type: 'varchar'})
   name: string;

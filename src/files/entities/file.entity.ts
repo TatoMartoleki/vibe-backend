@@ -1,4 +1,5 @@
 import { AlbumEntity } from "src/album/entities/album.entity";
+import { AuthorEntity } from "src/author/entities/author.entity";
 import { MusicEntity } from "src/music/entities/music.entity";
 import { Column, Entity, JoinColumn, JoinTable, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
@@ -14,8 +15,8 @@ export class FileEntity{
     @OneToOne(() => MusicEntity, (music) => music.file)
     musicPhotos: MusicEntity;
 
-    @OneToOne(() => MusicEntity, (artist) => artist.file)
-    artistPhotos: MusicEntity;
+    @OneToOne(() => AuthorEntity, (artist) => artist.file)
+    artistPhotos: AuthorEntity;
 
     @Column()
     url: string
