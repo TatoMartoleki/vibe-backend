@@ -30,11 +30,11 @@ export class AuthorController {
     return await this.authorService.findAll();
   }
   
-  @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.authorService.findOne(+id);
   }
+  
   @UseGuards(AdminGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateAuthorDto: UpdateAuthorDto) {

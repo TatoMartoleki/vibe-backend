@@ -9,7 +9,7 @@ import { MusicEntity } from 'src/music/entities/music.entity';
 import { error } from 'console';
 
 @Injectable()
-export class listenRepository {
+export class ListenRepository {
 
   constructor(@InjectRepository(ListenEntity)
   private readonly listenRepository: Repository<ListenEntity>) {

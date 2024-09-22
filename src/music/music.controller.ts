@@ -20,8 +20,7 @@ export class MusicController {
     @Body() createMusicDto: CreateMusicDto,
     @UploadedFile() file: Express.Multer.File
   ) {
-
-      console.log(createMusicDto)
+    console.log(createMusicDto)
     const result = await this.fileService.uploadFile(file)
     return await this.musicService.create(result, createMusicDto);
   }
@@ -32,12 +31,11 @@ export class MusicController {
     return await this.musicService.findAll();
   }
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string, @Req() request) {
     const userId = request.user.payload.userId
     const musicId = +id
-    
     return await this.musicService.findOne(+id, userId, musicId);
   }
 
@@ -49,6 +47,7 @@ export class MusicController {
   ) {
     return await this.musicService.update(+id, updateMusicDto);
   }
+
 
   @UseGuards(AdminGuard)
   @Delete(':id')

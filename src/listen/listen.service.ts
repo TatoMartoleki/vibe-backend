@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CreateListenDto } from './dto/create-listen.dto';
 import { UpdateListenDto } from './dto/update-listen.dto';
-import { listenRepository } from './repositories/listen.repository';
+import { ListenRepository } from './repositories/listen.repository';
 
 @Injectable()
 export class ListenService {
 
-  constructor(private readonly listenRepository: listenRepository){}
+  constructor(private readonly listenRepository: ListenRepository){}
 
   async create(userId: number, musicId: number) {
     return await this.listenRepository.create(userId, musicId)
