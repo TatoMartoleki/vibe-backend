@@ -24,7 +24,7 @@ export class ListenRepository {
 
       const record = new ListenEntity();
       record.userId = userId
-      record.musicId =musicId
+      record.musicId = musicId
 
 
       const currentTime = new Date();

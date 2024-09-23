@@ -12,6 +12,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { ListenModule } from './listen/listen.module';
 import { PlaylistModule } from './playlist/playlist.module';
+import 'dotenv/config'
+
 
 @Module({
   imports: [

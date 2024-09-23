@@ -18,6 +18,7 @@ export class FileEntity{
     @OneToOne(() => AuthorEntity, (artist) => artist.file)
     artistPhotos: AuthorEntity;
 
+
     @Column()
     url: string
 

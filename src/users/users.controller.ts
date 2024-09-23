@@ -2,11 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } fro
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthGuard } from 'src/auth/guards/auth.userGuard';
-import { Admin } from 'typeorm';
-import { AdminGuard } from 'src/auth/guards/auth.adminGuard';
-import { request } from 'http';
-import { log } from 'console';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { AdminGuard } from 'src/auth/guards/admin.guard.ts';
+
 
 @Controller('users')
 export class UsersController {

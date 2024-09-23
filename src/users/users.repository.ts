@@ -13,7 +13,6 @@ export class UsersRepository {
     private readonly userRepository: Repository<UserEntity>){}
 
   async create(createUserDto: CreateUserDto) {
-
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10)    
 
     const newUser = new UserEntity()

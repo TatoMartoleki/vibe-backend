@@ -13,13 +13,8 @@ export class AuthorService {
   }
 
   async create(file: FileEntity, createAuthorDto: CreateAuthorDto) {
-    //console.log('This is a file', file)
     return await this.authorRepository.create(file, createAuthorDto);
   }
-
-  // async create(createAuthorDto: CreateAuthorDto) {
-  //   return await this.authorRepository.create(createAuthorDto);
-  // }
 
   async findAll() {
     return await this.authorRepository.findAll();

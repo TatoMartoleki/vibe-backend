@@ -14,6 +14,7 @@ import {
     async canActivate(context: ExecutionContext): Promise<boolean> {
       const request = context.switchToHttp().getRequest();
       const token = this.extractTokenFromHeader(request);
+      
       if (!token) {
         throw new UnauthorizedException();
       }
@@ -22,8 +23,12 @@ import {
           token,
           {
             secret: process.env.JWT_SECRET
-          }
+          },
+          
         );
+        if(payload.role !== 'admin'){
+          throw new UnauthorizedException
+        }
 
         request['admin'] = payload;
       } catch {

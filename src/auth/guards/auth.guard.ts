@@ -17,7 +17,7 @@ import {
       if (!token) {
         throw new UnauthorizedException();
       }
-      try {
+      try { 
         const payload = await this.jwtService.verifyAsync(
           token,
           {
@@ -25,9 +25,9 @@ import {
           }
         );
 
-        request['user'] = payload;
+        request.user  = payload;
   
-        
+         
       } catch {
         throw new UnauthorizedException();
       }

@@ -2,10 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterc
 import { MusicService } from './music.service';
 import { CreateMusicDto } from './dto/create-music.dto';
 import { UpdateMusicDto } from './dto/update-music.dto';
-import { AdminGuard } from 'src/auth/guards/auth.adminGuard';
-import { AuthGuard } from 'src/auth/guards/auth.userGuard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FilesService } from 'src/files/files.service';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { AdminGuard } from 'src/auth/guards/admin.guard.ts';
 
 
 @Controller('music')
@@ -14,18 +14,20 @@ export class MusicController {
               private readonly fileService: FilesService
   ) {}
 
+
+  @UseGuards(AdminGuard)
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async create(
     @Body() createMusicDto: CreateMusicDto,
-    @UploadedFile() file: Express.Multer.File
+    @UploadedFile() file: Express.Multer.File,
+    @Req() req
   ) {
-    console.log(createMusicDto)
     const result = await this.fileService.uploadFile(file)
-    return await this.musicService.create(result, createMusicDto);
+    return await this.musicService.create(result, createMusicDto, req.user);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AdminGuard)
   @Get()
   async findAll() {
     return await this.musicService.findAll();

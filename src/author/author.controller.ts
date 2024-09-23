@@ -2,8 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UploadedF
 import { AuthorService } from './author.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
-import { AuthGuard } from 'src/auth/guards/auth.userGuard';
-import { AdminGuard } from 'src/auth/guards/auth.adminGuard';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { AdminGuard } from 'src/auth/guards/admin.guard.ts';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateAlbumDto } from 'src/album/dto/create-album.dto';
 import { FilesService } from 'src/files/files.service';
@@ -13,14 +13,16 @@ export class AuthorController {
   constructor(private readonly authorService: AuthorService,
               private readonly fileService: FilesService) {}
 
-    @Post('upload')
-    @UseInterceptors(FileInterceptor('file'))
-    async create(
-      @Body() createAuthorDto: CreateAuthorDto,
-      @UploadedFile() file: Express.Multer.File) {
-      const result = await this.fileService.uploadFile(file)
-      return await this.authorService.create(result, createAuthorDto);
-    }
+
+  @UseGuards(AdminGuard)
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  async create(
+    @Body() createAuthorDto: CreateAuthorDto,
+    @UploadedFile() file: Express.Multer.File) {
+    const result = await this.fileService.uploadFile(file)
+    return await this.authorService.create(result, createAuthorDto);
+  }
 
 
 
