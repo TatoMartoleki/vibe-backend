@@ -8,7 +8,6 @@ import { AdminGuard } from 'src/auth/guards/admin.guard.ts';
 export class SearchController {
   constructor(private readonly searchService: SearchService) {}
 
-  @UseGuards(AdminGuard)
   @Get()
   search(@Query('searchField') search: string){
     return this.searchService.search(search);
