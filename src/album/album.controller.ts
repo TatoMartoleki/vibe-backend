@@ -2,11 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterc
 import { AlbumService } from './album.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-import { AuthGuard } from 'src/auth/guards/auth.userGuard';
-import { AdminGuard } from 'src/auth/guards/auth.adminGuard';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { AdminGuard } from 'src/auth/guards/admin.guard.ts';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FilesService } from 'src/files/files.service';
-import { AlbumEntity } from './entities/album.entity';
 
 
 @Controller('album')
@@ -23,13 +22,13 @@ export class AlbumController {
     return await this.albumService.create(result, createAlbumDto);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AdminGuard)
   @Get()
   async findAll() {
     return await this.albumService.findAll();
   }
 
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.albumService.findOne(+id);

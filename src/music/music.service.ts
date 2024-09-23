@@ -12,7 +12,7 @@ export class MusicService {
     private readonly listenRepository: ListenRepository,
   ) {}
 
-  async create(file: FileEntity, createMusicDto: CreateMusicDto) {
+  async create(file: FileEntity, createMusicDto: CreateMusicDto, user) {        
     return await this.musicRepository.create(file, createMusicDto);
   }
 

@@ -28,11 +28,11 @@ export class AuthService {
         }
 
         const payload = {
-            userId: user.id, 
+            userId: user.id,
             role: 'user'
         }
 
-        const jwtToken = await this.jwtService.signAsync({payload});
+        const jwtToken = await this.jwtService.signAsync(payload);
 
         return {
             accessToken: jwtToken
@@ -40,9 +40,3 @@ export class AuthService {
     }
 
 }
-
-
-// sheqmeni auth guard
-// login user
-// aige accessToken rac mogca loginma da chasvi sxva requestshi
-// 

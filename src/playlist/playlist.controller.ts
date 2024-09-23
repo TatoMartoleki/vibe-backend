@@ -2,8 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } fro
 import { PlaylistService } from './playlist.service';
 import { CreatePlaylistDto } from './dto/create-playlist.dto';
 import { UpdatePlaylistDto } from './dto/update-playlist.dto';
-import { request } from 'http';
-import { AuthGuard } from 'src/auth/guards/auth.userGuard';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @Controller('playlist')
 export class PlaylistController {
@@ -17,6 +16,7 @@ export class PlaylistController {
     return await this.playlistService.create(createPlaylistDto, userId);
   }
 
+  
   @Get()
   async findAll() {
     return await this.playlistService.findAll();

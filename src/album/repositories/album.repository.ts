@@ -30,6 +30,7 @@ export class AlbumRepository {
   async findOne(id: number) {
     return await this.albumrepository
       .createQueryBuilder('album')
+      .leftJoinAndSelect('album.file', 'file')
       .where('album.id = :id', { id })
       .getOne();
   }
