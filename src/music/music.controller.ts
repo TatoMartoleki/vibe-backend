@@ -14,8 +14,6 @@ export class MusicController {
               private readonly fileService: FilesService
   ) {}
 
-
-  @UseGuards(AdminGuard)
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async create(
@@ -27,7 +25,6 @@ export class MusicController {
     return await this.musicService.create(result, createMusicDto, req.user);
   }
 
-  @UseGuards(AdminGuard)
   @Get()
   async findAll() {
     return await this.musicService.findAll();
