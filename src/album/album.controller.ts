@@ -22,7 +22,6 @@ export class AlbumController {
     return await this.albumService.create(result, createAlbumDto);
   }
 
-  @UseGuards(AdminGuard)
   @Get()
   async findAll() {
     return await this.albumService.findAll();
