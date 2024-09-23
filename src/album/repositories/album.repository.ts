@@ -23,9 +23,11 @@ export class AlbumRepository {
 
   async findAll() {
     return await this.albumrepository
-    .createQueryBuilder('album')
-    .getMany();
+      .createQueryBuilder('album')
+      .leftJoinAndSelect('album.files', 'file')
+      .getMany();
   }
+  
 
   async findOne(id: number) {
     return await this.albumrepository
