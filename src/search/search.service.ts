@@ -16,9 +16,9 @@ export class SearchService {
   
   async search(search: string){
 
-    const music = await this.musicRepo.findByName(search)
     const author = await this.authorRepo.findByName(search)
     const album = await this.albumRepo.findByName(search)
+    const music = await this.musicRepo.findByName(search)
 
     return { music, author, album}
   }
