@@ -23,22 +23,17 @@ export class AuthorRepository {
     return await this.authorRepositoy.save(album);
   }
 
-  // async create(createAuthorDto: CreateAuthorDto) {
-  //   return await this.authorRepositoy
-  //     .createQueryBuilder()
-  //     .insert()
-  //     .values(createAuthorDto)
-  //     .execute();
-  // }
-
   async findAll() {
-    return await this.authorRepositoy.createQueryBuilder().select().getMany();
+    return await this.authorRepositoy
+    .createQueryBuilder('author')
+    .leftJoinAndSelect('author.file', 'file')
+    .getMany();
   }
 
   async findOne(id: number) {
     return await this.authorRepositoy
       .createQueryBuilder()
-      .select()
+      .leftJoinAndSelect('author.file', 'file')
       .where('id = :id', { id })
       .getOne();
   }
@@ -64,6 +59,7 @@ export class AuthorRepository {
   async findByName(search: string){
     return await this.authorRepositoy
     .createQueryBuilder('author')
+    .leftJoinAndSelect('author.file', 'file') 
     .where('author.firstName LIKE :search', {search: `%${search}%`})
     .getMany()
   }
