@@ -7,7 +7,7 @@ export class PlaylistEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({type: "varchar"})
     name: string;
 
     @Column({nullable: true})
