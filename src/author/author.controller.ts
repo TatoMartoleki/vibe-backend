@@ -14,7 +14,6 @@ export class AuthorController {
               private readonly fileService: FilesService) {}
 
 
-  @UseGuards(AdminGuard)
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async create(
@@ -25,8 +24,6 @@ export class AuthorController {
   }
 
 
-
-  @UseGuards(AuthGuard)
   @Get()
   async findAll() {
     return await this.authorService.findAll();

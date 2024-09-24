@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, Req} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, Req, UnauthorizedException} from '@nestjs/common';
 import { MusicService } from './music.service';
 import { CreateMusicDto } from './dto/create-music.dto';
 import { UpdateMusicDto } from './dto/update-music.dto';
@@ -33,7 +33,7 @@ export class MusicController {
   @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string, @Req() request) {
-    const userId = request.user.payload.userId
+    const userId = request.user.userId
     const musicId = +id
     return await this.musicService.findOne(+id, userId, musicId);
   }
