@@ -25,6 +25,7 @@ export class MusicController {
     return await this.musicService.create(result, createMusicDto, req.user);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
   async findAll() {
     return await this.musicService.findAll();

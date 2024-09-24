@@ -12,6 +12,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { ListenModule } from './listen/listen.module';
 import { PlaylistModule } from './playlist/playlist.module';
+import { TopMusicModule } from './top-music/top-music.module';
 import 'dotenv/config'
 
 
@@ -44,6 +45,7 @@ import 'dotenv/config'
     AuthModule,
     ListenModule,
     PlaylistModule,
+    TopMusicModule,
   ],
   controllers: [AppController],
   providers: [AppService],
