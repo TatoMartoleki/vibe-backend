@@ -1,6 +1,6 @@
 import { MusicEntity } from "src/music/entities/music.entity";
 import { UserEntity } from "src/users/entities/user.entity";
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class PlaylistEntity {
@@ -23,4 +23,13 @@ export class PlaylistEntity {
 
     @Column()
     userId: number
+
+    @CreateDateColumn()
+    createdAt: Date
+
+    @UpdateDateColumn()
+    updatedAt: Date;
+
+    @DeleteDateColumn()
+    deletedAt: Date;
 }

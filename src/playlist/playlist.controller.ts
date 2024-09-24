@@ -11,8 +11,7 @@ export class PlaylistController {
   @UseGuards(AuthGuard)
   @Post()
   async create(@Body() createPlaylistDto: CreatePlaylistDto, @Req() request) {
-    const userId = request.user.payload.userId
-    
+    const userId = request.user.userId    
     return await this.playlistService.create(createPlaylistDto, userId);
   }
 
