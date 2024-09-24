@@ -17,9 +17,8 @@ export class UsersController {
 
   @UseGuards(AuthGuard)
   @Get('me')
-  async findMe(@Req() request){
-    
-    return await this.usersService.findMe(request.user.payload.userId)
+  async findMe(@Req() request){    
+    return await this.usersService.findMe(request.user.userId)
   }
 
 
