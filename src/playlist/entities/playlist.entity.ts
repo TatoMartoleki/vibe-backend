@@ -25,7 +25,7 @@ export class PlaylistEntity {
     userId: number
 
     @CreateDateColumn()
-    createdAt: Date
+    createdAt: Date;
 
     @UpdateDateColumn()
     updatedAt: Date;

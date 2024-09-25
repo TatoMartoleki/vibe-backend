@@ -22,8 +22,8 @@ export class PlaylistRepository {
 
     async findAll() {
         return await this.playlistRepository
-            .createQueryBuilder()
-            .orderBy("playlistEntity.createdAt", "DESC")
+            .createQueryBuilder("playlist")
+            .orderBy("playlist.createdAt", "DESC")
             .getMany()
     }
 
