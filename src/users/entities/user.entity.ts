@@ -10,12 +10,6 @@ export class UserEntity {
 id: number;
 
 @Column()
-firstName: string
-
-@Column()
-lastName: string
-
-@Column()
 email: string
 
 @Column({select: false})
@@ -26,5 +20,6 @@ listens: ListenEntity;
 
 @ManyToMany(() => PlaylistEntity, (playlists) => playlists.users)
 playlists: PlaylistEntity[]
+  static password: Promise<string>;
 
 }
