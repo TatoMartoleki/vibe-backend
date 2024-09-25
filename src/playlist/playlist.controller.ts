@@ -3,6 +3,7 @@ import { PlaylistService } from './playlist.service';
 import { CreatePlaylistDto } from './dto/create-playlist.dto';
 import { UpdatePlaylistDto } from './dto/update-playlist.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { request } from 'http';
 
 @Controller('playlist')
 export class PlaylistController {
@@ -17,8 +18,9 @@ export class PlaylistController {
 
   @UseGuards(AuthGuard)
   @Get()
-  async findAll() {
-    return await this.playlistService.findAll();
+  async findAll(@Req() request) {
+    const id = request.user.userId
+    return await this.playlistService.findAll(id);
   }
 
 

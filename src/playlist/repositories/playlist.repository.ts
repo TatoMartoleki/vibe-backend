@@ -20,9 +20,10 @@ export class PlaylistRepository {
         return await this.playlistRepository.save(playlist)
     }
 
-    async findAll() {
+    async findAll(id) {
         return await this.playlistRepository
             .createQueryBuilder("playlist")
+            .where("id = :id", { id })
             .orderBy("playlist.createdAt", "DESC")
             .getMany()
     }
@@ -47,7 +48,7 @@ export class PlaylistRepository {
             where: { id: playlistId },
             relations: { musics: true }
         })
-                
+
         if (!playlist) {
             throw new NotFoundException('Playlist not found');
         }
@@ -56,12 +57,12 @@ export class PlaylistRepository {
 
         const hasMusic = playlist.musics.some(music => music.id == musicId)
 
-        if(!hasMusic) {
+        if (!hasMusic) {
             playlist.musics.push(music)
         } else {
             throw new ConflictException("Music already exists in the playlist")
         }
-        
+
         if (!music) {
             throw new NotFoundException('Music not found');
         }
@@ -69,7 +70,7 @@ export class PlaylistRepository {
         try {
             return await this.playlistRepository.save(playlist);
         } catch (err) {
-            
+
             throw new ConflictException(
                 'Could not update playlist, please try again later',
             );
@@ -85,7 +86,7 @@ export class PlaylistRepository {
         if (!playlist) {
             throw new NotFoundException('Playlist not found');
         }
-    
+
         playlist.musics = playlist.musics.filter(m => m.id !== musicId);
 
         try {
