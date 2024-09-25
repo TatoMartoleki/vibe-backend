@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { AdminGuard } from 'src/auth/guards/admin.guard.ts';
+import { request } from 'http';
 
 
 @Controller('users')
@@ -35,9 +36,10 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard)
-  @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return await this.usersService.update(+id, updateUserDto);
+  @Patch('change-password')
+  async changePassword(@Req() request, @Body() UpdateUserDto: UpdateUserDto){
+    const id = request.user.userId    
+    return this.usersService.changePassword(id, UpdateUserDto)
   }
 
   @UseGuards(AdminGuard)
