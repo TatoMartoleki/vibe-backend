@@ -14,6 +14,7 @@ export class AuthService {
 
     async signInUser(data: SignInUserDto){
         const user = await  this.usersRepository.findByEmailAndReturnPassword(data.email) 
+        
         if(!user){
             throw new UnauthorizedException('Access Denied')
         }        
@@ -24,12 +25,12 @@ export class AuthService {
         )
 
         if(!isPasswordCorrect){
-            throw new UnauthorizedException('Access Denied')
+            throw new UnauthorizedException('Email or password is incorect')
         }
 
         const payload = {
             userId: user.id,
-            role: 'user'
+            role: user.role
         }
         
 

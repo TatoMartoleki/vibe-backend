@@ -30,7 +30,7 @@ export class UsersController {
     return await this.usersService.findAll();
   }
 
-  @UseGuards(AdminGuard)
+  @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.usersService.findOne(+id);
@@ -38,8 +38,10 @@ export class UsersController {
 
   @UseGuards(AuthGuard)
   @Patch(':userId/change-password')
-  async changePassword(@Param('userId') userId: number, @Body() UpdateUserAdminDto: UpdateUserAdminDto){  
-    return this.usersService.changePassword(userId, UpdateUserAdminDto)
+  async changePassword(@Param('userId') userId: number, @Body() UpdateUserAdminDto: UpdateUserAdminDto, @Req() request){  
+    const userRole = request.user.role
+    
+    return this.usersService.changePassword(userId, UpdateUserAdminDto, userRole)
   }
 
   @UseGuards(AdminGuard)

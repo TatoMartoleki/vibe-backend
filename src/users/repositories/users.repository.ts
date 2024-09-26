@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from '../dto/userDtos/create-user.dto';
 import { UpdateUserDto } from '../dto/userDtos/update-user.dto';
 import { UserEntity } from '../entities/user.entity';
@@ -55,19 +55,30 @@ export class UsersRepository {
         id: true,
         email: true,
         password: true,
+        role: true,
       }
     })
   }
 
 
-  async changePassword(userId: number, UpdateUserAdminDto: UpdateUserAdminDto) {
+  async changePassword(userId: number, UpdateUserAdminDto: UpdateUserAdminDto, userRole: string) {
+
+    if(userRole !== "admin"){
+      throw new UnauthorizedException("You aren't admin")
+    }
+
     const user = await this.userRepository.findOne({
       where: { id: userId }, select: {
         id: true,
         email: true,
-        password: true
+        password: true,
+        role: true,
       }
     })
+
+    if(user.role === "admin"){
+      throw new BadRequestException("That user is an admin")
+    }
 
     if (!user) {
       throw new UnauthorizedException("User not found")

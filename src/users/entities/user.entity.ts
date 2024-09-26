@@ -21,6 +21,7 @@ export class UserEntity {
     enum: Role,
     default: Role.User
   })
+  role: Role
 
   @OneToMany(() => ListenEntity, (listen) => listen.user)
   listens: ListenEntity;

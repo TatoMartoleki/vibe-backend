@@ -37,8 +37,8 @@ export class UsersService {
     return await this.usersRepository.findOne(id);
   }
 
-  async changePassword(userId: number, UpdateUserAdminDto: UpdateUserAdminDto){
-    return await this.usersRepository.changePassword(userId, UpdateUserAdminDto)
+  async changePassword(userId: number, UpdateUserAdminDto: UpdateUserAdminDto, userRole: string){
+    return await this.usersRepository.changePassword(userId, UpdateUserAdminDto, userRole)
   }
 
   async remove(id: number) {
