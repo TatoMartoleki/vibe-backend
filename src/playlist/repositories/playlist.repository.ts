@@ -20,10 +20,10 @@ export class PlaylistRepository {
         return await this.playlistRepository.save(playlist)
     }
 
-    async findAll(id) {
+    async findAll(userId: number) {
         return await this.playlistRepository
             .createQueryBuilder("playlist")
-            .where("id = :id", { id })
+            .where("playlist.userId = :userId", { userId })
             .orderBy("playlist.createdAt", "DESC")
             .getMany()
     }

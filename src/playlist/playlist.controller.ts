@@ -19,8 +19,8 @@ export class PlaylistController {
   @UseGuards(AuthGuard)
   @Get()
   async findAll(@Req() request) {
-    const id = request.user.userId
-    return await this.playlistService.findAll(id);
+    const userId = request.user.userId
+    return await this.playlistService.findAll(userId);
   }
 
 
