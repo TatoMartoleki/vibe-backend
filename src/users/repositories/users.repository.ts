@@ -41,9 +41,7 @@ export class UsersRepository {
       throw new NotFoundException('User not found');
     }
 
-    const isAdmin = await this.userRepository.findOne({ where: { id } })
-    
-    if(isAdmin){
+    if(user.role === "admin"){
       throw new BadRequestException("That user is an admin") 
     }
     await this.userRepository.softRemove(user);
