@@ -27,7 +27,9 @@ export class UsersRepository {
   }
 
   async findAll() {
-    return await this.userRepository.find();
+    return await this.userRepository.find({
+      withDeleted: true
+    });
   }
 
   async findOne(id: number) {
