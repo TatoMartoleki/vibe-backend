@@ -43,14 +43,16 @@ export class AuthService {
 
     async signInAdmin(data: SignInDto) {
         const user = await this.usersRepository.findByEmailAndReturnPassword(data.email)
-
-        if(user.role !== "admin"){
-            throw new UnauthorizedException('You are not Admin')
-        }
-
+        
         if (!user) {
             throw new UnauthorizedException("User doesn't exist")
         }
+
+        if (user.role !== "admin") {
+            throw new UnauthorizedException('You are not Admin')
+        }
+
+
 
         const isPasswordCorrect = await bcrypt.compare(
             data.password,
