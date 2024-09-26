@@ -1,6 +1,6 @@
 import { ListenEntity } from "src/listen/entities/listen.entity";
 import { PlaylistEntity } from "src/playlist/entities/playlist.entity";
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from "typeorm";
 import { Role } from "../enum/roles.enum";
 
 @Entity()
@@ -30,4 +30,12 @@ export class UserEntity {
   playlists: PlaylistEntity[]
   static password: Promise<string>;
 
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date
 }
