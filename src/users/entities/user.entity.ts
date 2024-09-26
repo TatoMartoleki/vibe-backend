@@ -1,25 +1,32 @@
 import { ListenEntity } from "src/listen/entities/listen.entity";
 import { PlaylistEntity } from "src/playlist/entities/playlist.entity";
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany } from "typeorm";
+import { Role } from "../enum/roles.enum";
 
 @Entity()
 
 export class UserEntity {
 
-@PrimaryGeneratedColumn()
-id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-@Column()
-email: string
+  @Column()
+  email: string
 
-@Column({select: false})
-password: string
+  @Column({ select: false })
+  password: string
 
-@OneToMany(() => ListenEntity, (listen) => listen.user)
-listens: ListenEntity;
+  @Column({
+    type: "enum",
+    enum: Role,
+    default: Role.User
+  })
 
-@ManyToMany(() => PlaylistEntity, (playlists) => playlists.users)
-playlists: PlaylistEntity[]
+  @OneToMany(() => ListenEntity, (listen) => listen.user)
+  listens: ListenEntity;
+
+  @ManyToMany(() => PlaylistEntity, (playlists) => playlists.users)
+  playlists: PlaylistEntity[]
   static password: Promise<string>;
 
 }
