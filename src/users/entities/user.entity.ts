@@ -38,4 +38,5 @@ export class UserEntity {
 
   @DeleteDateColumn()
   deletedAt: Date
+    static deletedAt: any;
 }
