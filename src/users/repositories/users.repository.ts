@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from '../dto/userDtos/create-user.dto';
 import { UpdateUserDto } from '../dto/userDtos/update-user.dto';
 import { UserEntity } from '../entities/user.entity';
@@ -37,9 +37,16 @@ export class UsersRepository {
 
   async remove(id: number) {
     const user = await this.userRepository.findOne({ where: { id } });
-    if (user) {
-      await this.userRepository.remove(user);
+    if (!user) {
+      throw new NotFoundException('User not found');
     }
+
+    const isAdmin = await this.userRepository.findOne({ where: { id } })
+    
+    if(isAdmin){
+      throw new BadRequestException("That user is an admin") 
+    }
+    await this.userRepository.softRemove(user);
   }
 
   findByEmail(email: string) {
@@ -56,14 +63,16 @@ export class UsersRepository {
         email: true,
         password: true,
         role: true,
-      }
+        deletedAt: true
+      },
+      withDeleted: true
     })
   }
 
 
   async changePassword(userId: number, UpdateUserAdminDto: UpdateUserAdminDto, userRole: string) {
 
-    if(userRole !== "admin"){
+    if (userRole !== "admin") {
       throw new UnauthorizedException("You aren't admin")
     }
 
@@ -76,12 +85,12 @@ export class UsersRepository {
       }
     })
 
-    if(user.role === "admin"){
-      throw new BadRequestException("That user is an admin")
-    }
-
     if (!user) {
       throw new UnauthorizedException("User not found")
+    }
+
+    if (user.role === "admin") {
+      throw new BadRequestException("That user is an admin")
     }
 
     if (UpdateUserAdminDto.newPassword !== UpdateUserAdminDto.confirmPassword) {

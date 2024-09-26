@@ -3,6 +3,7 @@ import { SignInDto } from './dto/signIn-user.dto';
 import { UsersRepository } from 'src/users/repositories/users.repository';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { UserEntity } from 'src/users/entities/user.entity';
 
 
 @Injectable()
@@ -15,8 +16,13 @@ export class AuthService {
     async signInUser(data: SignInDto) {
         const user = await this.usersRepository.findByEmailAndReturnPassword(data.email)
 
+
         if (!user) {
             throw new UnauthorizedException("User doesn't exist")
+        }
+        
+        if (user.deletedAt) {
+            throw new UnauthorizedException('This account has been deactivated. Please contact support.');
         }
 
         const isPasswordCorrect = await bcrypt.compare(
@@ -43,15 +49,6 @@ export class AuthService {
 
     async signInAdmin(data: SignInDto) {
         const user = await this.usersRepository.findByEmailAndReturnPassword(data.email)
-        
-        if (!user) {
-            throw new UnauthorizedException("User doesn't exist")
-        }
-
-        if (user.role !== "admin") {
-            throw new UnauthorizedException('You are not Admin')
-        }
-
 
 
         const isPasswordCorrect = await bcrypt.compare(
@@ -59,8 +56,18 @@ export class AuthService {
             user.password
         )
 
-        if (!isPasswordCorrect) {
+        if (user.deletedAt) {
+            throw new UnauthorizedException('This account has been deactivated. Please contact support.');
+        }
+
+        if (!user || !isPasswordCorrect) {
             throw new UnauthorizedException('Email or password is incorect')
+        }
+
+
+
+        if (user.role !== "admin") {
+            throw new UnauthorizedException('You are not Admin')
         }
 
         const payload = {
