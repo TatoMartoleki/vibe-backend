@@ -11,6 +11,9 @@ import { error } from "console";
 
 @Injectable()
 export class PlaylistRepository {
+    find(arg0: { where: { userId: number; }; }) {
+      throw new Error('Method not implemented.');
+    }
     constructor(@InjectRepository(PlaylistEntity)
     private readonly playlistRepository: Repository<PlaylistEntity>,
         private readonly musicRepository: MusicRepository) { }
@@ -26,6 +29,12 @@ export class PlaylistRepository {
             .orderBy("playlistEntity.createdAt", "DESC")
             .getMany()
     }
+
+    async findAllFromUser(userId: number) {
+        return await this.playlistRepository.find({
+          where: { userId: userId }
+        });
+      }
 
     async findOne(id: number) {
         return await this.playlistRepository

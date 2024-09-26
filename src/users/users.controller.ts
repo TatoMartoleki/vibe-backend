@@ -2,46 +2,48 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } fro
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { AdminGuard } from 'src/auth/guards/admin.guard.ts';
+import { AuthGuard } from 'src/auth/guards/auth-guard.service';
+import { Public } from 'src/auth/decorators/public.decorator';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { RoleEnum } from 'src/auth/enums/roles.enum';
+
 
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Public()
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
-  @UseGuards(AuthGuard)
+  @Roles(RoleEnum.admin, RoleEnum.user)
   @Get('me')
   async findMe(@Req() request){
-    
     return await this.usersService.findMe(request.user.payload.userId)
   }
 
-
-  @UseGuards(AdminGuard)
+  @Roles(RoleEnum.admin)
   @Get()
   async findAll() {
     return await this.usersService.findAll();
   }
 
-  @UseGuards(AdminGuard)
+  @Roles(RoleEnum.admin)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.usersService.findOne(+id);
   }
 
-  @UseGuards(AuthGuard)
+  @Roles(RoleEnum.admin)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return await this.usersService.update(+id, updateUserDto);
   }
 
-  @UseGuards(AdminGuard)
+  @Roles(RoleEnum.admin)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.usersService.remove(+id);

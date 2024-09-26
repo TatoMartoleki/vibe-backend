@@ -13,6 +13,8 @@ import { ConfigModule } from '@nestjs/config';
 import { ListenModule } from './listen/listen.module';
 import { PlaylistModule } from './playlist/playlist.module';
 import 'dotenv/config'
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './auth/guards/auth-guard.service';
 
 
 @Module({
@@ -44,8 +46,12 @@ import 'dotenv/config'
     AuthModule,
     ListenModule,
     PlaylistModule,
+    AuthModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, {
+    provide: APP_GUARD,
+    useClass: AuthGuard
+  }]
 })
 export class AppModule {}
