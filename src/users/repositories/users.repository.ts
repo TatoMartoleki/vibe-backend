@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from '../dto/create-user.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
+import { CreateUserDto } from '../dto/userDtos/create-user.dto';
+import { UpdateUserDto } from '../dto/userDtos/update-user.dto';
 import { UserEntity } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { UnauthorizedException } from '@nestjs/common';
+import { UpdateUserAdminDto } from '../dto/adminDtos/update-admin.dto';
 
 @Injectable()
 export class UsersRepository {
@@ -58,32 +59,28 @@ export class UsersRepository {
     })
   }
 
-  async changePassword(id: number, updateUserDto: UpdateUserDto) {
-    const user = await this.userRepository.findOne({ where: { id }, select: {
-      id: true,
-      email: true,
-      password: true
-    } })
+
+  async changePassword(userId: number, UpdateUserAdminDto: UpdateUserAdminDto) {
+    const user = await this.userRepository.findOne({
+      where: { id: userId }, select: {
+        id: true,
+        email: true,
+        password: true
+      }
+    })
 
     if (!user) {
       throw new UnauthorizedException("User not found")
     }
 
-    const isMatch = await bcrypt.compare(updateUserDto.currentPassword, user.password)
-
-    if (!isMatch) {
-      throw new UnauthorizedException('Current password is incorrect');
-    }
-
-    if(updateUserDto.newPassword !== updateUserDto.confirmPassword){
+    if (UpdateUserAdminDto.newPassword !== UpdateUserAdminDto.confirmPassword) {
       throw new UnauthorizedException("Passwords do not match")
     }
 
-    const hashedPassword = await bcrypt.hash(updateUserDto.newPassword, 10)
+    const hashedPassword = await bcrypt.hash(UpdateUserAdminDto.newPassword, 10)
     user.password = hashedPassword
 
     return this.userRepository.save(user);
-
   }
 
 }

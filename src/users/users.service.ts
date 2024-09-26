@@ -1,9 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from './dto/userDtos/create-user.dto';
+import { UpdateUserDto } from './dto/userDtos/update-user.dto';
 import { UsersRepository } from './repositories/users.repository';
 import { request } from 'http';
 import { Any } from 'typeorm';
+import { UpdateUserAdminDto } from './dto/adminDtos/update-admin.dto';
 
 @Injectable()
 export class UsersService {
@@ -36,8 +37,8 @@ export class UsersService {
     return await this.usersRepository.findOne(id);
   }
 
-  async changePassword(id: number, UpdateUserDto: UpdateUserDto){
-    return await this.usersRepository.changePassword(id, UpdateUserDto)
+  async changePassword(userId: number, UpdateUserAdminDto: UpdateUserAdminDto){
+    return await this.usersRepository.changePassword(userId, UpdateUserAdminDto)
   }
 
   async remove(id: number) {
