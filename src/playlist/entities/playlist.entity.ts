@@ -17,6 +17,7 @@ export class PlaylistEntity {
     @JoinTable({name: "playlist_music"})
     musics: MusicEntity[];
 
+
     @ManyToMany(() => UserEntity, (users) => users.playlists)
     @JoinTable({name: "playlist_user"})
     users: UserEntity[]
