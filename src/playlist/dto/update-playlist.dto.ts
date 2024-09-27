@@ -5,6 +5,4 @@ import { IsString } from 'class-validator';
 export class UpdatePlaylistDto extends PartialType(CreatePlaylistDto) {
     @IsString()
     name: string;
-
-    
 }

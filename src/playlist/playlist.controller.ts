@@ -43,16 +43,22 @@ export class PlaylistController {
     return await this.playlistService.update(+playlistId, updatePlaylistDto, userId);
   }
 
+  @UseGuards(AdminGuard)
+  @Patch(':userId/edit/:playlistId')
+  async editPlaylist(@Param('playlistId') playlistId: string, @Param('userId') userId: string, @Body() UpdatePlaylistDto: UpdatePlaylistDto){
+    return await this.playlistService.editPlaylist(+playlistId, +userId, UpdatePlaylistDto)
+  }
+
   @UseGuards(AuthGuard)
   @Patch(':playlistId/add/:musicId')
-  async addMusic(@Param('playlistId') playlistId: number, @Param('musicId') musicId: number) {
-    return await this.playlistService.addMusic(playlistId, musicId)
+  async addMusic(@Param('playlistId') playlistId: string, @Param('musicId') musicId: string) {
+    return await this.playlistService.addMusic(+playlistId, +musicId)
   }
 
   @UseGuards(AuthGuard)
   @Patch(':playlistId/remove/:musicId')
-  async removeMusic(@Param('playlistId') playlistId: number, @Param("musicId") musicId: number) {
-    return await this.playlistService.removeMusic(playlistId, musicId)
+  async removeMusic(@Param('playlistId') playlistId: string, @Param("musicId") musicId: string) {
+    return await this.playlistService.removeMusic(+playlistId, +musicId)
   }
 
   @UseGuards(AuthGuard)

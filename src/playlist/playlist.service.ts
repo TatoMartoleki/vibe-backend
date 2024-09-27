@@ -27,6 +27,10 @@ export class PlaylistService {
     return await this.playlistRepository.update(playlistId, updatePlaylistDto, userId);
   }
 
+  async editPlaylist(playlistId: number, userId: number, UpdatePlaylistDto: UpdatePlaylistDto){
+    return await this.playlistRepository.editPlaylist(playlistId, userId, UpdatePlaylistDto)
+  }
+
   async addMusic(PlaylistId: number, MusicId: number){
     return await this.playlistRepository.addMusic(PlaylistId, MusicId)
   }

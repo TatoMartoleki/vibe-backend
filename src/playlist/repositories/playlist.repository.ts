@@ -54,6 +54,16 @@ export class PlaylistRepository {
         .execute();
     }
 
+    async editPlaylist(playlistId: number, userId: number, updatePlaylistDto: UpdatePlaylistDto){
+        return await this.playlistRepository
+        .createQueryBuilder()
+        .update(PlaylistEntity)
+        .set(updatePlaylistDto)
+        .where('id = :id', {id: playlistId})
+        .andWhere('userId = :userId', {userId: userId})
+        .execute();
+    }
+
     async addMusic(playlistId: number, musicId: number) {
         const playlist = await this.playlistRepository.findOne({
             where: { id: playlistId },
