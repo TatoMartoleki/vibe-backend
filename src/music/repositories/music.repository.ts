@@ -19,7 +19,7 @@ export class MusicRepository {
       ...createMusicDto,
       photoFile,
       mp3File,
-      duration: Number(createMusicDto.duration)
+      // duration: Number(createMusicDto.duration)
     });
     return await this.musicRepository.save(album);
   }
