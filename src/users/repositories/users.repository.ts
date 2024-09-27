@@ -43,16 +43,27 @@ export class UsersRepository {
   }
 
 
-  async remove(id: number) {
-    const user = await this.userRepository.findOne({ where: { id } });
+  async blockUser(id: number) {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      withDeleted: true,
+    });
+
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    if (user.role === "admin") {
-      throw new BadRequestException("That user is an admin")
+    if (user.role === 'admin') {
+      throw new BadRequestException('Cannot block/unblock an admin');
     }
-    await this.userRepository.softRemove(user);
+
+    if (user.deletedAt) {
+      await this.userRepository.recover(user);
+      return { message: 'User unblocked successfully' };
+    } else {
+      await this.userRepository.softRemove(user);
+      return { message: 'User blocked successfully' };
+    };
   }
 
   findByEmail(email: string) {

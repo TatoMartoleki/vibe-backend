@@ -46,7 +46,7 @@ export class UsersController {
 
   @UseGuards(AdminGuard)
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return await this.usersService.remove(+id);
+  async blockUser(@Param('id') id: string) {
+    return await this.usersService.blockUser(+id);
   }
 }

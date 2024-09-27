@@ -41,8 +41,8 @@ export class UsersService {
     return await this.usersRepository.changePassword(userId, UpdateUserAdminDto, userRole)
   }
 
-  async remove(id: number) {
-    return await this.usersRepository.remove(id);
+  async blockUser(id: number) {
+    return await this.usersRepository.blockUser(id);
 
   }
 
