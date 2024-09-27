@@ -52,7 +52,7 @@ export class S3Service{
             return url;
         } catch (error) {
             console.error(`Failed to get presigned URL for key ${key}:`, error);
-            return null; // or handle the error as appropriate for your use case
+            return null;
         }
     }
 

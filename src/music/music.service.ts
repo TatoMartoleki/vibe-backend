@@ -12,8 +12,8 @@ export class MusicService {
     private readonly listenRepository: ListenRepository,
   ) {}
 
-  async create(file: FileEntity, createMusicDto: CreateMusicDto, user) {        
-    return await this.musicRepository.create(file, createMusicDto);
+  async create(photoFile: FileEntity, mp3File: FileEntity, createMusicDto: CreateMusicDto, user) {
+    return await this.musicRepository.create(photoFile, mp3File, createMusicDto);
   }
 
   async findAll() {

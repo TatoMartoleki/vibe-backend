@@ -1,11 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, Req, UnauthorizedException} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFiles, Req, UnauthorizedException} from '@nestjs/common';
 import { MusicService } from './music.service';
 import { CreateMusicDto } from './dto/create-music.dto';
 import { UpdateMusicDto } from './dto/update-music.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { FilesService } from 'src/files/files.service';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { AdminGuard } from 'src/auth/guards/admin.guard.ts';
+
 
 
 @Controller('music')
@@ -15,14 +14,18 @@ export class MusicController {
   ) {}
 
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileFieldsInterceptor([
+      { name: 'photo', maxCount: 1 }, 
+      { name: 'mp3', maxCount: 1 }
+  ]))
   async create(
     @Body() createMusicDto: CreateMusicDto,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFiles() files: { photo?: Express.Multer.File[], mp3?: Express.Multer.File[] },
     @Req() req
   ) {
-    const result = await this.fileService.uploadFile(file)
-    return await this.musicService.create(result, createMusicDto, req.user);
+    const photoResult = await this.fileService.uploadFile(files.photo[0]);
+    const mp3Result = await this.fileService.uploadFile(files.mp3[0]);
+    return await this.musicService.create(photoResult, mp3Result, createMusicDto, req.user);
   }
 
   @Get()
@@ -30,7 +33,6 @@ export class MusicController {
     return await this.musicService.findAll();
   }
 
-  @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string, @Req() request) {
     const userId = request.user.userId
@@ -38,7 +40,6 @@ export class MusicController {
     return await this.musicService.findOne(+id, userId, musicId);
   }
 
-  @UseGuards(AdminGuard)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -48,7 +49,6 @@ export class MusicController {
   }
 
 
-  @UseGuards(AdminGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.musicService.remove(+id);
