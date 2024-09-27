@@ -28,7 +28,13 @@ export class UsersRepository {
 
   async findAll() {
     return await this.userRepository.find({
-      withDeleted: true
+      withDeleted: true,
+      select: {
+        id: true,
+        email: true,
+        role: true,
+        deletedAt: true,
+      },
     });
   }
 
@@ -43,8 +49,8 @@ export class UsersRepository {
       throw new NotFoundException('User not found');
     }
 
-    if(user.role === "admin"){
-      throw new BadRequestException("That user is an admin") 
+    if (user.role === "admin") {
+      throw new BadRequestException("That user is an admin")
     }
     await this.userRepository.softRemove(user);
   }
