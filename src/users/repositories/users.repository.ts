@@ -34,6 +34,7 @@ export class UsersRepository {
         email: true,
         role: true,
         deletedAt: true,
+        createdAt: true,
       },
     });
   }
