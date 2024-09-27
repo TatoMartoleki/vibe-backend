@@ -37,9 +37,10 @@ export class PlaylistController {
   }
 
   @UseGuards(AuthGuard)
-  @Patch(':id')
-  async update(@Param('id') id: string, @Body() updatePlaylistDto: UpdatePlaylistDto) {
-    return await this.playlistService.update(+id, updatePlaylistDto);
+  @Patch(':playlistId')
+  async update(@Param('playlistId') playlistId: string, @Body() updatePlaylistDto: UpdatePlaylistDto, @Req() request) {
+    const userId = request.user.userId
+    return await this.playlistService.update(+playlistId, updatePlaylistDto, userId);
   }
 
   @UseGuards(AuthGuard)
