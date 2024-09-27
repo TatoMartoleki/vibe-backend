@@ -3,10 +3,10 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { PlaylistEntity } from "../entities/playlist.entity";
 import { Repository } from "typeorm";
 import { CreatePlaylistDto } from "../dto/create-playlist.dto";
-import { UpdateListenDto } from "src/listen/dto/update-listen.dto";
 import { MusicEntity } from "src/music/entities/music.entity";
 import { MusicRepository } from "src/music/repositories/music.repository";
 import { error } from "console";
+import { UpdatePlaylistDto } from "../dto/update-playlist.dto";
 
 
 @Injectable()
@@ -38,17 +38,20 @@ export class PlaylistRepository {
 
     async findOne(id: number) {
         return await this.playlistRepository
-            .createQueryBuilder()
-            .where('id = :id', { id })
-            .getOne()
+        .createQueryBuilder('playlist')
+        .leftJoinAndSelect('playlist.musics', 'music')
+        .where('playlist.id = :id', { id })
+        .getOne();
     }
 
-    async update(id: number, updateListenDto: UpdateListenDto) {
+    async update(playlistId: number, UpdatePlaylistDto: UpdatePlaylistDto, userId: number) {
         return await this.playlistRepository
-            .createQueryBuilder()
-            .update(PlaylistEntity)
-            .set(updateListenDto)
-            .where('id = :id', { id })
+        .createQueryBuilder()
+        .update(PlaylistEntity)
+        .set(UpdatePlaylistDto)
+        .where('id = :id', {id: playlistId})
+        .andWhere('userId = :userId', {userId: userId})
+        .execute();
     }
 
     async addMusic(playlistId: number, musicId: number) {

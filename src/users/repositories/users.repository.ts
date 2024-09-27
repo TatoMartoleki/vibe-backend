@@ -28,7 +28,9 @@ export class UsersRepository {
 
   async findAll() {
     return await this.userRepository.find({
-      withDeleted: true
+      select: {
+        deletedAt: true
+      }
     });
   }
 
