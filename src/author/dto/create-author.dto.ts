@@ -7,9 +7,9 @@ export class CreateAuthorDto {
   @IsString()
   lastName: string;
 
-  @IsArray()
-  @IsString({ each: true })
-  musics: string[];
+  // @IsArray()
+  // @IsString({ each: true })
+  // musics: string[];
 
   @IsString()
   biography: string;
