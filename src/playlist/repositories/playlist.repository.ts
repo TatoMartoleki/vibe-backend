@@ -28,6 +28,14 @@ export class PlaylistRepository {
             .getMany()
     }
 
+    async adminFindAll(userId: number) {
+        return await this.playlistRepository
+            .createQueryBuilder("playlist")
+            .where("playlist.userId = :userId", { userId })
+            .orderBy("playlist.createdAt", "DESC")
+            .getMany()
+    }
+
     async findOne(id: number) {
         return await this.playlistRepository
             .createQueryBuilder()

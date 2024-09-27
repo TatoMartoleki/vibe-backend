@@ -4,6 +4,7 @@ import { CreatePlaylistDto } from './dto/create-playlist.dto';
 import { UpdatePlaylistDto } from './dto/update-playlist.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { request } from 'http';
+import { AdminGuard } from 'src/auth/guards/admin.guard.ts';
 
 @Controller('playlist')
 export class PlaylistController {
@@ -23,6 +24,11 @@ export class PlaylistController {
     return await this.playlistService.findAll(userId);
   }
 
+  @UseGuards(AdminGuard)
+  @Get('admin/:userId')
+  async adminFindAll(@Param('userId') userId: string){
+    return await this.playlistService.findAll(+userId)
+  }
 
   @UseGuards(AuthGuard)
   @Get(':id')

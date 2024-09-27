@@ -15,6 +15,10 @@ export class PlaylistService {
     return await this.playlistRepository.findAll(userId);
   }
 
+  async adminFindAll(userId: number){
+    return await this.playlistRepository.adminFindAll(userId)
+  }
+
   async findOne(id: number) {
     return await this.playlistRepository.findOne(id);
   }
