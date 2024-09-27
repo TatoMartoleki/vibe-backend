@@ -43,7 +43,9 @@ import { ROLES_KEY } from '../decorators/roles.decorator';
         throw new UnauthorizedException();
       }
       try { 
-        const payload = await this.jwtService.verifyAsync(token);
+        const payload = await this.jwtService.verifyAsync(token,{
+          secret: process.env.JWT_SECRET
+        })
 
         if(roles){
           const isTrue = roles.some((role) => role === payload.role )
