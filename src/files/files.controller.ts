@@ -20,6 +20,4 @@ export class FilesController {
         return this.filesServce.getFile(id)
     }
 
-
-
 }

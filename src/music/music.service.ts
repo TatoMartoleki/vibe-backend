@@ -12,8 +12,8 @@ export class MusicService {
     private readonly listenRepository: ListenRepository,
   ) {}
 
-  async create(file: FileEntity, createMusicDto: CreateMusicDto, user) {        
-    return await this.musicRepository.create(file, createMusicDto);
+  async create(photoFile: FileEntity, mp3File: FileEntity, createMusicDto: CreateMusicDto, user) {
+    return await this.musicRepository.create(photoFile, mp3File, createMusicDto);
   }
 
   async findAll() {
@@ -36,27 +36,6 @@ export class MusicService {
   async update(id: number, updateMusicDto: UpdateMusicDto) {
     return await this.musicRepository.update(id, updateMusicDto);
   }
-
-
-  // async update(id: string, fileResult: FileEntity, updateMusicDto: UpdateMusicDto) {
-  //   const music = await this.musicRepository.findOne(+id);
-  
-  //   if (!music) {
-  //     throw new NotFoundException(`Music with id ${id} not found`);
-  //   }
-  
-  //   // Update file if a new one is uploaded
-  //   if (fileResult) {
-  //     music.file = fileResult; // Assuming fileResult is a FileEntity or URL
-  //   }
-  
-  //   // Update other fields
-  //   Object.assign(music, updateMusicDto);
-  
-  //   return await this.musicRepository.save(music);
-  // }
-
-
 
   async remove(id: number) {
     return await this.musicRepository.remove(id);
