@@ -12,6 +12,7 @@ import { FilesService } from 'src/files/files.service';
 export class AuthorController {
   constructor(private readonly authorService: AuthorService,
               private readonly fileService: FilesService) {}
+
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async create(
@@ -21,7 +22,6 @@ export class AuthorController {
     return await this.authorService.create(result, createAuthorDto);
   }
 
-  @UseGuards(AuthGuard)
   @Get()
   async findAll() {
     return await this.authorService.findAll();

@@ -11,16 +11,24 @@ export class PlaylistService {
     return await this.playlistRepository.create(createPlaylistDto, userId);
   }
 
-  async findAll() {
-    return await this.playlistRepository.findAll();
+  async findAll(userId: number) {
+    return await this.playlistRepository.findAll(userId);
+  }
+
+  async adminFindAll(userId: number){
+    return await this.playlistRepository.adminFindAll(userId)
   }
 
   async findOne(id: number) {
     return await this.playlistRepository.findOne(id);
   }
 
-  async update(id: number, updatePlaylistDto: UpdatePlaylistDto) {
-    return await this.playlistRepository.update(id, updatePlaylistDto);
+  async update(playlistId: number, updatePlaylistDto: UpdatePlaylistDto, userId: number) {    
+    return await this.playlistRepository.update(playlistId, updatePlaylistDto, userId);
+  }
+
+  async editPlaylist(playlistId: number, userId: number, UpdatePlaylistDto: UpdatePlaylistDto){
+    return await this.playlistRepository.editPlaylist(playlistId, userId, UpdatePlaylistDto)
   }
 
   async addMusic(PlaylistId: number, MusicId: number){

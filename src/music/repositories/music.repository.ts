@@ -27,18 +27,18 @@ export class MusicRepository {
   async findAll() {
     return await this.musicRepository
     .createQueryBuilder()
-    .select()
+    .leftJoinAndSelect('music.file', 'file')
     .getMany();
   }
 
   async findOne(id: number) {
     return await this.musicRepository
-      .createQueryBuilder()
-      .select('music')
-      .from(MusicEntity, 'music')
+      .createQueryBuilder('music')
+      .leftJoinAndSelect('music.file', 'file')
       .where('music.id = :id', { id })
       .getOne();
   }
+
 
   async update(id: number, updateMusicDto: UpdateMusicDto) {
     return await this.musicRepository
@@ -62,6 +62,7 @@ export class MusicRepository {
   async findByName(search: string){
     return await this.musicRepository
     .createQueryBuilder('music')
+    .leftJoinAndSelect('music.file', 'file') 
     .where('music.name LIKE :search', {search: `%${search}%`})
     .getMany()
   }
