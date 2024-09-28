@@ -8,12 +8,10 @@ import { FileEntity } from 'src/files/entities/file.entity';
 @Injectable()
 export class AuthorService {
 
-  constructor(private readonly authorRepository: AuthorRepository) {
+  constructor(private readonly authorRepository: AuthorRepository) {}
 
-  }
-
-  async create(file: FileEntity, createAuthorDto: CreateAuthorDto) {
-    return await this.authorRepository.create(file, createAuthorDto);
+  async create(photo: FileEntity, createAuthorDto: CreateAuthorDto) {
+    return await this.authorRepository.create(photo, createAuthorDto);
   }
 
   async findAll() {

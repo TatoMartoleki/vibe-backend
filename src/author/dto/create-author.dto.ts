@@ -12,5 +12,8 @@ export class CreateAuthorDto {
   // musics: string[];
 
   @IsString()
+  year: string
+
+  @IsString()
   biography: string;
 }

@@ -8,6 +8,9 @@ export class CreateAlbumDto {
   @IsString()
   releaseDate: string;
 
+  @IsString()
+  artistName: string
+
   @Type(() => Number)
   @IsNumber()
   artistId: number;
