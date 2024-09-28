@@ -5,7 +5,7 @@ export class CreateAuthorDto {
   firstName: string;
 
   @IsString()
-  lastName: string;
+  lastName?: string;
 
   // @IsArray()
   // @IsString({ each: true })
