@@ -36,8 +36,8 @@ export class AuthorEntity {
   @OneToMany(() => AlbumEntity, (album) => album.author)
   albums: AlbumEntity[];
 
-  @Column()
-  year: number;
+  @Column({nullable: true})
+  releaseDate: string;
 
   @CreateDateColumn()
   createdAt: Date;
