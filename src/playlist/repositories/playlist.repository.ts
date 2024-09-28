@@ -38,30 +38,30 @@ export class PlaylistRepository {
 
     async findOne(id: number) {
         return await this.playlistRepository
-        .createQueryBuilder('playlist')
-        .leftJoinAndSelect('playlist.musics', 'music')
-        .where('playlist.id = :id', { id })
-        .getOne();
+            .createQueryBuilder('playlist')
+            .leftJoinAndSelect('playlist.musics', 'music')
+            .where('playlist.id = :id', { id })
+            .getOne();
     }
 
     async update(playlistId: number, UpdatePlaylistDto: UpdatePlaylistDto, userId: number) {
         return await this.playlistRepository
-        .createQueryBuilder()
-        .update(PlaylistEntity)
-        .set(UpdatePlaylistDto)
-        .where('id = :id', {id: playlistId})
-        .andWhere('userId = :userId', {userId: userId})
-        .execute();
+            .createQueryBuilder()
+            .update(PlaylistEntity)
+            .set(UpdatePlaylistDto)
+            .where('id = :id', { id: playlistId })
+            .andWhere('userId = :userId', { userId: userId })
+            .execute();
     }
 
-    async editPlaylist(playlistId: number, userId: number, updatePlaylistDto: UpdatePlaylistDto){
+    async editPlaylist(playlistId: number, userId: number, updatePlaylistDto: UpdatePlaylistDto) {
         return await this.playlistRepository
-        .createQueryBuilder()
-        .update(PlaylistEntity)
-        .set(updatePlaylistDto)
-        .where('id = :id', {id: playlistId})
-        .andWhere('userId = :userId', {userId: userId})
-        .execute();
+            .createQueryBuilder()
+            .update(PlaylistEntity)
+            .set(updatePlaylistDto)
+            .where('id = :id', { id: playlistId })
+            .andWhere('userId = :userId', { userId: userId })
+            .execute();
     }
 
     async addMusic(playlistId: number, musicId: number) {
@@ -117,7 +117,17 @@ export class PlaylistRepository {
         }
     }
 
-    async remove(id: number) {
+    async remove(id: number, userId: number) {
+        return await this.playlistRepository
+            .createQueryBuilder()
+            .delete()
+            .from(PlaylistEntity)
+            .where('id = :id', { id })
+            .andWhere('userId = :userId', { userId })
+            .execute()
+    }
+
+    async adminRemove(id: number) {
         return await this.playlistRepository
             .createQueryBuilder()
             .delete()
@@ -125,5 +135,4 @@ export class PlaylistRepository {
             .where('id = :id', { id })
             .execute()
     }
-
 }

@@ -63,7 +63,14 @@ export class PlaylistController {
 
   @UseGuards(AuthGuard)
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return await this.playlistService.remove(+id);
+  async remove(@Param('id') id: string, @Req() request) {
+    const userId = request.user.userId
+    return await this.playlistService.remove(+id, userId);
+  }
+
+  @UseGuards(AdminGuard)
+  @Delete('admin/:id')
+  async adminRemove(@Param('id') id: string){
+    return await this.playlistService.adminRemove(+id)
   }
 }
