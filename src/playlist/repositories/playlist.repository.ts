@@ -12,7 +12,7 @@ import { UpdatePlaylistDto } from "../dto/update-playlist.dto";
 @Injectable()
 export class PlaylistRepository {
     find(arg0: { where: { userId: number; }; }) {
-      throw new Error('Method not implemented.');
+        throw new Error('Method not implemented.');
     }
     constructor(@InjectRepository(PlaylistEntity)
     private readonly playlistRepository: Repository<PlaylistEntity>,
@@ -41,9 +41,9 @@ export class PlaylistRepository {
 
     async findAllFromUser(userId: number) {
         return await this.playlistRepository.find({
-          where: { userId: userId }
+            where: { userId: userId }
         });
-      }
+    }
 
     async findOne(id: number) {
         return await this.playlistRepository
@@ -136,12 +136,13 @@ export class PlaylistRepository {
             .execute()
     }
 
-    async adminRemove(id: number) {
+    async adminRemove(userId: number, playlistId: number) {
         return await this.playlistRepository
             .createQueryBuilder()
             .delete()
             .from(PlaylistEntity)
-            .where('id = :id', { id })
+            .where('userId = :userId', { userId })
+            .andWhere('id = :playlistId', { playlistId })
             .execute()
     }
 }
