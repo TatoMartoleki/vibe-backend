@@ -1,6 +1,7 @@
+import { RoleEnum } from "src/auth/enums/roles.enum";
 import { ListenEntity } from "src/listen/entities/listen.entity";
 import { PlaylistEntity } from "src/playlist/entities/playlist.entity";
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from "typeorm";
 import { Role } from "../enum/roles.enum";
 
 @Entity()
@@ -38,5 +39,4 @@ export class UserEntity {
 
   @DeleteDateColumn()
   deletedAt: Date
-    static deletedAt: any;
 }

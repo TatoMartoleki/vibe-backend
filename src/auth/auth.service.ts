@@ -15,22 +15,17 @@ export class AuthService {
 
     async signInUser(data: SignInDto) {
         const user = await this.usersRepository.findByEmailAndReturnPassword(data.email)
-
-
-        if (!user) {
-            throw new UnauthorizedException("User doesn't exist")
-        }
-        
-        if (user.deletedAt) {
-            throw new UnauthorizedException('This account has been deactivated. Please contact support.');
-        }
-
         const isPasswordCorrect = await bcrypt.compare(
             data.password,
             user.password
         )
 
-        if (!isPasswordCorrect) {
+        if (user.deletedAt) {
+            throw new UnauthorizedException('This account has been deactivated. Please contact support.');
+        }
+
+
+        if (!user || !isPasswordCorrect) {
             throw new UnauthorizedException('Email or password is incorect')
         }
 
@@ -40,7 +35,9 @@ export class AuthService {
         }
 
 
-        const jwtToken = await this.jwtService.signAsync(payload);
+        const jwtToken = await this.jwtService.signAsync(payload, {
+            secret: process.env.JWT_SECRET
+        });
 
         return {
             accessToken: jwtToken
@@ -60,10 +57,10 @@ export class AuthService {
             throw new UnauthorizedException('This account has been deactivated. Please contact support.');
         }
 
+
         if (!user || !isPasswordCorrect) {
             throw new UnauthorizedException('Email or password is incorect')
         }
-
 
 
         if (user.role !== "admin") {
@@ -74,7 +71,6 @@ export class AuthService {
             userId: user.id,
             role: user.role
         }
-
 
         const jwtToken = await this.jwtService.signAsync(payload);
 
