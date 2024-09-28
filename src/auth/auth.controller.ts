@@ -15,15 +15,9 @@ export class AuthController {
         return this.authService.signInUser(data)
     }
 
-    @Post('admin/signIn')
-    signInAdmin(@Body() data: SignInDto){
-        return this.authService.signInAdmin(data)
-    }
     @Public()
     @Post('admin/signIn')
-    signInAdmin(@Body() data: SignInUserDto, @Req() request){
-        console.log(request);
-        
+    signInAdmin(@Body() data: SignInDto){
         return this.authService.signInAdmin(data)
     }
 }
