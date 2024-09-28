@@ -14,7 +14,6 @@ export class AuthorController {
   constructor(private readonly authorService: AuthorService,
               private readonly fileService: FilesService) {}
 
-  @Roles(RoleEnum.admin)
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async create(
