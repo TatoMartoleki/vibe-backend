@@ -142,7 +142,7 @@ export class PlaylistRepository {
             .delete()
             .from(PlaylistEntity)
             .where('userId = :userId', { userId })
-            .andWhere('userId = :userId', { userId })
+            .andWhere('playlistId = :playlistId', { playlistId })
             .execute()
     }
 }

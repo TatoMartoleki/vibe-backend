@@ -29,7 +29,6 @@ export class UserEntity {
 
   @ManyToMany(() => PlaylistEntity, (playlists) => playlists.users)
   playlists: PlaylistEntity[]
-  static password: Promise<string>;
 
   @CreateDateColumn()
   createdAt: Date;
