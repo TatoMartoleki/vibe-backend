@@ -34,6 +34,9 @@ export class MusicEntity {
   @Column({type: 'varchar'})
   name: string;
 
+  @Column()
+  artistName: string
+
   @Column({type: 'int'})
   artistId: number;
 
