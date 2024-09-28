@@ -14,11 +14,11 @@ export class MusicRepository {
   ) {}
 
 
-  async create(photoFile: FileEntity, mp3File: FileEntity, createMusicDto: CreateMusicDto): Promise<MusicEntity> {
+  async create(photo: FileEntity, url: FileEntity, createMusicDto: CreateMusicDto): Promise<MusicEntity> {
     const album = this.musicRepository.create({
       ...createMusicDto,
-      photoFile,
-      mp3File,
+      photo,
+      url,
       // duration: Number(createMusicDto.duration)
     });
     return await this.musicRepository.save(album);
