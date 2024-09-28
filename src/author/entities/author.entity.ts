@@ -1,3 +1,4 @@
+import { AlbumEntity } from 'src/album/entities/album.entity';
 import { FileEntity } from 'src/files/entities/file.entity';
 import {
   Column,
@@ -5,6 +6,7 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -30,6 +32,12 @@ export class AuthorEntity {
 
   @Column({type: 'varchar'})
   biography: string;
+
+  @OneToMany(() => AlbumEntity, (album) => album.author)
+  albums: AlbumEntity[];
+
+  @Column()
+  year: number;
 
   @CreateDateColumn()
   createdAt: Date;

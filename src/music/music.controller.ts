@@ -1,10 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, Req, UnauthorizedException} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFiles, Req, UnauthorizedException} from '@nestjs/common';
 import { MusicService } from './music.service';
 import { CreateMusicDto } from './dto/create-music.dto';
 import { UpdateMusicDto } from './dto/update-music.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { FilesService } from 'src/files/files.service';
-import { AuthGuard } from 'src/auth/guards/auth-guard.service';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { RoleEnum } from 'src/auth/enums/roles.enum';
 
@@ -17,14 +16,18 @@ export class MusicController {
 
   @Roles(RoleEnum.admin)
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileFieldsInterceptor([
+      { name: 'photo', maxCount: 1 }, 
+      { name: 'mp3', maxCount: 1 }
+  ]))
   async create(
     @Body() createMusicDto: CreateMusicDto,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFiles() files: { photo?: Express.Multer.File[], mp3?: Express.Multer.File[] },
     @Req() req
   ) {
-    const result = await this.fileService.uploadFile(file)
-    return await this.musicService.create(result, createMusicDto, req.user);
+    const photoResult = await this.fileService.uploadFile(files.photo[0]);
+    const mp3Result = await this.fileService.uploadFile(files.mp3[0]);
+    return await this.musicService.create(photoResult, mp3Result, createMusicDto, req.user);
   }
 
   @Roles(RoleEnum.admin)

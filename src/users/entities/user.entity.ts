@@ -8,31 +8,35 @@ import { Role } from "../enum/roles.enum";
 
 export class UserEntity {
 
-@PrimaryGeneratedColumn()
-id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-@Column()
-email: string
+  @Column()
+  email: string
 
-@Column({select: false})
-password: string
+  @Column({ select: false })
+  password: string
 
-@OneToMany(() => ListenEntity, (listen) => listen.user)
-listens: ListenEntity;
+  @Column({
+    type: "enum",
+    enum: Role,
+    default: Role.User
+  })
+  role: Role
 
-@ManyToMany(() => PlaylistEntity, (playlists) => playlists.users)
-playlists: PlaylistEntity[]
+  @OneToMany(() => ListenEntity, (listen) => listen.user)
+  listens: ListenEntity;
 
-@Column({default: RoleEnum.user, type: "enum", enum: RoleEnum})
-role: RoleEnum
+  @ManyToMany(() => PlaylistEntity, (playlists) => playlists.users)
+  playlists: PlaylistEntity[]
+  static password: Promise<string>;
 
-@CreateDateColumn()
-createdAt: Date;
+  @CreateDateColumn()
+  createdAt: Date;
 
-@UpdateDateColumn()
-updatedAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-@DeleteDateColumn()
-deletedAt: Date;
-
+  @DeleteDateColumn()
+  deletedAt: Date
 }

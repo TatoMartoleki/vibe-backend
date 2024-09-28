@@ -30,7 +30,7 @@ export class AlbumController {
     return await this.albumService.findAll();
   }
 
-  @Roles(RoleEnum.admin, RoleEnum.user)
+  @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.albumService.findOne(+id);

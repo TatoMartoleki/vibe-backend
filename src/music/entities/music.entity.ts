@@ -1,3 +1,4 @@
+import { AlbumEntity } from 'src/album/entities/album.entity';
 import { FileEntity } from 'src/files/entities/file.entity';
 import { ListenEntity } from 'src/listen/entities/listen.entity';
 import { PlaylistEntity } from 'src/playlist/entities/playlist.entity';
@@ -21,7 +22,14 @@ export class MusicEntity {
 
   @OneToOne(() => FileEntity)
   @JoinColumn()
-  file: FileEntity;
+  photoFile: FileEntity;
+
+  @OneToOne(() => FileEntity)
+  @JoinColumn()
+  mp3File: FileEntity;
+
+  @ManyToMany(() => AlbumEntity, (album) => album.musics)
+  albums: AlbumEntity[];
 
   @Column({type: 'varchar'})
   name: string;

@@ -12,12 +12,14 @@ export class FileEntity{
     @OneToOne(() => AlbumEntity, (album) => album.file)
     albumPhotos: AlbumEntity;
 
-    @OneToOne(() => MusicEntity, (music) => music.file)
+    @OneToOne(() => MusicEntity, (music) => music.photoFile)
     musicPhotos: MusicEntity;
+    
+    @OneToOne(() => MusicEntity, (music) => music.mp3File)
+    musicMp3: MusicEntity;
 
     @OneToOne(() => AuthorEntity, (artist) => artist.file)
     artistPhotos: AuthorEntity;
-
 
     @Column()
     url: string

@@ -1,4 +1,6 @@
+import { AuthorEntity } from 'src/author/entities/author.entity';
 import { FileEntity } from 'src/files/entities/file.entity';
+import { MusicEntity } from 'src/music/entities/music.entity';
 import {
   Column,
   CreateDateColumn,
@@ -6,6 +8,7 @@ import {
   Entity,
   JoinColumn,
   JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -26,8 +29,9 @@ export class AlbumEntity {
   @Column({ type: 'varchar' })
   releaseDate: string;
 
-  @Column({ type: 'simple-array' })
-  musics: string[];
+  @ManyToMany(() => MusicEntity, (music) => music.albums)
+  @JoinTable() 
+  musics: MusicEntity[];
 
   @Column({ type: 'int' })
   artistId: number;
@@ -35,6 +39,10 @@ export class AlbumEntity {
   @OneToOne(() => FileEntity)
   @JoinColumn()
   file: FileEntity;
+
+  @ManyToOne(() => AuthorEntity, (author) => author.albums)
+  @JoinColumn({ name: 'artist' })
+  author: AuthorEntity;
 
   @CreateDateColumn()
   createdAt: Date;
