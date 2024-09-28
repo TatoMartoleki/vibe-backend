@@ -1,4 +1,4 @@
-import { IsArray, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsString } from 'class-validator';
 
 export class CreateAuthorDto {
   @IsString()
@@ -12,7 +12,7 @@ export class CreateAuthorDto {
   // musics: string[];
 
   @IsString()
-  year: string
+  releaseDate: string
 
   @IsString()
   biography: string;
