@@ -29,6 +29,9 @@ export class AlbumEntity {
   @Column({ type: 'varchar' })
   releaseDate: string;
 
+  @Column()
+  artistName: string
+
   @ManyToMany(() => MusicEntity, (music) => music.albums)
   @JoinTable() 
   musics: MusicEntity[];
