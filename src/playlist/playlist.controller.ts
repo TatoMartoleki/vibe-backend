@@ -2,73 +2,73 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } fro
 import { PlaylistService } from './playlist.service';
 import { CreatePlaylistDto } from './dto/create-playlist.dto';
 import { UpdatePlaylistDto } from './dto/update-playlist.dto';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { RoleEnum } from 'src/auth/enums/roles.enum';
 import { request } from 'http';
-import { AdminGuard } from 'src/auth/guards/admin.guard.ts';
 
 @Controller('playlist')
 export class PlaylistController {
   constructor(private readonly playlistService: PlaylistService) { }
 
-  @UseGuards(AuthGuard)
+  @Roles(RoleEnum.admin, RoleEnum.user)
   @Post()
   async create(@Body() createPlaylistDto: CreatePlaylistDto, @Req() request) {
     const userId = request.user.userId
     return await this.playlistService.create(createPlaylistDto, userId);
   }
 
-  @UseGuards(AuthGuard)
+  @Roles(RoleEnum.admin)
   @Get()
   async findAll(@Req() request) {
     const userId = request.user.userId
     return await this.playlistService.findAll(userId);
   }
 
-  @UseGuards(AdminGuard)
+  @Roles(RoleEnum.admin)
   @Get('admin/:userId')
   async adminFindAll(@Param('userId') userId: string){
     return await this.playlistService.findAll(+userId)
   }
 
-  @UseGuards(AuthGuard)
+  @Roles(RoleEnum.admin)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.playlistService.findOne(+id);
   }
 
-  @UseGuards(AuthGuard)
+  @Roles(RoleEnum.admin, RoleEnum.user)
   @Patch(':playlistId')
   async update(@Param('playlistId') playlistId: string, @Body() updatePlaylistDto: UpdatePlaylistDto, @Req() request) {
     const userId = request.user.userId
     return await this.playlistService.update(+playlistId, updatePlaylistDto, userId);
   }
 
-  @UseGuards(AdminGuard)
+  @Roles(RoleEnum.admin)
   @Patch(':userId/edit/:playlistId')
   async editPlaylist(@Param('playlistId') playlistId: string, @Param('userId') userId: string, @Body() UpdatePlaylistDto: UpdatePlaylistDto){
     return await this.playlistService.editPlaylist(+playlistId, +userId, UpdatePlaylistDto)
   }
 
-  @UseGuards(AuthGuard)
+  @Roles(RoleEnum.admin, RoleEnum.user)
   @Patch(':playlistId/add/:musicId')
   async addMusic(@Param('playlistId') playlistId: string, @Param('musicId') musicId: string) {
     return await this.playlistService.addMusic(+playlistId, +musicId)
   }
 
-  @UseGuards(AuthGuard)
+  @Roles(RoleEnum.admin, RoleEnum.user)
   @Patch(':playlistId/remove/:musicId')
   async removeMusic(@Param('playlistId') playlistId: string, @Param("musicId") musicId: string) {
     return await this.playlistService.removeMusic(+playlistId, +musicId)
   }
 
-  @UseGuards(AuthGuard)
+  @Roles(RoleEnum.admin, RoleEnum.user)
   @Delete(':id')
   async remove(@Param('id') id: string, @Req() request) {
     const userId = request.user.userId
     return await this.playlistService.remove(+id, userId);
   }
 
-  @UseGuards(AdminGuard)
+  @Roles(RoleEnum.admin)
   @Delete(':userId/admin/:playlistId')
   async adminRemove(@Param('id') id: string){
     return await this.playlistService.adminRemove(+id)

@@ -2,12 +2,14 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } f
 import { SearchService } from './search.service';
 import { CreateSearchDto } from './dto/create-search.dto';
 import { UpdateSearchDto } from './dto/update-search.dto';
-import { AdminGuard } from 'src/auth/guards/admin.guard.ts';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { RoleEnum } from 'src/auth/enums/roles.enum';
 
 @Controller('search')
 export class SearchController {
   constructor(private readonly searchService: SearchService) {}
 
+  @Roles(RoleEnum.user, RoleEnum.admin)
   @Get()
   search(@Query('searchField') search: string){
     return this.searchService.search(search);

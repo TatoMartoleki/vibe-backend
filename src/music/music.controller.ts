@@ -4,7 +4,8 @@ import { CreateMusicDto } from './dto/create-music.dto';
 import { UpdateMusicDto } from './dto/update-music.dto';
 import { FileFieldsInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { FilesService } from 'src/files/files.service';
-
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { RoleEnum } from 'src/auth/enums/roles.enum';
 
 
 @Controller('music')
@@ -13,6 +14,7 @@ export class MusicController {
               private readonly fileService: FilesService
   ) {}
 
+  @Roles(RoleEnum.admin)
   @Post('upload')
   @UseInterceptors(FileFieldsInterceptor([
       { name: 'photo', maxCount: 1 }, 
@@ -28,11 +30,13 @@ export class MusicController {
     return await this.musicService.create(photoResult, mp3Result, createMusicDto, req.user);
   }
 
+  @Roles(RoleEnum.admin)
   @Get()
   async findAll() {
     return await this.musicService.findAll();
   }
 
+  @Roles(RoleEnum.admin, RoleEnum.user)
   @Get(':id')
   async findOne(@Param('id') id: string, @Req() request) {
     const userId = request.user.userId
@@ -40,6 +44,7 @@ export class MusicController {
     return await this.musicService.findOne(+id, userId, musicId);
   }
 
+  @Roles(RoleEnum.admin)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -49,6 +54,7 @@ export class MusicController {
   }
 
 
+  @Roles(RoleEnum.admin)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.musicService.remove(+id);
