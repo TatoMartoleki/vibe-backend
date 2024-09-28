@@ -62,6 +62,7 @@ export class UsersRepository {
         id: true,
         email: true, 
         password: true, 
+        role: true
         }})
   }
 
