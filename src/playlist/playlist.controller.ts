@@ -49,16 +49,18 @@ export class PlaylistController {
     return await this.playlistService.editPlaylist(+playlistId, +userId, UpdatePlaylistDto)
   }
 
-  @Roles(RoleEnum.admin, RoleEnum.user)
+  @Roles(RoleEnum.user)
   @Patch(':playlistId/add/:musicId')
-  async addMusic(@Param('playlistId') playlistId: string, @Param('musicId') musicId: string) {
-    return await this.playlistService.addMusic(+playlistId, +musicId)
+  async addMusic(@Param('playlistId') playlistId: string, @Param('musicId') musicId: string, @Req() request) {
+    const userId = request.user.userId
+    return await this.playlistService.addMusic(+playlistId, +musicId, userId)
   }
 
-  @Roles(RoleEnum.admin, RoleEnum.user)
+  @Roles(RoleEnum.user)
   @Patch(':playlistId/remove/:musicId')
-  async removeMusic(@Param('playlistId') playlistId: string, @Param("musicId") musicId: string) {
-    return await this.playlistService.removeMusic(+playlistId, +musicId)
+  async removeMusic(@Param('playlistId') playlistId: string, @Param("musicId") musicId: string, @Req() request) {
+    const userId = request.user.userId
+    return await this.playlistService.removeMusic(+playlistId, +musicId, userId)
   }
 
   @Roles(RoleEnum.admin, RoleEnum.user)

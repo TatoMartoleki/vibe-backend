@@ -31,12 +31,12 @@ export class PlaylistService {
     return await this.playlistRepository.editPlaylist(playlistId, userId, UpdatePlaylistDto)
   }
 
-  async addMusic(PlaylistId: number, MusicId: number){
-    return await this.playlistRepository.addMusic(PlaylistId, MusicId)
+  async addMusic(PlaylistId: number, MusicId: number, userId: number){
+    return await this.playlistRepository.addMusic(PlaylistId, MusicId, userId)
   }
 
-  async removeMusic(playlist: number, musicId: number){
-    return await this.playlistRepository.removeMusic(playlist, musicId)
+  async removeMusic(playlist: number, musicId: number, userId: number){
+    return await this.playlistRepository.removeMusic(playlist, musicId, userId)
   }
 
   async remove(id: number, userId: number) {

@@ -73,9 +73,9 @@ export class PlaylistRepository {
             .execute();
     }
 
-    async addMusic(playlistId: number, musicId: number) {
+    async addMusic(playlistId: number, musicId: number, userId: number) {
         const playlist = await this.playlistRepository.findOne({
-            where: { id: playlistId },
+            where: { id: playlistId, userId: userId },
             relations: { musics: true }
         })
 
@@ -107,9 +107,9 @@ export class PlaylistRepository {
         }
     }
 
-    async removeMusic(playlistId: number, musicId: number) {
+    async removeMusic(playlistId: number, musicId: number, userId: number) {
         const playlist = await this.playlistRepository.findOne({
-            where: { id: playlistId },
+            where: { id: playlistId, userId: userId },
             relations: { musics: true }
         })
 
