@@ -70,7 +70,7 @@ export class PlaylistController {
 
   @Roles(RoleEnum.admin)
   @Delete(':userId/admin/:playlistId')
-  async adminRemove(@Param('id') id: string){
-    return await this.playlistService.adminRemove(+id)
+  async adminRemove(@Param('userId') userId: string, @Param('playlistId') playlistId: string){
+    return await this.playlistService.adminRemove(+userId, +playlistId)
   }
 }
