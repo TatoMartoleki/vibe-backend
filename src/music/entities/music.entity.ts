@@ -22,11 +22,11 @@ export class MusicEntity {
 
   @OneToOne(() => FileEntity)
   @JoinColumn()
-  photoFile: FileEntity;
+  photo: FileEntity;
 
   @OneToOne(() => FileEntity)
   @JoinColumn()
-  mp3File: FileEntity;
+  url: FileEntity;
 
   @ManyToMany(() => AlbumEntity, (album) => album.musics)
   albums: AlbumEntity[];

@@ -12,10 +12,10 @@ export class FileEntity{
     @OneToOne(() => AlbumEntity, (album) => album.file)
     albumPhotos: AlbumEntity;
 
-    @OneToOne(() => MusicEntity, (music) => music.photoFile)
+    @OneToOne(() => MusicEntity, (music) => music.photo)
     musicPhotos: MusicEntity;
     
-    @OneToOne(() => MusicEntity, (music) => music.mp3File)
+    @OneToOne(() => MusicEntity, (music) => music.url)
     musicMp3: MusicEntity;
 
     @OneToOne(() => AuthorEntity, (artist) => artist.file)
