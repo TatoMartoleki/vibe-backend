@@ -44,6 +44,13 @@ export class MusicController {
     return await this.musicService.findOne(+id, +userId, +musicId);
   }
 
+  @Roles(RoleEnum.admin, RoleEnum.user)
+  @Get('recent')
+  async recentlyMusic() {
+    return await this.musicService.recentlyMusic()
+  }
+
+
   @Roles(RoleEnum.admin)
   @Patch(':id')
   async update(

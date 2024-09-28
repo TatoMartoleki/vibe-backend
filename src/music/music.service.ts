@@ -33,6 +33,10 @@ export class MusicService {
     }
   }
 
+  async recentlyMusic(){
+    return await this.musicRepository.recentlyMusic()
+  }
+
   async update(id: number, updateMusicDto: UpdateMusicDto) {
     return await this.musicRepository.update(id, updateMusicDto);
   }
@@ -40,4 +44,5 @@ export class MusicService {
   async remove(id: number) {
     return await this.musicRepository.remove(id);
   }
+
 }
