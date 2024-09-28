@@ -41,7 +41,7 @@ export class MusicController {
   async findOne(@Param('id') id: string, @Req() request) {
     const userId = request.user.userId
     const musicId = +id
-    return await this.musicService.findOne(+id, userId, musicId);
+    return await this.musicService.findOne(+id, +userId, +musicId);
   }
 
   @Roles(RoleEnum.admin)
