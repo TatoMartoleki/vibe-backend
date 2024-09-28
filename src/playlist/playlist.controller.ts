@@ -69,7 +69,7 @@ export class PlaylistController {
   }
 
   @UseGuards(AdminGuard)
-  @Delete('admin/:id')
+  @Delete(':userId/admin/:playlistId')
   async adminRemove(@Param('id') id: string){
     return await this.playlistService.adminRemove(+id)
   }
