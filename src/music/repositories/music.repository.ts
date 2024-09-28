@@ -26,15 +26,17 @@ export class MusicRepository {
 
   async findAll() {
     return await this.musicRepository
-    .createQueryBuilder()
-    .leftJoinAndSelect('music.file', 'file')
-    .getMany();
+      .createQueryBuilder('music')
+      .leftJoinAndSelect('music.photo', 'photo')
+      .leftJoinAndSelect('music.url', 'url')
+      .getMany();
   }
 
   async findOne(id: number) {
     return await this.musicRepository
       .createQueryBuilder('music')
-      .leftJoinAndSelect('music.file', 'file')
+      .leftJoinAndSelect('music.photo', 'photo')
+      .leftJoinAndSelect('music.url', 'url')
       .where('music.id = :id', { id })
       .getOne();
   }
