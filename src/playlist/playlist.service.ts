@@ -39,7 +39,11 @@ export class PlaylistService {
     return await this.playlistRepository.removeMusic(playlist, musicId)
   }
 
-  async remove(id: number) {
-    return await this.playlistRepository.remove(id);
+  async remove(id: number, userId: number) {
+    return await this.playlistRepository.remove(id, userId);
+  }
+
+  async adminRemove(id: number){
+    return await this.playlistRepository.adminRemove(id)
   }
 }
