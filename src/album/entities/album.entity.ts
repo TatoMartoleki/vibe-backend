@@ -36,16 +36,16 @@ export class AlbumEntity {
   @JoinTable() 
   musics: MusicEntity[];
 
-  @Column({ type: 'int' })
-  artistId: number;
-
+ 
   @OneToOne(() => FileEntity)
   @JoinColumn()
   file: FileEntity;
 
   @ManyToOne(() => AuthorEntity, (author) => author.albums)
-  @JoinColumn({ name: 'artist' })
   author: AuthorEntity;
+
+  @Column()
+  authorId: number
 
   @CreateDateColumn()
   createdAt: Date;

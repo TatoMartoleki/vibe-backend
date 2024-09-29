@@ -13,19 +13,24 @@ export class AlbumRepository {
     private albumrepository: Repository<AlbumEntity>,
   ) {}
 
-  async create(file: FileEntity, createAlbumDto: CreateAlbumDto): Promise<AlbumEntity> {
+  async create(
+    file: FileEntity,
+    createAlbumDto: CreateAlbumDto,
+    artistId: number
+  ): Promise<AlbumEntity> {
     const album = this.albumrepository.create({
       ...createAlbumDto,
-      file: file
+      authorId: artistId,
+      file: file,
     });
     return await this.albumrepository.save(album);
   }
 
   async findAll() {
     return await this.albumrepository
-    .createQueryBuilder('album')
-    .leftJoinAndSelect('album.file', 'file')
-    .getMany();
+      .createQueryBuilder('album')
+      .leftJoinAndSelect('album.file', 'file')
+      .getMany();
   }
 
   async findOne(id: number) {
@@ -54,11 +59,11 @@ export class AlbumRepository {
       .execute();
   }
 
-  async findByName(search: string){
+  async findByName(search: string) {
     return await this.albumrepository
-    .createQueryBuilder('album')
-    .leftJoinAndSelect('album.file', 'file') 
-    .where('album.title LIKE :search', {search: `%${search}%`})
-    .getMany()
+      .createQueryBuilder('album')
+      .leftJoinAndSelect('album.file', 'file')
+      .where('album.title LIKE :search', { search: `%${search}%` })
+      .getMany();
   }
 }
