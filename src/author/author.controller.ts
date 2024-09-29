@@ -23,6 +23,12 @@ export class AuthorController {
     return await this.authorService.create(result, createAuthorDto);
   }
 
+  @Roles(RoleEnum.admin, RoleEnum.user)
+  @Get("topArtists")
+  async getTopArtists(){    
+    return await this.authorService.getTopArtists()
+  }
+
   @Roles(RoleEnum.admin)
   @Get()
   async findAll() {

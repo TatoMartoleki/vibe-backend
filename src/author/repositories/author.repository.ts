@@ -26,6 +26,14 @@ export class AuthorRepository {
     return await this.authorRepositoy.save(album);
   }
 
+  async getTopArtists(){
+    return await this.authorRepositoy
+      .createQueryBuilder('author')
+      .leftJoinAndSelect('author.file', 'file')
+      .orderBy('author.totalListenCount', 'DESC')
+      .getMany();      
+  }
+
   async findAll() {
     return await this.authorRepositoy
       .createQueryBuilder('author')

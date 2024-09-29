@@ -15,6 +15,10 @@ export class AuthorService {
   async create(file: FileEntity, createAuthorDto: CreateAuthorDto) {
     return await this.authorRepository.create(file, createAuthorDto);
   }
+  
+  async getTopArtists(){
+    return await this.authorRepository.getTopArtists()
+  }
 
   async findAll() {
     return await this.authorRepository.findAll();
