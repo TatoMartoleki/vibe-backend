@@ -16,6 +16,10 @@ export class AuthorService {
     return await this.authorRepository.create(file, createAuthorDto);
   }
 
+  async recentlyMusic(){
+    return await this.authorRepository.recentlyMusic()
+  }
+
   async findAll() {
     return await this.authorRepository.findAll();
   }
