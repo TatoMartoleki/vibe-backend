@@ -44,7 +44,7 @@ export class AlbumController {
     return await this.albumService.getTopAlbum()
   }
 
-  @Roles(RoleEnum.admin)
+  @Roles(RoleEnum.admin, RoleEnum.admin)
   @Get()
   async findAll() {
     return await this.albumService.findAll();

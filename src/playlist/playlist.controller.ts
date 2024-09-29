@@ -17,7 +17,7 @@ export class PlaylistController {
     return await this.playlistService.create(createPlaylistDto, userId);
   }
 
-  @Roles(RoleEnum.admin)
+  @Roles(RoleEnum.admin, RoleEnum.user)
   @Get()
   async findAll(@Req() request) {
     const userId = request.user.userId

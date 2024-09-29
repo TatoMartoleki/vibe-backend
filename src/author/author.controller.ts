@@ -49,7 +49,7 @@ export class AuthorController {
     return await this.authorService.getTopArtists()
   }
 
-  @Roles(RoleEnum.admin)
+  @Roles(RoleEnum.admin, RoleEnum.user)
   @Get()
   async findAll() {
     return await this.authorService.findAll();
