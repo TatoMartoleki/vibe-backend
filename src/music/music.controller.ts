@@ -60,7 +60,7 @@ export class MusicController {
     return await this.musicService.recentlyMusic();
   }
   
-  @Roles(RoleEnum.admin)
+  @Roles(RoleEnum.admin, RoleEnum.admin)
   @Get()
   async findAll() {
     return await this.musicService.findAll();
