@@ -52,4 +52,8 @@ export class MusicService {
   async getTopMusic(){
     return await this.musicRepository.getTopMusic()
   }
+
+  async getRandomMusic(){
+    return await this.musicRepository.getRandomMusic()
+  }
 }

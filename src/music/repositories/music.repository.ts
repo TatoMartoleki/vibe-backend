@@ -138,4 +138,17 @@ export class MusicRepository {
       .orderBy('listenCount', 'DESC')
       .getRawMany();
   }
+
+  async getRandomMusic(): Promise<MusicEntity> {
+    const count = await this.musicRepository.count();
+    const randomIndex = Math.floor(Math.random() * count);
+
+    return await this.musicRepository
+      .createQueryBuilder('music')
+      .leftJoinAndSelect('music.photo', 'photo')
+      .leftJoinAndSelect('music.url', 'url')
+      .skip(randomIndex)
+      .take(1)
+      .getOne();
+  }
 }

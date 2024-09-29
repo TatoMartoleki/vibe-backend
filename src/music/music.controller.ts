@@ -45,8 +45,8 @@ export class MusicController {
     @UploadedFiles()
     files: { photo?: Express.Multer.File[]; mp3?: Express.Multer.File[] },
     @Req() req,
-    @Param("artistId") artistId: string,
-    @Param("albumId") albumId: string, 
+    @Param('artistId') artistId: string,
+    @Param('albumId') albumId: string,
   ) {
     const photoResult = await this.fileService.uploadFile(files.photo[0]);
     const mp3Result = await this.fileService.uploadFile(files.mp3[0]);
@@ -55,20 +55,26 @@ export class MusicController {
       mp3Result,
       createMusicDto,
       +artistId,
-      +albumId
+      +albumId,
     );
   }
 
   @Roles(RoleEnum.admin, RoleEnum.user)
-  @Get("weekCharts")
-  async topHitsOfTheWeek() {
-    return await this.musicService.topHitsOfTheWeek()
+  @Get('random')
+  async getRandomMusic() {
+    return await this.musicService.getRandomMusic();
   }
 
   @Roles(RoleEnum.admin, RoleEnum.user)
-  @Get("top")
+  @Get('weekCharts')
+  async topHitsOfTheWeek() {
+    return await this.musicService.topHitsOfTheWeek();
+  }
+
+  @Roles(RoleEnum.admin, RoleEnum.user)
+  @Get('top')
   async getTopMusic() {
-    return await this.musicService.getTopMusic()
+    return await this.musicService.getTopMusic();
   }
 
   @Roles(RoleEnum.admin, RoleEnum.user)
@@ -76,7 +82,7 @@ export class MusicController {
   async recentlyMusic() {
     return await this.musicService.recentlyMusic();
   }
-  
+
   @Roles(RoleEnum.admin, RoleEnum.user)
   @Get()
   async findAll() {
