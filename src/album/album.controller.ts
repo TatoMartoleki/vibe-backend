@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
 import { AlbumService } from './album.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
@@ -8,20 +19,23 @@ import { FilesService } from 'src/files/files.service';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { RoleEnum } from 'src/auth/enums/roles.enum';
 
-
 @Controller('album')
 export class AlbumController {
-  constructor(private readonly albumService: AlbumService,
-    private readonly fileService: FilesService) { }
+  constructor(
+    private readonly albumService: AlbumService,
+    private readonly fileService: FilesService,
+  ) {}
 
   @Roles(RoleEnum.admin)
-  @Post('upload')
+  @Post('upload/:artistId')
   @UseInterceptors(FileInterceptor('file'))
   async create(
     @Body() createAlbumDto: CreateAlbumDto,
-    @UploadedFile() file: Express.Multer.File) {
-    const result = await this.fileService.uploadFile(file)
-    return await this.albumService.create(result, createAlbumDto);
+    @UploadedFile() file: Express.Multer.File,
+    @Param('artistId') artistId: string
+  ) {
+    const result = await this.fileService.uploadFile(file);
+    return await this.albumService.create(result, createAlbumDto, +artistId);
   }
 
   @Roles(RoleEnum.admin)
@@ -38,10 +52,13 @@ export class AlbumController {
 
   @Roles(RoleEnum.admin)
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateAlbumDto: UpdateAlbumDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateAlbumDto: UpdateAlbumDto,
+  ) {
     return await this.albumService.update(+id, updateAlbumDto);
   }
-  
+
   @Roles(RoleEnum.admin)
   @Delete(':id')
   async remove(@Param('id') id: string) {

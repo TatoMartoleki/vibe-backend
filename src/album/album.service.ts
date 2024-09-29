@@ -8,12 +8,11 @@ import { AlbumEntity } from 'src/album/entities/album.entity'; // Add this impor
 
 @Injectable()
 export class AlbumService {
+  constructor(private readonly albumRepository: AlbumRepository) {}
 
-  constructor(private readonly albumRepository: AlbumRepository){}
-
-  async create(file: FileEntity, createAlbumDto: CreateAlbumDto) {
+  async create(file: FileEntity, createAlbumDto: CreateAlbumDto, artistId: number) {
     //console.log('This is a file', file)
-    return await this.albumRepository.create(file, createAlbumDto);
+    return await this.albumRepository.create(file, createAlbumDto, artistId);
   }
 
   async findAll() {
@@ -32,7 +31,5 @@ export class AlbumService {
     return await this.albumRepository.remove(id);
   }
 
-  async uploadedFile(){
-
-  }
+  async uploadedFile() {}
 }

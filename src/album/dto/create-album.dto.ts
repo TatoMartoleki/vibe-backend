@@ -11,10 +11,5 @@ export class CreateAlbumDto {
   @IsString()
   artistName: string
 
-  // @Type(() => Number)
-  // @IsNumber()
-  // artistId?: number;
-
-
 }
 
