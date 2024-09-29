@@ -97,4 +97,14 @@ export class MusicRepository {
       .where('music.name LIKE :search', { search: `%${search}%` })
       .getMany();
   }
+
+  async getTopMusic() {
+    return await this.musicRepository
+      .createQueryBuilder('music')
+      .leftJoinAndSelect('music.listenCounter', 'listen')
+      .select(['music', 'COUNT(listen.id) as listenCount'])
+      .groupBy('music.id')
+      .orderBy('listenCount', 'DESC')
+      .getRawMany();
+  }
 }

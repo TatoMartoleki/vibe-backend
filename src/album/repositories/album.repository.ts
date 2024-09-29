@@ -16,7 +16,7 @@ export class AlbumRepository {
   async create(
     file: FileEntity,
     createAlbumDto: CreateAlbumDto,
-    artistId: number
+    artistId: number,
   ): Promise<AlbumEntity> {
     const album = this.albumrepository.create({
       ...createAlbumDto,
@@ -24,6 +24,15 @@ export class AlbumRepository {
       file: file,
     });
     return await this.albumrepository.save(album);
+  }
+
+  async getTopAlbum() {
+    return await this.albumrepository
+      .createQueryBuilder('album')
+      .leftJoinAndSelect('album.file', 'file')
+      .orderBy('album.totalListenCount', 'DESC')
+      .getMany();
+    
   }
 
   async findAll() {
@@ -65,5 +74,14 @@ export class AlbumRepository {
       .leftJoinAndSelect('album.file', 'file')
       .where('album.title LIKE :search', { search: `%${search}%` })
       .getMany();
+  }
+
+  async incrementListenCount(albumId: number) {
+    await this.albumrepository
+      .createQueryBuilder()
+      .update(AlbumEntity)
+      .set({ totalListenCount: () => 'totalListenCount + 1' })
+      .where('id = :albumId', { albumId })
+      .execute();
   }
 }

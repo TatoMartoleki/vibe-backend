@@ -45,4 +45,7 @@ export class MusicService {
     return await this.musicRepository.remove(id);
   }
 
+  async getTopMusic(){
+    return await this.musicRepository.getTopMusic()
+  }
 }

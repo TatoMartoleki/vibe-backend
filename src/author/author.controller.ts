@@ -44,7 +44,7 @@ export class AuthorController {
   }
 
   @Roles(RoleEnum.admin, RoleEnum.user)
-  @Get("topArtists")
+  @Get("top")
   async getTopArtists(){    
     return await this.authorService.getTopArtists()
   }

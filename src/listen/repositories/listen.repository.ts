@@ -8,13 +8,16 @@ import { UserEntity } from 'src/users/entities/user.entity';
 import { MusicEntity } from 'src/music/entities/music.entity';
 import { error } from 'console';
 import { AuthorRepository } from 'src/author/repositories/author.repository';
+import { AlbumRepository } from 'src/album/repositories/album.repository';
+import { AlbumEntity } from 'src/album/entities/album.entity';
 
 @Injectable()
 export class ListenRepository {
   constructor(
     @InjectRepository(ListenEntity)
     private readonly listenRepository: Repository<ListenEntity>,
-    private readonly authorRepository: AuthorRepository
+    private readonly authorRepository: AuthorRepository,
+    private readonly albumRepository: AlbumRepository,
   ) {}
 
   async create(userId: number, musicId: number) {
@@ -43,13 +46,22 @@ export class ListenRepository {
       }
     }
 
-    const music = await this.listenRepository.manager.findOne(MusicEntity, {
+    const artist = await this.listenRepository.manager.findOne(MusicEntity, {
       where: { id: musicId },
       relations: ['artist'],
     });
 
-    if (music && music.artist) {
-      await this.authorRepository.incrementListenCount(music.artist.id);
+    const album = await this.listenRepository.manager.findOne(MusicEntity, {
+      where: { id: musicId },
+      relations: ['album'],
+    });
+
+    if (album && album.album) {
+      await this.albumRepository.incrementListenCount(album.album.id);
+    }
+
+    if (artist && artist.artist) {
+      await this.authorRepository.incrementListenCount(artist.artist.id);
     }
 
     return await this.listenRepository.save(record);

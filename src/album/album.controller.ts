@@ -38,6 +38,12 @@ export class AlbumController {
     return await this.albumService.create(result, createAlbumDto, +artistId);
   }
 
+  @Roles(RoleEnum.admin, RoleEnum.user)
+  @Get("top")
+  async getTopAlbum(){
+    return await this.albumService.getTopAlbum()
+  }
+
   @Roles(RoleEnum.admin)
   @Get()
   async findAll() {

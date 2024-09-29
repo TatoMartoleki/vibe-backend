@@ -30,7 +30,7 @@ export class AlbumEntity {
   releaseDate: string;
 
   @Column()
-  artistName: string
+  artistName: string;
 
   @ManyToMany(() => MusicEntity, (music) => music.album)
   musics: MusicEntity[];
@@ -43,7 +43,10 @@ export class AlbumEntity {
   author: AuthorEntity;
 
   @Column()
-  authorId: number
+  authorId: number;
+
+  @Column({default: 0})
+  totalListenCount: number
 
   @CreateDateColumn()
   createdAt: Date;

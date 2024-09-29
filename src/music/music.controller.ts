@@ -22,6 +22,7 @@ import {
 import { FilesService } from 'src/files/files.service';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { RoleEnum } from 'src/auth/enums/roles.enum';
+import { Role } from 'src/users/enum/roles.enum';
 
 @Controller('music')
 export class MusicController {
@@ -55,6 +56,12 @@ export class MusicController {
       +artistId,
       +albumId
     );
+  }
+
+  @Roles(RoleEnum.admin, RoleEnum.user)
+  @Get("top")
+  async getTopMusic() {
+    return await this.musicService.getTopMusic()
   }
 
   @Roles(RoleEnum.admin, RoleEnum.user)
