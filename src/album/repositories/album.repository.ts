@@ -30,6 +30,8 @@ export class AlbumRepository {
     return await this.albumrepository
       .createQueryBuilder('album')
       .leftJoinAndSelect('album.file', 'file')
+      .leftJoinAndSelect("album.musics", "musics")
+      .leftJoinAndSelect("album.author", "author")
       .orderBy('album.totalListenCount', 'DESC')
       .getMany();
     
@@ -39,6 +41,8 @@ export class AlbumRepository {
     return await this.albumrepository
       .createQueryBuilder('album')
       .leftJoinAndSelect('album.file', 'file')
+      .leftJoinAndSelect('album.musics', 'musics')
+      .leftJoinAndSelect('album.author', 'author')
       .getMany();
   }
 
@@ -46,6 +50,8 @@ export class AlbumRepository {
     return await this.albumrepository
       .createQueryBuilder('album')
       .leftJoinAndSelect('album.file', 'file')
+      .leftJoinAndSelect('album.musics', 'musics')
+      .leftJoinAndSelect('album.author', 'author')
       .where('album.id = :id', { id })
       .getOne();
   }

@@ -45,6 +45,8 @@ export class AuthorRepository {
     return await this.authorRepositoy
       .createQueryBuilder('author')
       .leftJoinAndSelect('author.file', 'file')
+      .leftJoinAndSelect("author.musics", "musics")
+      .leftJoinAndSelect("author.albums", "albums")
       .getMany();
   }
 
@@ -52,6 +54,8 @@ export class AuthorRepository {
     return await this.authorRepositoy
       .createQueryBuilder('author')
       .leftJoinAndSelect('author.file', 'file')
+      .leftJoinAndSelect('author.musics', 'musics')
+      .leftJoinAndSelect('author.albums', 'albums')
       .where('author.id = :id', { id })
       .getOne();
   }
@@ -78,6 +82,8 @@ export class AuthorRepository {
     return await this.authorRepositoy
       .createQueryBuilder('author')
       .leftJoinAndSelect('author.file', 'file')
+      .leftJoinAndSelect('author.musics', 'musics')
+      .leftJoinAndSelect('author.albums', 'albums')
       .where('author.firstName LIKE :search', { search: `%${search}%` })
       .getMany();
   }

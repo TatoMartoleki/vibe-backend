@@ -18,6 +18,13 @@ export class PlaylistController {
   }
 
   @Roles(RoleEnum.admin, RoleEnum.user)
+  @Get("musics/:id")
+  async findMusicFromPlaylist(@Req() request, @Param("id") id: string){
+    const userId = request.user.userId
+    return await this.playlistService.findMusicFromPlaylist(userId, +id);
+  }
+
+  @Roles(RoleEnum.admin, RoleEnum.user)
   @Get()
   async findAll(@Req() request) {
     const userId = request.user.userId
