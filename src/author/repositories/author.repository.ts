@@ -26,12 +26,19 @@ export class AuthorRepository {
     return await this.authorRepositoy.save(album);
   }
 
-  async getTopArtists(){
+  async getTopArtists() {
     return await this.authorRepositoy
       .createQueryBuilder('author')
       .leftJoinAndSelect('author.file', 'file')
       .orderBy('author.totalListenCount', 'DESC')
-      .getMany();      
+      .getMany();
+  }
+  async recentlyMusic() {
+    return await this.authorRepositoy
+      .createQueryBuilder('author')
+      .leftJoinAndSelect('author.file', 'file')
+      .orderBy('author.createdAt', 'DESC')
+      .getMany();
   }
 
   async findAll() {
@@ -75,7 +82,7 @@ export class AuthorRepository {
       .getMany();
   }
 
-  async incrementListenCount(artistId: number){
+  async incrementListenCount(artistId: number) {
     await this.authorRepositoy
       .createQueryBuilder()
       .update(AuthorEntity)

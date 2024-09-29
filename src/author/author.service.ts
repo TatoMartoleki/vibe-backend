@@ -20,6 +20,10 @@ export class AuthorService {
     return await this.authorRepository.getTopArtists()
   }
 
+  async recentlyMusic(){
+    return await this.authorRepository.recentlyMusic()
+  }
+
   async findAll() {
     return await this.authorRepository.findAll();
   }
