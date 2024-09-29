@@ -72,7 +72,8 @@ export class MusicRepository {
   async findByName(search: string) {
     return await this.musicRepository
       .createQueryBuilder('music')
-      .leftJoinAndSelect('music.file', 'file')
+      .leftJoinAndSelect('music.photo', 'photo')
+      .leftJoinAndSelect('music.url', 'url')
       .where('music.name LIKE :search', { search: `%${search}%` })
       .getMany()
   }
