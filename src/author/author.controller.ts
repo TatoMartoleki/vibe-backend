@@ -23,6 +23,12 @@ export class AuthorController {
     return await this.authorService.create(result, createAuthorDto);
   }
 
+  @Roles(RoleEnum.admin, RoleEnum.user)
+  @Get('recent')
+  async recentlyMusic() {
+    return await this.authorService.recentlyMusic();
+  }
+
   @Roles(RoleEnum.admin)
   @Get()
   async findAll() {

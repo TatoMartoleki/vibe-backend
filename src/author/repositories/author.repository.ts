@@ -23,6 +23,14 @@ export class AuthorRepository {
     return await this.authorRepositoy.save(album);
   }
 
+  async recentlyMusic() {
+    return await this.authorRepositoy
+      .createQueryBuilder('author')
+      .leftJoinAndSelect('author.file', 'file')
+      .orderBy('author.createdAt', 'DESC')
+      .getMany();
+  }
+
   async findAll() {
     return await this.authorRepositoy
     .createQueryBuilder('author')
