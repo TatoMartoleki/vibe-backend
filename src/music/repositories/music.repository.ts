@@ -44,6 +44,8 @@ export class MusicRepository {
   async recentlyMusic() {
     return await this.musicRepository
       .createQueryBuilder('music')
+      .leftJoinAndSelect('music.photo', 'photo')
+      .leftJoinAndSelect('music.url', 'url')
       .orderBy('music.createdAt', 'DESC')
       .getMany();
   }
