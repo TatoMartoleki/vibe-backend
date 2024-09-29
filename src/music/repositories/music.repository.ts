@@ -14,29 +14,33 @@ export class MusicRepository {
     @InjectRepository(MusicEntity)
     private musicRepository: Repository<MusicEntity>,
     private albumRepository: AlbumRepository,
-    private authorRepository: AuthorRepository
-  ) { }
+    private authorRepository: AuthorRepository,
+  ) {}
 
-
-  async create(photo: FileEntity, url: FileEntity, createMusicDto: CreateMusicDto, artistId: number, albumId: number): Promise<MusicEntity> {
-
+  async create(
+    photo: FileEntity,
+    url: FileEntity,
+    createMusicDto: CreateMusicDto,
+    artistId: number,
+    albumId: number,
+  ): Promise<MusicEntity> {
     const album = await this.albumRepository.findOne(albumId);
     const artist = await this.authorRepository.findOne(artistId);
 
-    if(!album){
-      throw new BadRequestException("Album doesn't exist")
+    if (!album) {
+      throw new BadRequestException("Album doesn't exist");
     }
 
     if (!artist) {
       throw new BadRequestException("Artist doesn't exist");
     }
-    
+
     const music = this.musicRepository.create({
       ...createMusicDto,
       photo,
       url,
       album,
-      artist
+      artist,
       // duration: (createMusicDto.duration)
     });
     return await this.musicRepository.save(music);
@@ -78,14 +82,12 @@ export class MusicRepository {
   }
 
   async remove(id: number) {
-    return await this.musicRepository
-      .createQueryBuilder()
-      .delete()
-      .from(MusicEntity)
-      .where('id = :id', { id })
-      .execute();
+    const music = await this.musicRepository.findOne({ where: { id } });
+    if (!music) {
+      throw new Error('Music not found');
+    }
+    await this.musicRepository.remove(music);
   }
-
 
   async findByName(search: string) {
     return await this.musicRepository
@@ -93,8 +95,6 @@ export class MusicRepository {
       .leftJoinAndSelect('music.photo', 'photo')
       .leftJoinAndSelect('music.url', 'url')
       .where('music.name LIKE :search', { search: `%${search}%` })
-      .getMany()
+      .getMany();
   }
-
 }
-
