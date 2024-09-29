@@ -22,26 +22,29 @@ export class AuthorEntity {
   @JoinColumn()
   file: FileEntity;
 
-  @Column({type: 'varchar'})
+  @Column({ type: 'varchar' })
   firstName: string;
 
-  @Column({type: 'varchar'})
+  @Column({ type: 'varchar' })
   lastName: string;
 
   @OneToMany(() => MusicEntity, (musics) => musics.artist)
   musics: MusicEntity[];
 
-  @Column({type: 'varchar'})
+  @Column({ type: 'varchar' })
   biography: string;
 
   @OneToMany(() => AlbumEntity, (album) => album.author)
   albums: AlbumEntity[];
 
-  @Column({nullable: true})
-  albumsId: number
+  @Column({ nullable: true })
+  albumsId: number;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   releaseDate: string;
+
+  @Column({ default: 0 })
+  totalListenCount: number;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -15,19 +15,22 @@ export class AuthorRepository {
     private authorRepositoy: Repository<AuthorEntity>,
   ) {}
 
-  async create(file: FileEntity, createAuthorDto: CreateAuthorDto): Promise<AuthorEntity> {
+  async create(
+    file: FileEntity,
+    createAuthorDto: CreateAuthorDto,
+  ): Promise<AuthorEntity> {
     const album = this.authorRepositoy.create({
       ...createAuthorDto,
-      file: file
+      file: file,
     });
     return await this.authorRepositoy.save(album);
   }
 
   async findAll() {
     return await this.authorRepositoy
-    .createQueryBuilder('author')
-    .leftJoinAndSelect('author.file', 'file')
-    .getMany();
+      .createQueryBuilder('author')
+      .leftJoinAndSelect('author.file', 'file')
+      .getMany();
   }
 
   async findOne(id: number) {
@@ -56,11 +59,20 @@ export class AuthorRepository {
       .execute();
   }
 
-  async findByName(search: string){
+  async findByName(search: string) {
     return await this.authorRepositoy
-    .createQueryBuilder('author')
-    .leftJoinAndSelect('author.file', 'file') 
-    .where('author.firstName LIKE :search', {search: `%${search}%`})
-    .getMany()
+      .createQueryBuilder('author')
+      .leftJoinAndSelect('author.file', 'file')
+      .where('author.firstName LIKE :search', { search: `%${search}%` })
+      .getMany();
+  }
+
+  async incrementListenCount(artistId: number){
+    await this.authorRepositoy
+      .createQueryBuilder()
+      .update(AuthorEntity)
+      .set({ totalListenCount: () => 'totalListenCount + 1' })
+      .where('id = :artistId', { artistId })
+      .execute();
   }
 }

@@ -25,7 +25,7 @@ export class UserEntity {
   role: Role
 
   @OneToMany(() => ListenEntity, (listen) => listen.user)
-  listens: ListenEntity;
+  listens: ListenEntity[];
 
   @ManyToMany(() => PlaylistEntity, (playlists) => playlists.users)
   playlists: PlaylistEntity[]

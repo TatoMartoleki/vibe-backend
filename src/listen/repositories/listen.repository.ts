@@ -7,47 +7,56 @@ import { UpdateListenDto } from '../dto/update-listen.dto';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { MusicEntity } from 'src/music/entities/music.entity';
 import { error } from 'console';
+import { AuthorRepository } from 'src/author/repositories/author.repository';
 
 @Injectable()
 export class ListenRepository {
-
-  constructor(@InjectRepository(ListenEntity)
-  private readonly listenRepository: Repository<ListenEntity>) {
-  }
+  constructor(
+    @InjectRepository(ListenEntity)
+    private readonly listenRepository: Repository<ListenEntity>,
+    private readonly authorRepository: AuthorRepository
+  ) {}
 
   async create(userId: number, musicId: number) {
-      const lastRecord = await this.listenRepository.findOne({
-        where: { user: { id: userId }, music: { id: musicId } },
-        order: { createdAt: 'DESC' },
-      });
+    const lastRecord = await this.listenRepository.findOne({
+      where: { user: { id: userId }, music: { id: musicId } },
+      order: { createdAt: 'DESC' },
+    });
 
+    const record = new ListenEntity();
+    record.userId = userId;
+    record.musicId = musicId;
 
-      const record = new ListenEntity();
-      record.userId = userId
-      record.musicId = musicId
+    const currentTime = new Date();
 
-
-      const currentTime = new Date();
-
-      if (!lastRecord) {
-        record.counter = 1;
+    if (!lastRecord) {
+      record.counter = 1;
+    } else {
+      const timeDifference =
+        currentTime.getTime() - lastRecord.createdAt.getTime();
+      if (timeDifference > 60 * 1000) {
+        record.counter = lastRecord.counter + 1;
       } else {
-        const timeDifference = currentTime.getTime() - lastRecord.createdAt.getTime();
-        if (timeDifference > 60 * 1000) {
-          record.counter = lastRecord.counter + 1;
-        } else {
-          throw new ForbiddenException(`You cannot listen to this music again within ${60 - Math.floor(timeDifference / 1000)} seconds.`);
-        }
+        throw new ForbiddenException(
+          `You cannot listen to this music again within ${60 - Math.floor(timeDifference / 1000)} seconds.`,
+        );
       }
-      return await this.listenRepository.save(record)
-    } 
+    }
 
+    const music = await this.listenRepository.manager.findOne(MusicEntity, {
+      where: { id: musicId },
+      relations: ['artist'],
+    });
+
+    if (music && music.artist) {
+      await this.authorRepository.incrementListenCount(music.artist.id);
+    }
+
+    return await this.listenRepository.save(record);
+  }
 
   async findAll() {
-    return await this.listenRepository
-      .createQueryBuilder()
-      .select()
-      .getMany()
+    return await this.listenRepository.createQueryBuilder().select().getMany();
   }
 
   async findOne(id: number) {
@@ -56,7 +65,7 @@ export class ListenRepository {
       .select('listen')
       .from(ListenEntity, 'listen')
       .where('listen.id = :id', { id })
-      .getOne()
+      .getOne();
   }
 
   async update(id: number, updateListenDto: UpdateListenDto) {
@@ -64,8 +73,8 @@ export class ListenRepository {
       .createQueryBuilder('listen')
       .update()
       .set(updateListenDto)
-      .where("id = :id", { id })
-      .execute()
+      .where('id = :id', { id })
+      .execute();
   }
 
   async remove(id: number) {
@@ -73,7 +82,6 @@ export class ListenRepository {
       .createQueryBuilder()
       .delete()
       .from(ListenEntity)
-      .where('id = :id', { id })
-      .execute
+      .where('id = :id', { id }).execute;
   }
 }
