@@ -16,6 +16,10 @@ export class MusicService {
     return await this.musicRepository.create(photoFile, mp3File, createMusicDto, artistId, albumId);
   }
 
+  async topHitsOfTheWeek(){
+    return await this.musicRepository.topHitsOfTheWeek()
+  }
+
   async findAll() {
     return await this.musicRepository.findAll();
   }

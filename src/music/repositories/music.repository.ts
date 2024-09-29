@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { CreateMusicDto } from '../dto/create-music.dto';
 import { UpdateMusicDto } from '../dto/update-music.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -44,6 +48,33 @@ export class MusicRepository {
       // duration: (createMusicDto.duration)
     });
     return await this.musicRepository.save(music);
+  }
+
+  async topHitsOfTheWeek() {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    try {
+      return await this.musicRepository
+        .createQueryBuilder('music')
+        .leftJoin('music.listenCounter', 'listenCounter')
+        .where('listenCounter.createdAt >= :oneWeekAgo', { oneWeekAgo })
+        .select([
+          'music.id AS id',
+          'music.name AS name',
+          'music.artistName AS artistName',
+          'music.photo AS photo',
+          'music.url AS url',
+          'COUNT(listenCounter.id) AS listenCount',
+        ])
+        .groupBy('music.id')
+        .orderBy('listenCount', 'DESC')
+        .take(50)
+        .getRawMany();
+    } catch (err) {
+      throw new InternalServerErrorException(
+        'Failed to get top hits of the week',
+      );
+    }
   }
 
   async findAll() {

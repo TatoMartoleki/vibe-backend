@@ -11,6 +11,7 @@ import {
   UploadedFiles,
   Req,
   UnauthorizedException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { MusicService } from './music.service';
 import { CreateMusicDto } from './dto/create-music.dto';
@@ -56,6 +57,12 @@ export class MusicController {
       +artistId,
       +albumId
     );
+  }
+
+  @Roles(RoleEnum.admin, RoleEnum.user)
+  @Get("weekCharts")
+  async topHitsOfTheWeek() {
+    return await this.musicService.topHitsOfTheWeek()
   }
 
   @Roles(RoleEnum.admin, RoleEnum.user)
