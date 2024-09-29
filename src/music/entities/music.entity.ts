@@ -1,4 +1,5 @@
 import { AlbumEntity } from 'src/album/entities/album.entity';
+import { AuthorEntity } from 'src/author/entities/author.entity';
 import { FileEntity } from 'src/files/entities/file.entity';
 import { ListenEntity } from 'src/listen/entities/listen.entity';
 import { PlaylistEntity } from 'src/playlist/entities/playlist.entity';
@@ -8,7 +9,9 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -28,26 +31,27 @@ export class MusicEntity {
   @JoinColumn()
   url: FileEntity;
 
-  @ManyToMany(() => AlbumEntity, (album) => album.musics)
-  albums: AlbumEntity[];
+  @ManyToOne(() => AlbumEntity, (album) => album.musics)
+  album: AlbumEntity;
 
-  @Column({type: 'varchar'})
+  @ManyToOne(() => AuthorEntity, (artist) => artist.musics)
+  artist: AuthorEntity;
+
+
+  @Column({ type: 'varchar' })
   name: string;
 
   @Column()
-  artistName: string
+  artistName: string;
 
-  @Column({type: 'int'})
-  artistId: number;
-
-  @Column({type: 'int'})
+  @Column({ nullable: true })
   duration: number;
 
   @OneToMany(() => ListenEntity, (listenCounter) => listenCounter.music)
-  listenCounter: ListenEntity
+  listenCounter: ListenEntity;
 
   @ManyToMany(() => PlaylistEntity, (playlists) => playlists.musics)
-  playlists: PlaylistEntity[]
+  playlists: PlaylistEntity[];
 
   @CreateDateColumn()
   createdAt: Date;

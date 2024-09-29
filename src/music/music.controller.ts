@@ -31,7 +31,7 @@ export class MusicController {
   ) {}
 
   @Roles(RoleEnum.admin)
-  @Post('upload')
+  @Post('upload/:artistId/add/:albumId')
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'photo', maxCount: 1 },
@@ -43,6 +43,8 @@ export class MusicController {
     @UploadedFiles()
     files: { photo?: Express.Multer.File[]; mp3?: Express.Multer.File[] },
     @Req() req,
+    @Param("artistId") artistId: string,
+    @Param("albumId") albumId: string, 
   ) {
     const photoResult = await this.fileService.uploadFile(files.photo[0]);
     const mp3Result = await this.fileService.uploadFile(files.mp3[0]);
@@ -50,7 +52,8 @@ export class MusicController {
       photoResult,
       mp3Result,
       createMusicDto,
-      req.user,
+      +artistId,
+      +albumId
     );
   }
 

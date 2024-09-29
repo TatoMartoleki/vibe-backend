@@ -1,5 +1,6 @@
 import { AlbumEntity } from 'src/album/entities/album.entity';
 import { FileEntity } from 'src/files/entities/file.entity';
+import { MusicEntity } from 'src/music/entities/music.entity';
 import {
   Column,
   CreateDateColumn,
@@ -27,14 +28,17 @@ export class AuthorEntity {
   @Column({type: 'varchar'})
   lastName: string;
 
-  @Column({ type: 'simple-array', nullable: true })
-  musics: string[];
+  @OneToMany(() => MusicEntity, (musics) => musics.artist)
+  musics: MusicEntity[];
 
   @Column({type: 'varchar'})
   biography: string;
 
   @OneToMany(() => AlbumEntity, (album) => album.author)
   albums: AlbumEntity[];
+
+  @Column({nullable: true})
+  albumsId: number
 
   @Column({nullable: true})
   releaseDate: string;

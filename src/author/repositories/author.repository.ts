@@ -32,9 +32,9 @@ export class AuthorRepository {
 
   async findOne(id: number) {
     return await this.authorRepositoy
-      .createQueryBuilder()
+      .createQueryBuilder('author')
       .leftJoinAndSelect('author.file', 'file')
-      .where('id = :id', { id })
+      .where('author.id = :id', { id })
       .getOne();
   }
 

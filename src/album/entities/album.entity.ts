@@ -32,11 +32,9 @@ export class AlbumEntity {
   @Column()
   artistName: string
 
-  @ManyToMany(() => MusicEntity, (music) => music.albums)
-  @JoinTable() 
+  @ManyToMany(() => MusicEntity, (music) => music.album)
   musics: MusicEntity[];
 
- 
   @OneToOne(() => FileEntity)
   @JoinColumn()
   file: FileEntity;
