@@ -48,20 +48,18 @@ export class MusicRepository {
      const oneWeekAgo = new Date(); 
      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7); 
      try { 
-      return await this.musicRepository 
-      .createQueryBuilder('music') 
-      .leftJoin('music.listenCounter', 'listenCounter') 
-      .where('listenCounter.counter >= :oneWeekAgo', { oneWeekAgo }) 
-      .addSelect('music.id', 'id') 
-      .addSelect('music.name', 'name') 
-      .addSelect('music.artistName', 'artistName') 
-      .addSelect('music.photo', 'photo') 
-      .addSelect('music.url', 'url') 
-      .addSelect('COUNT(listenCounter.id)', 'listenCount') 
-      .groupBy('music.id') 
-      .orderBy('listenCount', 'DESC') 
-      .take (50) 
-      .getRawMany(); 
+      return await this.musicRepository
+      .createQueryBuilder('music')
+      .select()
+      .where('listenCounter.createdAt >= :oneWeekAgo', { oneWeekAgo })
+      .addSelect('COUNT(listenCounter.id)', 'listenCount')      
+      .leftJoinAndSelect('music.listenCounter', 'listenCounter')
+      .leftJoinAndSelect('music.photo', 'photo')
+      .leftJoinAndSelect('music.url', 'url')
+      .groupBy('music.id')
+      .orderBy('listenCount', 'DESC')
+      .take(50)
+      .getMany();
     } catch (err) { 
       throw new ErrorException( 'Failed to get top hits of the week', ); }
   }
