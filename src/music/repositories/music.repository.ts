@@ -39,7 +39,6 @@ export class MusicRepository {
       photo,
       url,
       album,
-      artistId: album.authorId
       // duration: (createMusicDto.duration)
     });
     return await this.musicRepository.save(music);
