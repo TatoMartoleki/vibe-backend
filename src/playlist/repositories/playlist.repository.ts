@@ -66,6 +66,7 @@ export class PlaylistRepository {
     return await this.playlistRepository
       .createQueryBuilder('playlist')
       .leftJoinAndSelect('playlist.musics', 'music')
+      .leftJoinAndSelect('music.photo', 'photo')
       .where('playlist.id = :id', { id })
       .getOne();
   }
