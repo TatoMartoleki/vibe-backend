@@ -58,12 +58,12 @@ export class AlbumRepository {
 
   async findOne(id: number) {
     return await this.albumrepository
-      .createQueryBuilder('album')
-      .leftJoinAndSelect('album.file', 'file')
-      .leftJoinAndSelect('album.musics', 'musics')
-      .leftJoinAndSelect('album.author', 'author')
-      .where('album.id = :id', { id })
-      .getOne();
+      .createQueryBuilder('author')
+    .leftJoinAndSelect('author.file', 'file')
+    .leftJoinAndSelect('author.musics', 'musics')  // Join to include musics
+    .leftJoinAndSelect('author.albums', 'albums')
+    .where('author.id = :id', { id })
+    .getOne();
   }
 
   async update(id: number, updateAlbumDto: UpdateAlbumDto) {
