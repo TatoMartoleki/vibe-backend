@@ -22,7 +22,7 @@ export class PlaylistRepository {
     @InjectRepository(PlaylistEntity)
     private readonly playlistRepository: Repository<PlaylistEntity>,
     private readonly musicRepository: MusicRepository,
-  ) {}
+  ) { }
 
   async create(createPlaylistDto: CreatePlaylistDto, userId: number) {
     const playlist = this.playlistRepository.create({
@@ -32,11 +32,27 @@ export class PlaylistRepository {
     return await this.playlistRepository.save(playlist);
   }
 
+  async getMusicFromPlaylist(userId: number, playlistId: number) {
+    const playlist = await this.playlistRepository
+      .createQueryBuilder('playlist')
+      .leftJoinAndSelect('playlist.musics', 'music')
+      .where('playlist.userId = :userId', { userId })
+      .andWhere('playlist.id = :playlistId', { playlistId })
+      .getOne();
+
+    if (!playlist) {
+      throw new NotFoundException('Playlist not found or you do not have access');
+    }
+
+    return playlist.musics;
+
+  }
+
   async findMusicFromPlaylist(userId: number, id: number) {
     return await this.playlistRepository
       .createQueryBuilder()
       .where('playlist.userId = :userId', { userId })
-      .andWhere("playlist.id = :id", {id})
+      .andWhere("playlist.id = :id", { id })
       .getMany();
   }
 
