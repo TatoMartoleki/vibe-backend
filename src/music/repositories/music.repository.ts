@@ -60,6 +60,8 @@ export class MusicRepository {
           'music.url AS url',
           'COUNT(listenCounter.id) AS listenCount',
         ])
+        .leftJoinAndSelect("music.photo", "photo")
+        .leftJoinAndSelect("music.url", "url")
         .groupBy('music.id')
         .orderBy('listenCount', 'DESC')
         .take(50)
