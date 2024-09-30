@@ -22,7 +22,7 @@ export class MusicService {
     const album = await this.albumRepository.findOne(albumId)
 
     if(!album){
-      throw new BadRequestException("'Album doesn't exist")
+      throw new BadRequestException("Album doesn't exist")
     }
 
     return await this.musicRepository.create(album.file, mp3File, createMusicDto, albumId);
