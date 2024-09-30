@@ -127,13 +127,12 @@ export class MusicRepository {
     return await this.musicRepository
       .createQueryBuilder('music')
       .leftJoinAndSelect('music.listenCounter', 'listen')
-      
       .select(['music', 'COUNT(listen.id) as listenCount'])
+      .leftJoinAndSelect('music.photo', 'photo')
+      .leftJoinAndSelect('music.url', 'url')
       .groupBy('music.id')
       .orderBy('listenCount', 'DESC')
-      .leftJoinAndSelect('music.photo', 'photo')
-      .leftJoinAndSelect('music.url', 'mp3')
-      .getRawMany();
+      .getMany();
   }
 
   async getRandomMusic(): Promise<MusicEntity> {
