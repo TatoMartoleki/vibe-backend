@@ -22,7 +22,7 @@ export class PlaylistRepository {
     @InjectRepository(PlaylistEntity)
     private readonly playlistRepository: Repository<PlaylistEntity>,
     private readonly musicRepository: MusicRepository,
-  ) {}
+  ) { }
 
   async create(createPlaylistDto: CreatePlaylistDto, userId: number) {
     const playlist = this.playlistRepository.create({
@@ -36,7 +36,7 @@ export class PlaylistRepository {
     return await this.playlistRepository
       .createQueryBuilder()
       .where('playlist.userId = :userId', { userId })
-      .andWhere("playlist.id = :id", {id})
+      .andWhere("playlist.id = :id", { id })
       .getMany();
   }
 
@@ -66,6 +66,7 @@ export class PlaylistRepository {
     return await this.playlistRepository
       .createQueryBuilder('playlist')
       .leftJoinAndSelect('playlist.musics', 'music')
+      .leftJoinAndSelect('music.photo', 'photo')
       .where('playlist.id = :id', { id })
       .getOne();
   }
