@@ -1,31 +1,19 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateMusicDto } from './dto/create-music.dto';
 import { UpdateMusicDto } from './dto/update-music.dto';
 import { MusicRepository } from './repositories/music.repository';
 import { FileEntity } from 'src/files/entities/file.entity';
 import { ListenRepository } from 'src/listen/repositories/listen.repository';
-import { AlbumRepository } from 'src/album/repositories/album.repository';
 
 @Injectable()
 export class MusicService {
   constructor(
     private readonly musicRepository: MusicRepository,
     private readonly listenRepository: ListenRepository,
-    private readonly albumRepository: AlbumRepository
   ) {}
 
-  async create(
-    mp3File: FileEntity,
-    createMusicDto: CreateMusicDto,
-    albumId: number
-  ) {
-    const album = await this.albumRepository.findOne(albumId)
-
-    if(!album){
-      throw new BadRequestException("Album doesn't exist")
-    }
-
-    return await this.musicRepository.create(album.file, mp3File, createMusicDto, albumId);
+  async create(photoFile: FileEntity, mp3File: FileEntity, createMusicDto: CreateMusicDto, albumId: number) {
+    return await this.musicRepository.create(photoFile, mp3File, createMusicDto, albumId);
   }
 
   async topHitsOfTheWeek(){

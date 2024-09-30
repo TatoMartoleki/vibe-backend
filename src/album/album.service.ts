@@ -11,6 +11,7 @@ export class AlbumService {
   constructor(private readonly albumRepository: AlbumRepository) {}
 
   async create(file: FileEntity, createAlbumDto: CreateAlbumDto, artistId: number) {
+    //console.log('This is a file', file)
     return await this.albumRepository.create(file, createAlbumDto, artistId);
   }
 

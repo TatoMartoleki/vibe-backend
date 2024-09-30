@@ -43,16 +43,14 @@ export class MusicController {
   async create(
     @Body() createMusicDto: CreateMusicDto,
     @UploadedFiles()
-    files: { 
-      // photo?: Express.Multer.File[]; 
-      mp3?: Express.Multer.File[] },
+    files: { photo?: Express.Multer.File[]; mp3?: Express.Multer.File[] },
     @Req() req,
     @Param('albumId') albumId: string,
   ) {
-    // const photoResult = await this.fileService.uploadFile(files.photo[0]);
+    const photoResult = await this.fileService.uploadFile(files.photo[0]);
     const mp3Result = await this.fileService.uploadFile(files.mp3[0]);
     return await this.musicService.create(
-      // photoResult,
+      photoResult,
       mp3Result,
       createMusicDto,
       +albumId
