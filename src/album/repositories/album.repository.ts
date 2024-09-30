@@ -32,6 +32,16 @@ export class AlbumRepository {
     return await this.albumrepository.save(album);
   }
 
+  async getMusicFromAlbum(albumId: number){
+    return await this.albumrepository
+    .createQueryBuilder('album')
+    .leftJoinAndSelect('album.musics', 'music')
+    .leftJoinAndSelect('album.author', 'author')
+    .leftJoinAndSelect('album.file', 'file')
+    .where('album.id = :albumId', { albumId })
+    .getOne()
+  }
+
   async getTopAlbum() {
     return await this.albumrepository
       .createQueryBuilder('album')

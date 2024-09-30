@@ -15,7 +15,11 @@ export class AlbumService {
     return await this.albumRepository.create(file, createAlbumDto, artistId);
   }
 
-  async getTopAlbum() {
+  async getMusicFromAlbum(albumId: number){
+    return await this.albumRepository.getMusicFromAlbum(albumId)
+  }
+
+  async getTopAlbum(){
     return await this.albumRepository.getTopAlbum()
   }
 

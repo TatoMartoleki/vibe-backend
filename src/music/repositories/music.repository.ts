@@ -134,6 +134,8 @@ export class MusicRepository {
       .select(['music', 'COUNT(listen.id) as listenCount'])
       .groupBy('music.id')
       .orderBy('listenCount', 'DESC')
+      .leftJoinAndSelect('music.photo', 'photo')
+      .leftJoinAndSelect('music.url', 'mp3')
       .getRawMany();
   }
 
