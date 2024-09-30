@@ -37,15 +37,11 @@ export class MusicEntity {
   @ManyToOne(() => AuthorEntity, (artist) => artist.musics)
   artist: AuthorEntity;
 
-
   @Column({ type: 'varchar' })
   name: string;
 
   @Column()
   artistName: string;
-
-  @Column({ nullable: true })
-  duration: number;
 
   @OneToMany(() => ListenEntity, (listenCounter) => listenCounter.music)
   listenCounter: ListenEntity;

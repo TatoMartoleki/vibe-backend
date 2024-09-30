@@ -6,10 +6,4 @@ export class CreateMusicDto {
 
     @IsString()
     artistName: string
-
-    // @IsNumberString()
-    // artistId?: number;
-
-    // @IsNumberString()
-    // duration?: number;
 }
