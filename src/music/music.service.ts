@@ -12,8 +12,8 @@ export class MusicService {
     private readonly listenRepository: ListenRepository,
   ) {}
 
-  async create(photoFile: FileEntity, mp3File: FileEntity, createMusicDto: CreateMusicDto, artistId: number, albumId: number) {
-    return await this.musicRepository.create(photoFile, mp3File, createMusicDto, artistId, albumId);
+  async create(photoFile: FileEntity, mp3File: FileEntity, createMusicDto: CreateMusicDto, albumId: number) {
+    return await this.musicRepository.create(photoFile, mp3File, createMusicDto, albumId);
   }
 
   async topHitsOfTheWeek(){

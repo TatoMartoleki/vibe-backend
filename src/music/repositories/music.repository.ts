@@ -25,26 +25,20 @@ export class MusicRepository {
     photo: FileEntity,
     url: FileEntity,
     createMusicDto: CreateMusicDto,
-    artistId: number,
     albumId: number,
   ): Promise<MusicEntity> {
     const album = await this.albumRepository.findOne(albumId);
-    const artist = await this.authorRepository.findOne(artistId);
 
     if (!album) {
       throw new BadRequestException("Album doesn't exist");
     }
 
-    if (!artist) {
-      throw new BadRequestException("Artist doesn't exist");
-    }
-
+    
     const music = this.musicRepository.create({
       ...createMusicDto,
       photo,
       url,
       album,
-      artist,
       // duration: (createMusicDto.duration)
     });
     return await this.musicRepository.save(music);

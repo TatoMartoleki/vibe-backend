@@ -45,7 +45,6 @@ export class MusicController {
     @UploadedFiles()
     files: { photo?: Express.Multer.File[]; mp3?: Express.Multer.File[] },
     @Req() req,
-    @Param('artistId') artistId: string,
     @Param('albumId') albumId: string,
   ) {
     const photoResult = await this.fileService.uploadFile(files.photo[0]);
@@ -54,8 +53,7 @@ export class MusicController {
       photoResult,
       mp3Result,
       createMusicDto,
-      +artistId,
-      +albumId,
+      +albumId
     );
   }
 
