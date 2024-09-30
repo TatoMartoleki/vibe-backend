@@ -19,7 +19,7 @@ export class MusicRepository {
     private musicRepository: Repository<MusicEntity>,
     private albumRepository: AlbumRepository,
     private authorRepository: AuthorRepository,
-  ) {}
+  ) { }
 
   async create(
     photo: FileEntity,
@@ -33,7 +33,7 @@ export class MusicRepository {
       throw new BadRequestException("Album doesn't exist");
     }
 
-    
+
     const music = this.musicRepository.create({
       ...createMusicDto,
       photo,
@@ -127,6 +127,8 @@ export class MusicRepository {
     return await this.musicRepository
       .createQueryBuilder('music')
       .leftJoinAndSelect('music.listenCounter', 'listen')
+      .leftJoinAndSelect('music.photo', 'photo')
+      .leftJoinAndSelect('music.url', 'url')
       .select(['music', 'COUNT(listen.id) as listenCount'])
       .groupBy('music.id')
       .orderBy('listenCount', 'DESC')
