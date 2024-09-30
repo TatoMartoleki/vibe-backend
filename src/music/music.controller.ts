@@ -33,7 +33,7 @@ export class MusicController {
   ) {}
 
   @Roles(RoleEnum.admin)
-  @Post('upload/:artistId/add/:albumId')
+  @Post('upload/:albumId')
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'photo', maxCount: 1 },
