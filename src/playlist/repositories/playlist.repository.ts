@@ -32,22 +32,6 @@ export class PlaylistRepository {
     return await this.playlistRepository.save(playlist);
   }
 
-  async getMusicFromPlaylist(userId: number, playlistId: number) {
-    const playlist = await this.playlistRepository
-      .createQueryBuilder('playlist')
-      .leftJoinAndSelect('playlist.musics', 'music')
-      .where('playlist.userId = :userId', { userId })
-      .andWhere('playlist.id = :playlistId', { playlistId })
-      .getOne();
-
-    if (!playlist) {
-      throw new NotFoundException('Playlist not found or you do not have access');
-    }
-
-    return playlist.musics;
-
-  }
-
   async findMusicFromPlaylist(userId: number, id: number) {
     return await this.playlistRepository
       .createQueryBuilder()

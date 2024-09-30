@@ -11,10 +11,6 @@ export class PlaylistService {
     return await this.playlistRepository.create(createPlaylistDto, userId);
   }
 
-  async getMusicFromPlaylist(userId: number, playlistId: number){
-    return await this.playlistRepository.getMusicFromPlaylist(userId, playlistId)
-  }
-
   async findMusicFromPlaylist(userId: number, id: number){
     return await this.playlistRepository.findMusicFromPlaylist(userId, id)
   }
