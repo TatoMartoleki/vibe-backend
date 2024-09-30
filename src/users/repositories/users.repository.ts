@@ -15,15 +15,11 @@ export class UsersRepository {
   private readonly userRepository: Repository<UserEntity>) { }
 
   async create(createUserDto: CreateUserDto) {
-
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10)
-
     const newUser = new UserEntity()
     newUser.email = createUserDto.email;
     newUser.password = hashedPassword;
-
     return this.userRepository.save(newUser);
-
   }
 
   async findAll() {
@@ -40,19 +36,16 @@ export class UsersRepository {
   }
 
   async findOne(id: number) {
-    return await this.userRepository.findOne({ where: { id } });
+    const user = await this.userRepository.findOne({ where: { id }, withDeleted: true}) ;
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
 
   async blockUser(id: number) {
-    const user = await this.userRepository.findOne({
-      where: { id },
-      withDeleted: true,
-    });
-
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+    const user = await this.findOne(id)
 
     if (user.role === 'admin') {
       throw new BadRequestException('Cannot block/unblock an admin');

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AlbumEntity } from '../entities/album.entity';
 import { Repository } from 'typeorm';
@@ -11,13 +11,19 @@ export class AlbumRepository {
   constructor(
     @InjectRepository(AlbumEntity)
     private albumrepository: Repository<AlbumEntity>,
-  ) {}
+  ) { }
 
   async create(
     file: FileEntity,
     createAlbumDto: CreateAlbumDto,
     artistId: number,
   ): Promise<AlbumEntity> {
+
+    const existingAlbum = await this.findByName(createAlbumDto.title)
+    if (existingAlbum) {
+      throw new BadRequestException('Album already exists');
+    }
+
     const album = this.albumrepository.create({
       ...createAlbumDto,
       authorId: artistId,
@@ -34,7 +40,7 @@ export class AlbumRepository {
       .leftJoinAndSelect("album.author", "author")
       .orderBy('album.totalListenCount', 'DESC')
       .getMany();
-    
+
   }
 
   async findAll() {

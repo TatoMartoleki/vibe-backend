@@ -14,7 +14,7 @@ export class UsersService {
   async create(createUserDto: CreateUserDto) {
     const existingUser = await this.usersRepository.findByEmail(createUserDto.email);
     if (existingUser) {
-      throw new BadRequestException('Email is incorrect');
+      throw new BadRequestException('Email is already in use');
     }
 
 

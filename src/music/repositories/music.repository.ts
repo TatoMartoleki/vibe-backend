@@ -19,7 +19,7 @@ export class MusicRepository {
     private musicRepository: Repository<MusicEntity>,
     private albumRepository: AlbumRepository,
     private authorRepository: AuthorRepository,
-  ) {}
+  ) { }
 
   async create(
     photo: FileEntity,
@@ -33,7 +33,11 @@ export class MusicRepository {
       throw new BadRequestException("Album doesn't exist");
     }
 
-    
+    const existingMusic = await this.findByName(createMusicDto.name);
+    if (existingMusic) {
+      throw new BadRequestException('Music already exists');
+    }
+
     const music = this.musicRepository.create({
       ...createMusicDto,
       photo,
@@ -133,16 +137,4 @@ export class MusicRepository {
       .getRawMany();
   }
 
-  async getRandomMusic(): Promise<MusicEntity> {
-    const count = await this.musicRepository.count();
-    const randomIndex = Math.floor(Math.random() * count);
-
-    return await this.musicRepository
-      .createQueryBuilder('music')
-      .leftJoinAndSelect('music.photo', 'photo')
-      .leftJoinAndSelect('music.url', 'url')
-      .skip(randomIndex)
-      .take(1)
-      .getOne();
-  }
 }

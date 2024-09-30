@@ -30,7 +30,7 @@ export class MusicController {
   constructor(
     private readonly musicService: MusicService,
     private readonly fileService: FilesService,
-  ) {}
+  ) { }
 
   @Roles(RoleEnum.admin)
   @Post('upload/:albumId')
@@ -57,11 +57,6 @@ export class MusicController {
     );
   }
 
-  @Roles(RoleEnum.admin, RoleEnum.user)
-  @Get('random')
-  async getRandomMusic() {
-    return await this.musicService.getRandomMusic();
-  }
 
   @Roles(RoleEnum.admin, RoleEnum.user)
   @Get('weekCharts')
