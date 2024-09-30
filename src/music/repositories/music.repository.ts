@@ -45,30 +45,25 @@ export class MusicRepository {
   }
 
   async topHitsOfTheWeek() {
-    const oneWeekAgo = new Date();
-    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-    try {
-      return await this.musicRepository
-        .createQueryBuilder('music')
-        .leftJoin('music.listenCounter', 'listenCounter')
-        .where('listenCounter.createdAt >= :oneWeekAgo', { oneWeekAgo })
-        .select([
-          'music.id AS id',
-          'music.name AS name',
-          'music.artistName AS artistName',
-          'music.photo AS photo',
-          'music.url AS url',
-          'COUNT(listenCounter.id) AS listenCount',
-        ])
-        .groupBy('music.id')
-        .orderBy('listenCount', 'DESC')
-        .take(50)
-        .getRawMany();
-    } catch (err) {
-      throw new InternalServerErrorException(
-        'Failed to get top hits of the week',
-      );
-    }
+     const oneWeekAgo = new Date(); 
+     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7); 
+     try { 
+      return await this.musicRepository 
+      .createQueryBuilder('music') 
+      .leftJoin('music.listenCounter', 'listenCounter') 
+      .where('listenCounter.counter >= :oneWeekAgo', { oneWeekAgo }) 
+      .addSelect('music.id', 'id') 
+      .addSelect('music.name', 'name') 
+      .addSelect('music.artistName', 'artistName') 
+      .addSelect('music.photo', 'photo') 
+      .addSelect('music.url', 'url') 
+      .addSelect('COUNT(listenCounter.id)', 'listenCount') 
+      .groupBy('music.id') 
+      .orderBy('listenCount', 'DESC') 
+      .take (50) 
+      .getRawMany(); 
+    } catch (err) { 
+      throw new ErrorException( 'Failed to get top hits of the week', ); }
   }
 
   async findAll() {
@@ -149,3 +144,7 @@ export class MusicRepository {
       .getOne();
   }
 }
+function ErrorException(arg0: string) {
+  throw new Error('Function not implemented.');
+}
+
