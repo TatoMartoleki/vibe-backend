@@ -33,31 +33,31 @@ export class AlbumController {
   async create(
     @Body() createAlbumDto: CreateAlbumDto,
     @UploadedFile() file: Express.Multer.File,
-    @Param('artistId') artistId: string
+    @Param('artistId') artistId: string,
   ) {
     const result = await this.fileService.uploadFile(file);
     return await this.albumService.create(result, createAlbumDto, +artistId);
   }
 
   @Roles(RoleEnum.admin, RoleEnum.user)
-  @Get("music/:albumId")
-  async getMusicFromAlbum(@Param("albumId") albumId: string){
-    return await this.albumService.getMusicFromAlbum(+albumId)
+  @Get('music/:albumId')
+  async getMusicFromAlbum(@Param('albumId') albumId: string) {
+    return await this.albumService.getMusicFromAlbum(+albumId);
   }
 
   @Roles(RoleEnum.admin, RoleEnum.user)
-  @Get("top")
-  async getTopAlbum(){
-    return await this.albumService.getTopAlbum()
+  @Get('top')
+  async getTopAlbum() {
+    return await this.albumService.getTopAlbum();
   }
 
-  @Roles(RoleEnum.admin, RoleEnum.admin)
+  @Roles(RoleEnum.admin, RoleEnum.user)
   @Get()
   async findAll() {
     return await this.albumService.findAll();
   }
 
-  @UseGuards(AuthGuard)
+  @Roles(RoleEnum.admin, RoleEnum.user)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.albumService.findOne(+id);
