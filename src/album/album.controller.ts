@@ -18,6 +18,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { FilesService } from 'src/files/files.service';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { RoleEnum } from 'src/auth/enums/roles.enum';
+import { Role } from 'src/users/enum/roles.enum';
 
 @Controller('album')
 export class AlbumController {
@@ -36,6 +37,12 @@ export class AlbumController {
   ) {
     const result = await this.fileService.uploadFile(file);
     return await this.albumService.create(result, createAlbumDto, +artistId);
+  }
+
+  @Roles(RoleEnum.admin, RoleEnum.user)
+  @Get("music/:albumId")
+  async getMusicFromAlbum(@Param("albumId") albumId: string){
+    return await this.albumService.getMusicFromAlbum(+albumId)
   }
 
   @Roles(RoleEnum.admin, RoleEnum.user)
