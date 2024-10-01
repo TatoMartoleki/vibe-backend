@@ -62,7 +62,7 @@ export class MusicRepository {
       .take(50)
       .getMany();
     } catch (err) { 
-      throw new ErrorException( 'Failed to get top hits of the week', ); }
+      throw new BadRequestException( 'Failed to get top hits of the week', ); }
   }
 
   async findAll() {
@@ -141,8 +141,5 @@ export class MusicRepository {
       .take(1)
       .getOne();
   }
-}
-function ErrorException(arg0: string) {
-  throw new Error('Function not implemented.');
 }
 
