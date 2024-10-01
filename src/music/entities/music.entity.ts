@@ -1,6 +1,7 @@
 import { AlbumEntity } from 'src/album/entities/album.entity';
 import { AuthorEntity } from 'src/author/entities/author.entity';
 import { FileEntity } from 'src/files/entities/file.entity';
+import { GenreEntity } from 'src/genres/entities/genre.entity';
 import { ListenEntity } from 'src/listen/entities/listen.entity';
 import { PlaylistEntity } from 'src/playlist/entities/playlist.entity';
 import {
@@ -51,6 +52,10 @@ export class MusicEntity {
 
   @ManyToMany(() => PlaylistEntity, (playlists) => playlists.musics)
   playlists: PlaylistEntity[];
+
+  @ManyToMany(() => GenreEntity, (genre) => genre.musics)
+  @JoinTable({ name: 'music_genre' })
+  genres: GenreEntity[];
 
   @CreateDateColumn()
   createdAt: Date;
