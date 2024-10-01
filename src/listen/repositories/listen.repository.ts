@@ -18,7 +18,7 @@ export class ListenRepository {
     private readonly listenRepository: Repository<ListenEntity>,
     private readonly authorRepository: AuthorRepository,
     private readonly albumRepository: AlbumRepository,
-  ) {}
+  ) { }
 
   async create(userId: number, musicId: number) {
     const lastRecord = await this.listenRepository.findOne({
@@ -37,13 +37,7 @@ export class ListenRepository {
     } else {
       const timeDifference =
         currentTime.getTime() - lastRecord.createdAt.getTime();
-      if (timeDifference > 60 * 1000) {
         record.counter = lastRecord.counter + 1;
-      } else {
-        throw new ForbiddenException(
-          `You cannot listen to this music again within ${60 - Math.floor(timeDifference / 1000)} seconds.`,
-        );
-      }
     }
 
     const artist = await this.listenRepository.manager.findOne(MusicEntity, {
