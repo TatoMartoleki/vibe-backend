@@ -12,22 +12,25 @@ import { MusicEntity } from 'src/music/entities/music.entity';
 import { MusicRepository } from 'src/music/repositories/music.repository';
 import { error } from 'console';
 import { UpdatePlaylistDto } from '../dto/update-playlist.dto';
+import { UsersRepository } from 'src/users/users.repository';
+import { UserEntity } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class PlaylistRepository {
-  find(arg0: { where: { userId: number } }) {
-    throw new Error('Method not implemented.');
-  }
+
   constructor(
     @InjectRepository(PlaylistEntity)
     private readonly playlistRepository: Repository<PlaylistEntity>,
     private readonly musicRepository: MusicRepository,
+    @InjectRepository(UserEntity)
+    private readonly usersRepository: Repository<UserEntity>
   ) { }
 
   async create(createPlaylistDto: CreatePlaylistDto, userId: number) {
+    const user = await this.usersRepository.findOne({where: {id: userId}})
     const playlist = this.playlistRepository.create({
       ...createPlaylistDto,
-      userId: userId,
+      users: [user],
     });
     return await this.playlistRepository.save(playlist);
   }
@@ -102,7 +105,7 @@ export class PlaylistRepository {
   async addMusic(playlistId: number, musicId: number, userId: number) {
     const playlist = await this.playlistRepository.findOne({
       where: { id: playlistId, userId: userId },
-      relations: { musics: true },
+      relations: { musics: true, users: true },
     });
 
     if (!playlist) {
@@ -143,6 +146,7 @@ export class PlaylistRepository {
     }
 
     playlist.musics = playlist.musics.filter((m) => m.id !== musicId);
+
 
     try {
       return await this.playlistRepository.save(playlist);
