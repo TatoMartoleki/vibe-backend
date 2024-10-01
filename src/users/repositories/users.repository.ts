@@ -22,7 +22,11 @@ export class UsersRepository {
     newUser.email = createUserDto.email;
     newUser.password = hashedPassword;
 
-    return this.userRepository.save(newUser);
+    this.userRepository.save(newUser);
+
+    const { password, ...result } = newUser
+
+    return result
 
   }
 
