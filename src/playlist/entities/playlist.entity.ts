@@ -22,9 +22,6 @@ export class PlaylistEntity {
     @JoinTable({ name: "playlist_user" })
     users: UserEntity[];
 
-    @Column()
-    userId: number
-
     @CreateDateColumn()
     createdAt: Date;
 

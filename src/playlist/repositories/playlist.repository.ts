@@ -27,7 +27,7 @@ export class PlaylistRepository {
   ) { }
 
   async create(createPlaylistDto: CreatePlaylistDto, userId: number) {
-    const user = await this.usersRepository.findOne({where: {id: userId}})
+    const user = await this.usersRepository.findOne({ where: { id: userId } })
     const playlist = this.playlistRepository.create({
       ...createPlaylistDto,
       users: [user],
@@ -38,7 +38,8 @@ export class PlaylistRepository {
   async findMusicFromPlaylist(userId: number, id: number) {
     return await this.playlistRepository
       .createQueryBuilder()
-      .where('playlist.userId = :userId', { userId })
+      .leftJoinAndSelect("playlist.users", "users")
+      .where('users.id = :userId', { userId })
       .andWhere("playlist.id = :id", { id })
       .getMany();
   }
@@ -46,7 +47,8 @@ export class PlaylistRepository {
   async findAll(userId: number) {
     return await this.playlistRepository
       .createQueryBuilder('playlist')
-      .where('playlist.userId = :userId', { userId })
+      .leftJoinAndSelect('playlist.users', 'users')
+      .where('users.id = :userId', { userId })
       .orderBy('playlist.createdAt', 'DESC')
       .getMany();
   }
@@ -60,10 +62,13 @@ export class PlaylistRepository {
   }
 
   async findAllFromUser(userId: number) {
-    return await this.playlistRepository.find({
-      where: { userId: userId },
-    });
+    return await this.playlistRepository
+      .createQueryBuilder('playlist')
+      .leftJoinAndSelect('playlist.users', 'users')
+      .where('users.id = :userId', { userId })
+      .getMany();
   }
+
 
   async findOne(id: number) {
     return await this.playlistRepository
@@ -79,12 +84,19 @@ export class PlaylistRepository {
     UpdatePlaylistDto: UpdatePlaylistDto,
     userId: number,
   ) {
+    const playlist = await this.playlistRepository.findOne({
+      where: { id: playlistId, users: { id: userId } },
+    });
+
+    if (!playlist) {
+      throw new NotFoundException('Playlist not found or access denied');
+    }
+
     return await this.playlistRepository
       .createQueryBuilder()
       .update(PlaylistEntity)
       .set(UpdatePlaylistDto)
       .where('id = :id', { id: playlistId })
-      .andWhere('userId = :userId', { userId: userId })
       .execute();
   }
 
@@ -93,18 +105,25 @@ export class PlaylistRepository {
     userId: number,
     updatePlaylistDto: UpdatePlaylistDto,
   ) {
+    const playlist = await this.playlistRepository.findOne({
+      where: { id: playlistId, users: { id: userId } },
+    });
+
+    if (!playlist) {
+      throw new NotFoundException('Playlist not found or access denied');
+    }
+
     return await this.playlistRepository
       .createQueryBuilder()
       .update(PlaylistEntity)
       .set(updatePlaylistDto)
       .where('id = :id', { id: playlistId })
-      .andWhere('userId = :userId', { userId: userId })
       .execute();
   }
 
   async addMusic(playlistId: number, musicId: number, userId: number) {
     const playlist = await this.playlistRepository.findOne({
-      where: { id: playlistId, userId: userId },
+      where: { id: playlistId },
       relations: { musics: true, users: true },
     });
 
@@ -137,7 +156,7 @@ export class PlaylistRepository {
 
   async removeMusic(playlistId: number, musicId: number, userId: number) {
     const playlist = await this.playlistRepository.findOne({
-      where: { id: playlistId, userId: userId },
+      where: { id: playlistId },
       relations: { musics: true, users: true },
     });
 
@@ -158,22 +177,36 @@ export class PlaylistRepository {
   }
 
   async remove(id: number, userId: number) {
+    const playlist = await this.playlistRepository.findOne({
+      where: { id, users: { id: userId } },
+    });
+
+    if (!playlist) {
+      throw new NotFoundException('Playlist not found or access denied');
+    }
+
     return await this.playlistRepository
       .createQueryBuilder()
       .delete()
       .from(PlaylistEntity)
       .where('id = :id', { id })
-      .andWhere('userId = :userId', { userId })
       .execute();
   }
 
   async adminRemove(userId: number, playlistId: number) {
+    const playlist = await this.playlistRepository.findOne({
+      where: { id: playlistId, users: { id: userId } },
+    });
+
+    if (!playlist) {
+      throw new NotFoundException('Playlist not found or access denied');
+    }
+
     return await this.playlistRepository
       .createQueryBuilder()
       .delete()
       .from(PlaylistEntity)
-      .where('userId = :userId', { userId })
-      .andWhere('id = :playlistId', { playlistId })
+      .where('id = :id', { id: playlistId })
       .execute();
   }
 }
