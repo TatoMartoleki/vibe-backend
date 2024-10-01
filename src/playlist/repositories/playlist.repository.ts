@@ -40,7 +40,7 @@ export class PlaylistRepository {
       .createQueryBuilder()
       .leftJoinAndSelect("playlist.users", "users")
       .leftJoinAndSelect("playlist.musics", "musics")
-      .leftJoinAndSelect('music.photo', 'photo')
+      .leftJoinAndSelect('musics.photo', 'photo')
       .where('users.id = :userId', { userId })
       .andWhere("playlist.id = :id", { id })
       .getMany();
@@ -51,7 +51,7 @@ export class PlaylistRepository {
       .createQueryBuilder('playlist')
       .leftJoinAndSelect('playlist.users', 'users')
       .leftJoinAndSelect("playlist.musics", "musics")
-      .leftJoinAndSelect('music.photo', 'photo')
+      .leftJoinAndSelect('musics.photo', 'photo')
       .where('users.id = :userId', { userId })
       .orderBy('playlist.createdAt', 'DESC')
       .getMany();
@@ -70,7 +70,7 @@ export class PlaylistRepository {
       .createQueryBuilder('playlist')
       .leftJoinAndSelect('playlist.users', 'users')
       .leftJoinAndSelect("playlist.musics", "musics")
-      .leftJoinAndSelect('music.photo', 'photo')
+      .leftJoinAndSelect('musics.photo', 'photo')
       .where('users.id = :userId', { userId })
       .getMany();
   }
@@ -79,8 +79,8 @@ export class PlaylistRepository {
   async findOne(id: number) {
     return await this.playlistRepository
       .createQueryBuilder('playlist')
-      .leftJoinAndSelect('playlist.musics', 'music')
-      .leftJoinAndSelect('music.photo', 'photo')
+      .leftJoinAndSelect('playlist.musics', 'musics')
+      .leftJoinAndSelect('musics.photo', 'photo')
       .where('playlist.id = :id', { id })
       .getOne();
   }
@@ -162,7 +162,7 @@ export class PlaylistRepository {
 
   async removeMusic(playlistId: number, musicId: number, userId: number) {
     const playlist = await this.playlistRepository.findOne({
-      where: { id: playlistId, users: {id: userId} },
+      where: { id: playlistId, users: {id: userId} , },
       relations: { musics: true, users: true },
     });
 
@@ -188,7 +188,7 @@ export class PlaylistRepository {
     });
 
     if (!playlist) {
-      throw new NotFoundException('Playlist not found or access denied');
+      throw new NotFoundException('Playlist not found');
     }
 
     return await this.playlistRepository
