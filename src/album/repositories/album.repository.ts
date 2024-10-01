@@ -53,6 +53,7 @@ export class AlbumRepository {
       .leftJoinAndSelect('album.file', 'file')
       .leftJoinAndSelect('album.musics', 'musics')
       .leftJoinAndSelect('album.author', 'author')
+      .orderBy('album.createdAt', "DESC")
       .getMany();
   }
 
