@@ -15,6 +15,7 @@ import { PlaylistModule } from './playlist/playlist.module';
 import 'dotenv/config'
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/guards/auth-guard.service';
+import { GenresModule } from './genres/genres.module';
 
 
 @Module({
@@ -46,7 +47,8 @@ import { AuthGuard } from './auth/guards/auth-guard.service';
     AuthModule,
     ListenModule,
     PlaylistModule,
-    AuthModule
+    AuthModule,
+    GenresModule
   ],
   controllers: [AppController],
   providers: [AppService, {

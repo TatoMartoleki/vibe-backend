@@ -25,7 +25,7 @@ export class AuthorEntity {
   @Column({ type: 'varchar' })
   firstName: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   lastName: string;
 
   @OneToMany(() => MusicEntity, (musics) => musics.artist)
