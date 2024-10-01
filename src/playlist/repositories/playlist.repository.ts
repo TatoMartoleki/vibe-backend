@@ -39,6 +39,8 @@ export class PlaylistRepository {
     return await this.playlistRepository
       .createQueryBuilder()
       .leftJoinAndSelect("playlist.users", "users")
+      .leftJoinAndSelect("playlist.musics", "musics")
+      .leftJoinAndSelect('music.photo', 'photo')
       .where('users.id = :userId', { userId })
       .andWhere("playlist.id = :id", { id })
       .getMany();
@@ -48,6 +50,8 @@ export class PlaylistRepository {
     return await this.playlistRepository
       .createQueryBuilder('playlist')
       .leftJoinAndSelect('playlist.users', 'users')
+      .leftJoinAndSelect("playlist.musics", "musics")
+      .leftJoinAndSelect('music.photo', 'photo')
       .where('users.id = :userId', { userId })
       .orderBy('playlist.createdAt', 'DESC')
       .getMany();
@@ -65,6 +69,8 @@ export class PlaylistRepository {
     return await this.playlistRepository
       .createQueryBuilder('playlist')
       .leftJoinAndSelect('playlist.users', 'users')
+      .leftJoinAndSelect("playlist.musics", "musics")
+      .leftJoinAndSelect('music.photo', 'photo')
       .where('users.id = :userId', { userId })
       .getMany();
   }
