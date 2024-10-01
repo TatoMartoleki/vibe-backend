@@ -24,11 +24,9 @@ export class PlaylistRepository {
     @InjectRepository(PlaylistEntity)
     private readonly playlistRepository: Repository<PlaylistEntity>,
     private readonly musicRepository: MusicRepository,
-    private readonly usersRepository: UsersRepository
   ) { }
 
   async create(createPlaylistDto: CreatePlaylistDto, userId: number) {
-    const user = this.usersRepository.findOne(userId)
 
     const playlist = this.playlistRepository.create({
       ...createPlaylistDto,
