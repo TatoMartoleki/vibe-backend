@@ -25,9 +25,12 @@ export class GenreRepository {
 
     async findAll() {
         return await this.genreRepository
-        .createQueryBuilder('genre')
-        .leftJoinAndSelect("genre.file", "file")
-        .getMany()
+          .createQueryBuilder('genre')
+          .leftJoinAndSelect('genre.file', 'file')
+          .leftJoinAndSelect('genre.musics', 'musics')
+          .leftJoinAndSelect('musics.url', 'url')
+          .leftJoinAndSelect('musics.photo', 'photo')
+          .getMany();
     }
 
     async findOne(id: number) {
