@@ -3,7 +3,6 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PlaylistEntity } from '../entities/playlist.entity';
@@ -13,7 +12,6 @@ import { MusicEntity } from 'src/music/entities/music.entity';
 import { MusicRepository } from 'src/music/repositories/music.repository';
 import { error } from 'console';
 import { UpdatePlaylistDto } from '../dto/update-playlist.dto';
-import { UsersRepository } from 'src/users/repositories/users.repository';
 
 @Injectable()
 export class PlaylistRepository {
@@ -27,9 +25,9 @@ export class PlaylistRepository {
   ) { }
 
   async create(createPlaylistDto: CreatePlaylistDto, userId: number) {
-
     const playlist = this.playlistRepository.create({
       ...createPlaylistDto,
+      userId: userId,
     });
     return await this.playlistRepository.save(playlist);
   }
