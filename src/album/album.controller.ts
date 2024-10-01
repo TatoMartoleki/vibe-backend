@@ -18,7 +18,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { FilesService } from 'src/files/files.service';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { RoleEnum } from 'src/auth/enums/roles.enum';
-import { Role } from 'src/users/enum/roles.enum';
 
 @Controller('album')
 export class AlbumController {

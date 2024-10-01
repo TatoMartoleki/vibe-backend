@@ -62,8 +62,8 @@ export class AlbumRepository {
       .leftJoinAndSelect('album.file', 'file')
       .leftJoinAndSelect('album.musics', 'musics')
       .leftJoinAndSelect('album.author', 'author')
-      .leftJoinAndSelect('musics.photo', 'musicPhoto')
-      .leftJoinAndSelect('musics.url', 'musicUrl')
+      .leftJoinAndSelect('musics.photo', 'photo')
+      .leftJoinAndSelect('musics.url', 'url')
       .where('album.id = :id', { id })
       .getOne();
   }
