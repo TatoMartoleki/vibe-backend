@@ -53,14 +53,14 @@ export class AuthorRepository {
   async findOne(id: number) {
     return await this.authorRepositoy
       .createQueryBuilder('author')
-      .leftJoinAndSelect('author.file', 'file')
-      .leftJoinAndSelect('author.musics', 'musics')
-      .leftJoinAndSelect('author.albums', 'albums')
-      .leftJoinAndSelect('albums.file','albumfile')
-      .leftJoinAndSelect("musics.url", "musicsurl")
-      .leftJoinAndSelect("musics.photo", "musicphoto")
-      .where('author.id = :id', { id })
-      .getOne();
+    .leftJoinAndSelect('author.file', 'file')
+    .leftJoinAndSelect('author.musics', 'musics')
+    .leftJoinAndSelect('author.albums', 'albums')
+    .leftJoinAndSelect('albums.file', 'albumfile')
+    .leftJoinAndSelect('musics.url', 'musicUrl')
+    .leftJoinAndSelect('musics.photo', 'musicPhoto')
+    .where('author.id = :id', { id })
+    .getOne();
   }
 
   async update(id: number, updateAuthorDto: UpdateAuthorDto) {
