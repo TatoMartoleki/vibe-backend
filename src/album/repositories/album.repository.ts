@@ -11,7 +11,7 @@ export class AlbumRepository {
   constructor(
     @InjectRepository(AlbumEntity)
     private albumrepository: Repository<AlbumEntity>,
-  ) {}
+  ) { }
 
   async create(
     file: FileEntity,
@@ -26,14 +26,14 @@ export class AlbumRepository {
     return await this.albumrepository.save(album);
   }
 
-  async getMusicFromAlbum(albumId: number){
+  async getMusicFromAlbum(albumId: number) {
     return await this.albumrepository
-    .createQueryBuilder('album')
-    .leftJoinAndSelect('album.musics', 'music')
-    .leftJoinAndSelect('album.author', 'author')
-    .leftJoinAndSelect('album.file', 'file')
-    .where('album.id = :albumId', { albumId })
-    .getOne()
+      .createQueryBuilder('album')
+      .leftJoinAndSelect('album.musics', 'music')
+      .leftJoinAndSelect('album.author', 'author')
+      .leftJoinAndSelect('album.file', 'file')
+      .where('album.id = :albumId', { albumId })
+      .getOne()
   }
 
   async getTopAlbum() {
@@ -44,7 +44,7 @@ export class AlbumRepository {
       .leftJoinAndSelect("album.author", "author")
       .orderBy('album.totalListenCount', 'DESC')
       .getMany();
-    
+
   }
 
   async findAll() {
@@ -62,6 +62,8 @@ export class AlbumRepository {
       .leftJoinAndSelect('album.file', 'file')
       .leftJoinAndSelect('album.musics', 'musics')
       .leftJoinAndSelect('album.author', 'author')
+      .leftJoinAndSelect('musics.url', 'musicUrl')
+      .leftJoinAndSelect('musics.photo', 'musicPhoto')
       .where('album.id = :id', { id })
       .getOne();
   }
