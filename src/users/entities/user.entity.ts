@@ -28,7 +28,7 @@ export class UserEntity {
   listens: ListenEntity[];
 
   @ManyToMany(() => PlaylistEntity, (playlists) => playlists.users)
-  playlists: PlaylistEntity[]
+  playlists: PlaylistEntity[];
 
   @CreateDateColumn()
   createdAt: Date;

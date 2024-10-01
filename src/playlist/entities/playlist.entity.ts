@@ -7,20 +7,20 @@ export class PlaylistEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({type: "varchar"})
+    @Column({ type: "varchar" })
     name: string;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     description: string;
 
     @ManyToMany(() => MusicEntity, (musics) => musics.playlists)
-    @JoinTable({name: "playlist_music"})
+    @JoinTable({ name: "playlist_music" })
     musics: MusicEntity[];
 
 
     @ManyToMany(() => UserEntity, (users) => users.playlists)
-    @JoinTable({name: "playlist_user"})
-    users: UserEntity[]
+    @JoinTable({ name: "playlist_user" })
+    users: UserEntity[];
 
     @Column()
     userId: number
