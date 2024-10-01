@@ -55,17 +55,17 @@ export class GenreRepository {
         await this.genreRepository.remove(genre);
     }
 
-    async findMusicByGenre(genreName: string) {
+    async findMusicByGenre(id: number) {
         const genre = await this.genreRepository
         .createQueryBuilder('genre')
         .leftJoinAndSelect('genre.musics', 'musics')
         .leftJoinAndSelect("musics.url", "url")
         .leftJoinAndSelect("musics.photo", "photo")
-        .where('genre.name = :name', { name: genreName })
+        .where('genre.id = :id', { id: id })
         .getOne();
         
     if (!genre) {
-        throw new NotFoundException(`Genre with name ${genreName} not found`);
+        throw new NotFoundException(`Genre doesn't exist`);
     }
     
     return genre;

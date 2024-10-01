@@ -29,8 +29,8 @@ export class GenresService {
     return await this.genreRepository.remove(id)
   }
 
-  async findMusicByGenre(genreName: string) {
-    return await this.genreRepository.findMusicByGenre(genreName)
+  async findMusicByGenre(id: number) {
+    return await this.genreRepository.findMusicByGenre(+id)
   }
 
   async addMusicToGenre(genreId: number, musicId: number) {

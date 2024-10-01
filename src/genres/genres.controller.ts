@@ -46,9 +46,9 @@ export class GenresController {
   }
 
   @Roles(RoleEnum.admin, RoleEnum.user)
-  @Get(':genreName/musics')
-  async findMusicByGenre(@Param('genreName') genreName: string) {
-    return await this.genresService.findMusicByGenre(genreName);
+  @Get(':id/musics')
+  async findMusicByGenre(@Param('id') id: string) {
+    return await this.genresService.findMusicByGenre(+id);
   }
 
   @Roles(RoleEnum.admin)
