@@ -135,7 +135,7 @@ export class PlaylistRepository {
   async removeMusic(playlistId: number, musicId: number, userId: number) {
     const playlist = await this.playlistRepository.findOne({
       where: { id: playlistId, userId: userId },
-      relations: { musics: true },
+      relations: { musics: true, users: true },
     });
 
     if (!playlist) {
