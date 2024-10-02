@@ -81,6 +81,7 @@ export class PlaylistRepository {
       .createQueryBuilder('playlist')
       .leftJoinAndSelect('playlist.musics', 'musics')
       .leftJoinAndSelect('musics.photo', 'photo')
+      .leftJoinAndSelect("musics.url", "url")
       .where('playlist.id = :id', { id })
       .getOne();
   }
