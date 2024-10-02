@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateAuthorDto } from '../dto/create-author.dto';
 import { UpdateAuthorDto } from '../dto/update-author.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,13 +7,19 @@ import { Like, Repository } from 'typeorm';
 import { CreateAlbumDto } from 'src/album/dto/create-album.dto';
 import { AlbumEntity } from 'src/album/entities/album.entity';
 import { FileEntity } from 'src/files/entities/file.entity';
+import { MusicEntity } from 'src/music/entities/music.entity';
+import { AlbumRepository } from 'src/album/repositories/album.repository';
 
 @Injectable()
 export class AuthorRepository {
   constructor(
     @InjectRepository(AuthorEntity)
     private authorRepositoy: Repository<AuthorEntity>,
-  ) {}
+    @InjectRepository(AlbumEntity)
+    private albumRepository: Repository<AlbumEntity>,
+    @InjectRepository(MusicEntity)
+    private musicRepository: Repository<MusicEntity>
+  ) { }
 
   async create(
     file: FileEntity,
@@ -53,14 +59,14 @@ export class AuthorRepository {
   async findOne(id: number) {
     return await this.authorRepositoy
       .createQueryBuilder('author')
-    .leftJoinAndSelect('author.file', 'file')
-    .leftJoinAndSelect('author.musics', 'musics')
-    .leftJoinAndSelect('author.albums', 'albums')
-    .leftJoinAndSelect('albums.file', 'albumfile')
-    .leftJoinAndSelect('musics.url', 'musicUrl')
-    .leftJoinAndSelect('musics.photo', 'musicPhoto')
-    .where('author.id = :id', { id })
-    .getOne();
+      .leftJoinAndSelect('author.file', 'file')
+      .leftJoinAndSelect('author.musics', 'musics')
+      .leftJoinAndSelect('author.albums', 'albums')
+      .leftJoinAndSelect('albums.file', 'albumfile')
+      .leftJoinAndSelect('musics.url', 'musicUrl')
+      .leftJoinAndSelect('musics.photo', 'musicPhoto')
+      .where('author.id = :id', { id })
+      .getOne();
   }
 
   async update(id: number, updateAuthorDto: UpdateAuthorDto) {
@@ -73,12 +79,44 @@ export class AuthorRepository {
   }
 
   async remove(id: number) {
-    return await this.authorRepositoy
+    const authorWithRelations = await this.authorRepositoy
+      .createQueryBuilder('author')
+      .leftJoinAndSelect('author.albums', 'albums')
+      .leftJoinAndSelect('albums.musics', 'musics')
+      .where('author.id = :id', { id })
+      .getOne();
+
+
+    if (!authorWithRelations) {
+      throw new BadRequestException('Author not found');
+    }
+
+    const albumIds = authorWithRelations.albums.map(album => album.id);
+
+  if (albumIds.length > 0) {
+    await this.musicRepository
       .createQueryBuilder()
       .delete()
-      .from(AuthorEntity)
-      .where('id = :id', { id })
+      .from(MusicEntity)
+      .where('albumId IN (:...albumIds)', { albumIds })
       .execute();
+  }
+
+  // Deleting albums associated with the author
+  await this.albumRepository
+    .createQueryBuilder()
+    .delete()
+    .from(AlbumEntity)
+    .where('authorId = :authorId', { authorId: id })
+    .execute();
+
+  // Finally, deleting the author
+  return await this.authorRepositoy
+    .createQueryBuilder()
+    .delete()
+    .from(AuthorEntity)
+    .where('id = :id', { id })
+    .execute();
   }
 
   async findByName(search: string) {
