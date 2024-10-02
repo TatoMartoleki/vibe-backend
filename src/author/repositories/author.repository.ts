@@ -93,46 +93,40 @@ export class AuthorRepository {
 
     const albumIds = authorWithRelations.albums.map(album => album.id);
 
-  if (albumIds.length > 0) {
-    await this.musicRepository
+    if (albumIds.length > 0) {
+      await this.musicRepository
+        .createQueryBuilder()
+        .delete()
+        .from(MusicEntity)
+        .where('albumId IN (:...albumIds)', { albumIds })
+        .execute();
+    }
+
+    // Deleting albums associated with the author
+    await this.albumRepository
       .createQueryBuilder()
       .delete()
-      .from(MusicEntity)
-      .where('albumId IN (:...albumIds)', { albumIds })
+      .from(AlbumEntity)
+      .where('authorId = :authorId', { authorId: id })
+      .execute();
+
+    // Finally, deleting the author
+    return await this.authorRepositoy
+      .createQueryBuilder()
+      .delete()
+      .from(AuthorEntity)
+      .where('id = :id', { id })
       .execute();
   }
 
-  // Deleting albums associated with the author
-  await this.albumRepository
-    .createQueryBuilder()
-    .delete()
-    .from(AlbumEntity)
-    .where('authorId = :authorId', { authorId: id })
-    .execute();
-
-  // Finally, deleting the author
-  return await this.authorRepositoy
-    .createQueryBuilder()
-    .delete()
-    .from(AuthorEntity)
-    .where('id = :id', { id })
-    .execute();
-  }
-
   async findByName(search: string) {
-    const authors = await this.authorRepositoy.find({
-      relations: {
-        albums: {
-          musics: true,
-          file: true,
-        },
-      },
-      where: {
-        firstName: Like(`%${search}%`),
-      },
-    });
-
-    return authors;
+    return await this.authorRepositoy
+      .createQueryBuilder('author')
+      .leftJoinAndSelect('author.file', 'file')
+      .leftJoinAndSelect('author.musics', 'musics')
+      .leftJoinAndSelect('author.albums', 'albums')
+      .where('author.firstName LIKE :search', { search: `%${search}%` })
+      .getMany();
   }
   async incrementListenCount(artistId: number) {
     await this.authorRepositoy

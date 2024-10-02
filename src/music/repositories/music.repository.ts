@@ -109,15 +109,13 @@ export class MusicRepository {
     await this.musicRepository.remove(music);
   }
 
-  findByName(search: string) {    
-    return this.musicRepository
+  async findByName(search: string) {    
+    return await this.musicRepository
       .createQueryBuilder('music')
-      .where('music.name LIKE :searchField', {
-        searchField: `%${search}%`,
-      })
-      .leftJoinAndSelect("music.url", "url")
-      .leftJoinAndSelect("music.photo", "photo")
-      .getMany();
+      .leftJoinAndSelect('music.photo', 'photo')
+      .leftJoinAndSelect('music.url', 'url')
+      .where('music.name LIKE :search', { search: `%${search}%` })
+      .getMany()
   }
 
   async getTopMusic() {

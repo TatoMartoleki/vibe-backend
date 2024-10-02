@@ -90,17 +90,11 @@ export class AlbumRepository {
   }
 
   async findByName(search: string) {
-    const albums = await this.albumrepository.find({
-      relations: {
-        musics: true,
-        file: true
-      },
-      where: {
-        title: Like(`%${search}%`),
-      },
-    });
-
-    return albums;
+    return await this.albumrepository
+      .createQueryBuilder('album')
+      .leftJoinAndSelect('album.file', 'file')
+      .where('album.title LIKE :search', { search: `%${search}%` })
+      .getMany()
   }
 
   async incrementListenCount(albumId: number) {

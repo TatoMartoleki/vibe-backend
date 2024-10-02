@@ -7,30 +7,18 @@ import { AlbumRepository } from 'src/album/repositories/album.repository';
 
 @Injectable()
 export class SearchService {
-  constructor(
-    private readonly musicsRepository: MusicRepository,
-    private readonly authorsRepository: AuthorRepository,
-    private readonly albumsRepository: AlbumRepository,
-  ) {}
+  constructor(private readonly musicRepo: MusicRepository,
+    private readonly authorRepo: AuthorRepository,
+    private readonly albumRepo: AlbumRepository
+  ) { }
 
   async search(search: string) {
-    try {
-      const musics = await this.musicsRepository.findByName(search);
-      const authors = await this.authorsRepository.findByName(search);
-      const albums = await this.albumsRepository.findByName(search);
+    const author = await this.authorRepo.findByName(search)
+    const album = await this.albumRepo.findByName(search)
+    const music = await this.musicRepo.findByName(search)
 
-      
 
-      const results = [
-        ...musics.map((music) => ({ type: 'music', data: music })),
-        ...authors.map((author) => ({ type: 'author', data: author })),
-        ...albums.map((album) => ({ type: 'album', data: album })),
-      ];      
+    return { music, author, album }
 
-      return results;
-    } catch (err) {
-      console.log(err)
-    }
   }
-
 }
