@@ -119,8 +119,6 @@ export class AlbumRepository {
       .leftJoinAndSelect('album.file', 'file')
       .where('album.title LIKE :search', { search: `%${search}%` })
       .leftJoinAndSelect("album.musics", "musics")
-      .leftJoinAndSelect("musics.url", "url")
-      .leftJoinAndSelect("musics.photo", "photo")
       .getMany()
   }
 

@@ -62,9 +62,9 @@ export class AuthorRepository {
       .leftJoinAndSelect('author.file', 'file')
       .leftJoinAndSelect('author.musics', 'musics')
       .leftJoinAndSelect('author.albums', 'albums')
-      .leftJoinAndSelect('albums.file', 'file')
-      .leftJoinAndSelect('musics.url', 'url')
-      .leftJoinAndSelect('musics.photo', 'photo')
+      .leftJoinAndSelect('albums.file', 'albumfile')
+      .leftJoinAndSelect('musics.url', 'musicUrl')
+      .leftJoinAndSelect('musics.photo', 'musicPhoto')
       .where('author.id = :id', { id })
       .getOne();
   }
@@ -123,9 +123,6 @@ export class AuthorRepository {
       .leftJoinAndSelect('author.file', 'file')
       .leftJoinAndSelect('author.musics', 'musics')
       .leftJoinAndSelect('author.albums', 'albums')
-      .leftJoinAndSelect("musics.url", "url")
-      .leftJoinAndSelect('musics.photo', "photo")
-      .leftJoinAndSelect("albums.file", "file")
       .where('author.firstName LIKE :search', { search: `%${search}%` })
       .getMany();
   }
