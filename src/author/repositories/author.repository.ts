@@ -102,7 +102,6 @@ export class AuthorRepository {
         .execute();
     }
 
-    // Deleting albums associated with the author
     await this.albumRepository
       .createQueryBuilder()
       .delete()
@@ -110,7 +109,6 @@ export class AuthorRepository {
       .where('authorId = :authorId', { authorId: id })
       .execute();
 
-    // Finally, deleting the author
     return await this.authorRepositoy
       .createQueryBuilder()
       .delete()

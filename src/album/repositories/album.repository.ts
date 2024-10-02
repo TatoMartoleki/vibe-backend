@@ -1,16 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AlbumEntity } from '../entities/album.entity';
 import { Like, Repository } from 'typeorm';
 import { CreateAlbumDto } from '../dto/create-album.dto';
 import { UpdateAlbumDto } from '../dto/update-album.dto';
 import { FileEntity } from 'src/files/entities/file.entity';
+import { MusicEntity } from 'src/music/entities/music.entity';
 
 @Injectable()
 export class AlbumRepository {
   constructor(
     @InjectRepository(AlbumEntity)
     private albumrepository: Repository<AlbumEntity>,
+    @InjectRepository(MusicEntity)
+    private musicRepostiory: Repository<MusicEntity>
   ) { }
 
   async create(
@@ -81,13 +84,34 @@ export class AlbumRepository {
   }
 
   async remove(id: number) {
-    return await this.albumrepository
+    const albumWithMusics = await this.albumrepository
       .createQueryBuilder('album')
+      .leftJoinAndSelect('album.musics', 'musics')
+      .where('album.id = :id', { id })
+      .getOne();
+
+    if (!albumWithMusics) {
+      throw new BadRequestException('Album not found');
+    }
+
+    const musicIds = albumWithMusics.musics.map((music) => music.id);
+    if (musicIds.length > 0) {
+      await this.musicRepostiory
+        .createQueryBuilder()
+        .delete()
+        .from(MusicEntity)
+        .where('id IN (:...musicIds)', { musicIds })
+        .execute();
+    }
+
+    return await this.albumrepository
+      .createQueryBuilder()
       .delete()
       .from(AlbumEntity)
-      .where('album.id = :id', { id })
+      .where('id = :id', { id })
       .execute();
   }
+
 
   async findByName(search: string) {
     return await this.albumrepository
