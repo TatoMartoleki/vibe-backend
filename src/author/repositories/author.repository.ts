@@ -3,7 +3,7 @@ import { CreateAuthorDto } from '../dto/create-author.dto';
 import { UpdateAuthorDto } from '../dto/update-author.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthorEntity } from '../entities/author.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreateAlbumDto } from 'src/album/dto/create-album.dto';
 import { AlbumEntity } from 'src/album/entities/album.entity';
 import { FileEntity } from 'src/files/entities/file.entity';
@@ -82,15 +82,20 @@ export class AuthorRepository {
   }
 
   async findByName(search: string) {
-    return await this.authorRepositoy
-      .createQueryBuilder('author')
-      .leftJoinAndSelect('author.file', 'file')
-      .leftJoinAndSelect('author.musics', 'musics')
-      .leftJoinAndSelect('author.albums', 'albums')
-      .where('author.firstName LIKE :search', { search: `%${search}%` })
-      .getMany();
-  }
+    const authors = await this.authorRepositoy.find({
+      relations: {
+        albums: {
+          musics: true,
+          file: true,
+        },
+      },
+      where: {
+        firstName: Like(`%${search}%`),
+      },
+    });
 
+    return authors;
+  }
   async incrementListenCount(artistId: number) {
     await this.authorRepositoy
       .createQueryBuilder()
