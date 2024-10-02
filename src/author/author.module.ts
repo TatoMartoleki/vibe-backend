@@ -6,9 +6,11 @@ import { AuthorEntity } from './entities/author.entity';
 import { AuthorRepository } from './repositories/author.repository';
 import { FileEntity } from 'src/files/entities/file.entity';
 import { FilesModule } from 'src/files/files.module';
+import { AlbumEntity } from 'src/album/entities/album.entity';
+import { MusicEntity } from 'src/music/entities/music.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AuthorEntity]), FilesModule],
+  imports: [TypeOrmModule.forFeature([AuthorEntity, AlbumEntity, MusicEntity]), FilesModule],
   controllers: [AuthorController],
   providers: [AuthorService, AuthorRepository],
   exports: [AuthorRepository]

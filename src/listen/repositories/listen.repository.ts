@@ -26,6 +26,11 @@ export class ListenRepository {
       order: { createdAt: 'DESC' },
     });
 
+
+    if(musicId){
+      const record = new ListenEntity()
+    }
+    
     const record = new ListenEntity();
     record.userId = userId;
     record.musicId = musicId;
@@ -34,9 +39,8 @@ export class ListenRepository {
 
     if (!lastRecord) {
       record.counter = 1;
-    } else {
-      const timeDifference =
-        currentTime.getTime() - lastRecord.createdAt.getTime();
+    } else {  
+      const timeDifference = currentTime.getTime() - lastRecord.createdAt.getTime();
         record.counter = lastRecord.counter + 1;
     }
 

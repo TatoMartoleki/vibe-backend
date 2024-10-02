@@ -11,6 +11,7 @@ import { MusicEntity } from '../entities/music.entity';
 import { FileEntity } from 'src/files/entities/file.entity';
 import { AlbumRepository } from 'src/album/repositories/album.repository';
 import { AuthorRepository } from 'src/author/repositories/author.repository';
+import { log } from 'console';
 
 @Injectable()
 export class MusicRepository {
@@ -108,12 +109,14 @@ export class MusicRepository {
     await this.musicRepository.remove(music);
   }
 
-  async findByName(search: string) {
-    return await this.musicRepository
+  findByName(search: string) {    
+    return this.musicRepository
       .createQueryBuilder('music')
-      .leftJoinAndSelect('music.photo', 'photo')
-      .leftJoinAndSelect('music.url', 'url')
-      .where('music.name LIKE :search', { search: `%${search}%` })
+      .where('music.name LIKE :searchField', {
+        searchField: `%${search}%`,
+      })
+      .leftJoinAndSelect("music.url", "url")
+      .leftJoinAndSelect("music.photo", "photo")
       .getMany();
   }
 
