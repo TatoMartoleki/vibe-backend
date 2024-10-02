@@ -47,8 +47,12 @@ export class MusicRepository {
 
 
   async shuffleMusics() {
-    const musics = await this.musicRepository.find();
-
+    const musics = await this.musicRepository
+    .createQueryBuilder('music')
+    .leftJoinAndSelect('music.photo', 'photo')
+    .leftJoinAndSelect('music.url', 'url')
+    .getMany();
+    
     for (let i = musics.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [musics[i], musics[j]] = [musics[j], musics[i]];
