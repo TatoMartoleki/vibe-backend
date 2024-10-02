@@ -69,7 +69,7 @@ export class MusicRepository {
     return await this.musicRepository
       .createQueryBuilder('music')
       .leftJoinAndSelect('music.photo', 'photo')
-      .leftJoinAndSelect('music.url', 'url')
+      .leftJoinAndSelect('music.mp3', 'mp3')
       .getMany();
   }
 
