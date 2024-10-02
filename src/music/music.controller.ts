@@ -81,6 +81,11 @@ export class MusicController {
     return await this.musicService.recentlyMusic();
   }
 
+  @Get('shuffle')
+  async shuffleMusics() {
+    return this.musicService.shuffleMusics();
+  }
+
   @Roles(RoleEnum.admin, RoleEnum.user)
   @Get()
   async findAll() {

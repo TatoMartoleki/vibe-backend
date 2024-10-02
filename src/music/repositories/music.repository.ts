@@ -41,29 +41,42 @@ export class MusicRepository {
       url,
       album,
       artistId: album.authorId
-      // duration: (createMusicDto.duration)
     });
     return await this.musicRepository.save(music);
   }
 
+
+  async shuffleMusics() {
+    const musics = await this.musicRepository.find();
+
+    for (let i = musics.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [musics[i], musics[j]] = [musics[j], musics[i]];
+    }
+
+    return musics;
+  }
+
+
   async topHitsOfTheWeek() {
-     const oneWeekAgo = new Date(); 
-     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7); 
-     try { 
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    try {
       return await this.musicRepository
-      .createQueryBuilder('music')
-      .select()
-      .where('listenCounter.createdAt >= :oneWeekAgo', { oneWeekAgo })
-      .addSelect('COUNT(listenCounter.id)', 'listenCount')      
-      .leftJoinAndSelect('music.listenCounter', 'listenCounter')
-      .leftJoinAndSelect('music.photo', 'photo')
-      .leftJoinAndSelect('music.url', 'url')
-      .groupBy('music.id')
-      .orderBy('listenCount', 'DESC')
-      .take(50)
-      .getMany();
-    } catch (err) { 
-      throw new BadRequestException( 'Failed to get top hits of the week', ); }
+        .createQueryBuilder('music')
+        .select()
+        .where('listenCounter.createdAt >= :oneWeekAgo', { oneWeekAgo })
+        .addSelect('COUNT(listenCounter.id)', 'listenCount')
+        .leftJoinAndSelect('music.listenCounter', 'listenCounter')
+        .leftJoinAndSelect('music.photo', 'photo')
+        .leftJoinAndSelect('music.url', 'url')
+        .groupBy('music.id')
+        .orderBy('listenCount', 'DESC')
+        .take(50)
+        .getMany();
+    } catch (err) {
+      throw new BadRequestException('Failed to get top hits of the week',);
+    }
   }
 
   async findAll() {
@@ -109,7 +122,7 @@ export class MusicRepository {
     await this.musicRepository.remove(music);
   }
 
-  async findByName(search: string) {    
+  async findByName(search: string) {
     return await this.musicRepository
       .createQueryBuilder('music')
       .leftJoinAndSelect('music.photo', 'photo')

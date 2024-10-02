@@ -24,6 +24,9 @@ export class MusicService {
     return await this.musicRepository.findAll();
   }
 
+  async shuffleMusics() {
+    return await this.musicRepository.shuffleMusics()
+  }
 
   async findOne(id: number, userId: number, musicId: number) {
     const music = await this.musicRepository.findOne(id);
