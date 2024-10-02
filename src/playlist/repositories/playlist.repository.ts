@@ -47,15 +47,28 @@ export class PlaylistRepository {
   }
 
   async findAll(userId: number) {
-    return await this.playlistRepository
+    const playlists = await this.playlistRepository
       .createQueryBuilder('playlist')
       .leftJoinAndSelect('playlist.users', 'users')
-      .leftJoinAndSelect("playlist.musics", "musics")
+      .leftJoinAndSelect('playlist.musics', 'musics')
       .leftJoinAndSelect('musics.photo', 'photo')
       .where('users.id = :userId', { userId })
       .orderBy('playlist.createdAt', 'DESC')
+      .addOrderBy('musics.createdAt', 'DESC')
       .getMany();
+  
+    return playlists.map(playlist => {
+      const lastMusic = playlist.musics.length > 0 ? playlist.musics[0] : null;
+      const lastMusicPhoto = lastMusic?.photo?.url || null;
+      return {
+        ...playlist,
+        lastMusicPhoto
+      };
+    });
   }
+  
+
+  
 
   async adminFindAll(userId: number) {
     return await this.playlistRepository
