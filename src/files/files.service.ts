@@ -10,12 +10,13 @@ export class FilesService {
   ) {}
 
   async uploadFile(file: Express.Multer.File) {
-    
-    if(!file){
-        throw new BadRequestException("Upload the file please")
+    if (!file) {
+      throw new BadRequestException("Upload the file please");
     }
 
-    const fileName = file.originalname.split('.').slice(0, -1).join('.');
+    const randomLetters = this.generateRandomLetters(2);
+    const fileNameWithoutExt = file.originalname.split('.').slice(0, -1).join('.');
+    const fileName = `${randomLetters}_${fileNameWithoutExt}.mp3`;
 
     const result = await this.s3Service.upload(file, fileName);
 
@@ -27,6 +28,16 @@ export class FilesService {
     );
 
     return savedFile;
+  }
+
+  private generateRandomLetters(length: number): string {
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * letters.length);
+      result += letters[randomIndex];
+    }
+    return result;
   }
 
   async getFile(fileId: number) {

@@ -62,7 +62,7 @@ export class MusicController {
   async getRandomMusic() {
     return await this.musicService.getRandomMusic();
   }
-
+  
   @Roles(RoleEnum.admin, RoleEnum.user)
   @Get('weekCharts')
   async topHitsOfTheWeek() {
