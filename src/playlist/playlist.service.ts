@@ -51,6 +51,10 @@ export class PlaylistService {
     );
   }
 
+  // async findLastAddedMusicPhoto(userId: number){
+  //   return this.playlistRepository.findLastAddedMusicPhoto(userId)
+  // }
+
   async addMusic(PlaylistId: number, MusicId: number, userId: number) {
     return await this.playlistRepository.addMusic(PlaylistId, MusicId, userId);
   }
