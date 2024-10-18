@@ -52,17 +52,13 @@ export class AlbumRepository {
 
   }
 
-  async findAll(limit: number, offset: number, search: string) {
-    const limitNumber = Math.min(12, limit)
+  async findAll() {
     return await this.albumrepository
       .createQueryBuilder('album')
-      .where('album.title LIKE :search', { search: `%${search}%` })
       .leftJoinAndSelect('album.file', 'file')
       .leftJoinAndSelect('album.musics', 'musics')
       .leftJoinAndSelect('album.author', 'author')
       .orderBy('album.createdAt', "DESC")
-      .limit(limitNumber)
-      .offset(offset)
       .getMany();
   }
 

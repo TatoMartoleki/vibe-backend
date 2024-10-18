@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/
 import { UserEntity } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as bcryptjs from 'bcryptjs' ; 
+import * as bcrypt from 'bcrypt' ; 
 import { UpdateUserDto } from './dto/userDtos/update-user.dto';
 import { CreateUserDto } from './dto/userDtos/create-user.dto';
 import { UpdateUserAdminDto } from './dto/adminDtos/update-admin.dto';
@@ -14,7 +14,7 @@ export class UsersRepository {
     private readonly userRepository: Repository<UserEntity>){}
 
   async create(createUserDto: CreateUserDto) {
-    const hashedPassword = await bcryptjs.hash(createUserDto.password, 10)    
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 10)    
 
     const newUser = new UserEntity()
     newUser.email = createUserDto.email;
@@ -91,7 +91,7 @@ export class UsersRepository {
       throw new UnauthorizedException("Passwords do not match")
     }
 
-    const hashedPassword = await bcryptjs.hash(UpdateUserAdminDto.newPassword, 10)
+    const hashedPassword = await bcrypt.hash(UpdateUserAdminDto.newPassword, 10)
     user.password = hashedPassword
 
     return this.userRepository.save(user);

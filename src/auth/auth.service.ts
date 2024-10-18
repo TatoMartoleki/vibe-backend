@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { SignInDto } from './dto/signIn-user.dto';
 import { UsersRepository } from 'src/users/repositories/users.repository';
-import * as bcryptjs from 'bcryptjs';
+import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from 'src/users/entities/user.entity';
 
@@ -15,7 +15,7 @@ export class AuthService {
 
     async signInUser(data: SignInDto) {
         const user = await this.usersRepository.findByEmailAndReturnPassword(data.email)
-        const isPasswordCorrect = await bcryptjs.compare(
+        const isPasswordCorrect = await bcrypt.compare(
             data.password,
             user.password
         )
@@ -48,7 +48,7 @@ export class AuthService {
         const user = await this.usersRepository.findByEmailAndReturnPassword(data.email)
 
 
-        const isPasswordCorrect = await bcryptjs.compare(
+        const isPasswordCorrect = await bcrypt.compare(
             data.password,
             user.password
         )

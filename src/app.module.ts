@@ -51,7 +51,9 @@ import { GenresModule } from './genres/genres.module';
     GenresModule
   ],
   controllers: [AppController],
-  providers: [AppService,
-    ]
+  providers: [AppService, {
+    provide: APP_GUARD,
+    useClass: AuthGuard
+  }]
 })
 export class AppModule {}
