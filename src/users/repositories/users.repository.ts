@@ -4,9 +4,10 @@ import { UpdateUserDto } from '../dto/userDtos/update-user.dto';
 import { UserEntity } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import * as bcryptjs from 'bcryptjs';
 import { UnauthorizedException } from '@nestjs/common';
 import { UpdateUserAdminDto } from '../dto/adminDtos/update-admin.dto';
+import { off } from 'process';
 
 @Injectable()
 export class UsersRepository {
@@ -16,7 +17,7 @@ export class UsersRepository {
 
   async create(createUserDto: CreateUserDto) {
 
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10)
+    const hashedPassword = await bcryptjs.hash(createUserDto.password, 10)
 
     const newUser = new UserEntity()
     newUser.email = createUserDto.email;
@@ -30,17 +31,22 @@ export class UsersRepository {
 
   }
 
-  async findAll() {
-    return await this.userRepository.find({
-      withDeleted: true,
-      select: {
-        id: true,
-        email: true,
-        role: true,
-        deletedAt: true,
-        createdAt: true,
-      },
-    });
+  async findAll(limit: number, offset: number, search: string) {
+    const limitNumber = Math.min(12, limit)
+    return await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.email LIKE :search', { search: `%${search}%` })
+      .select([
+        'user.id',
+        'user.email',
+        'user.role',
+        'user.deletedAt',
+        'user.createdAt',
+      ])
+      .withDeleted()
+      .limit(limitNumber)
+      .offset(offset)
+      .getMany();
   }
 
   async findOne(id: number) {
@@ -119,7 +125,7 @@ export class UsersRepository {
       throw new UnauthorizedException("Passwords do not match")
     }
 
-    const hashedPassword = await bcrypt.hash(UpdateUserAdminDto.newPassword, 10)
+    const hashedPassword = await bcryptjs.hash(UpdateUserAdminDto.newPassword, 10)
     user.password = hashedPassword
 
     return this.userRepository.save(user);
