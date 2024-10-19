@@ -23,8 +23,8 @@ export class AlbumService {
     return await this.albumRepository.getTopAlbum()
   }
 
-  async findAll() {
-    return await this.albumRepository.findAll();
+  async findAll(limit: number, offset: number, search?: string) {
+    return await this.albumRepository.findAll(limit, offset, search);
   }
 
   async findOne(id: number) {

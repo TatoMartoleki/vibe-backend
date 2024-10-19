@@ -9,6 +9,7 @@ import { AlbumEntity } from 'src/album/entities/album.entity';
 import { FileEntity } from 'src/files/entities/file.entity';
 import { MusicEntity } from 'src/music/entities/music.entity';
 import { AlbumRepository } from 'src/album/repositories/album.repository';
+import { off } from 'process';
 
 @Injectable()
 export class AuthorRepository {
@@ -47,12 +48,16 @@ export class AuthorRepository {
       .getMany();
   }
 
-  async findAll() {
+  async findAll(limit: number, offset: number, search: string) {
+    const limitNumber = Math.min(12, limit)
     return await this.authorRepositoy
       .createQueryBuilder('author')
+      .where('author.firstName LIKE :search OR author.lastName LIKE :search', { search: `%${search}%` })
       .leftJoinAndSelect('author.file', 'file')
       .leftJoinAndSelect("author.musics", "musics")
       .leftJoinAndSelect("author.albums", "albums")
+      .limit(limitNumber)
+      .offset(offset)
       .getMany();
   }
 

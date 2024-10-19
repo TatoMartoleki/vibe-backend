@@ -83,13 +83,18 @@ export class MusicRepository {
     }
   }
 
-  async findAll() {
+  async findAll(limit: number, offset: number, search: string) {
+    const limitNumber = Math.min(12, limit)
     return await this.musicRepository
       .createQueryBuilder('music')
+      .where('music.name LIKE :search', { search: `%${search}%` })
       .leftJoinAndSelect('music.photo', 'photo')
       .leftJoinAndSelect('music.url', 'url')
+      .limit(limitNumber)
+      .offset(offset)
       .getMany();
   }
+  
 
   async findOne(id: number) {
     return await this.musicRepository

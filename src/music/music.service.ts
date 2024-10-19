@@ -20,9 +20,10 @@ export class MusicService {
     return await this.musicRepository.topHitsOfTheWeek()
   }
 
-  async findAll() {
-    return await this.musicRepository.findAll();
+  async findAll(limit: number, offset: number, search: string) {
+    return await this.musicRepository.findAll(limit, offset, search);
   }
+  
 
   async shuffleMusics() {
     return await this.musicRepository.shuffleMusics()

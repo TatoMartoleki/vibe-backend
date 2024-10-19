@@ -1,9 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/userDtos/create-user.dto';
-import { UpdateUserDto } from './dto/userDtos/update-user.dto';
 import { UsersRepository } from './repositories/users.repository';
-import { request } from 'http';
-import { Any } from 'typeorm';
 import { UpdateUserAdminDto } from './dto/adminDtos/update-admin.dto';
 
 @Injectable()
@@ -17,8 +14,6 @@ export class UsersService {
       throw new BadRequestException('Email is incorrect');
     }
 
-
-
     if (createUserDto.confirmPassword !== createUserDto.password) {
       throw new BadRequestException("Password doesn't match")
     }
@@ -29,8 +24,8 @@ export class UsersService {
     return await this.usersRepository.findOne(myId) 
   }
 
-  async findAll() {
-    return await this.usersRepository.findAll();
+  async findAll(limit: number, offset: number, search: string) {
+    return await this.usersRepository.findAll(limit, offset, search);
   }
 
   async findOne(id: number) {
