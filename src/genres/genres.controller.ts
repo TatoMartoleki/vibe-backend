@@ -22,7 +22,7 @@ export class GenresController {
   @ApiResponse({
     status: 201,
     description: 'New genre successfully created',
-    type: GenreEntity,
+    type: [GenreEntity],
     example: {
       name: 'shengelia',
       file: {

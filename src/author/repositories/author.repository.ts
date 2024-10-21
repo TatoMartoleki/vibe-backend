@@ -15,7 +15,7 @@ import { off } from 'process';
 export class AuthorRepository {
   constructor(
     @InjectRepository(AuthorEntity)
-    private authorRepositoy: Repository<AuthorEntity>,
+    private authorRepository: Repository<AuthorEntity>,
     @InjectRepository(AlbumEntity)
     private albumRepository: Repository<AlbumEntity>,
     @InjectRepository(MusicEntity)
@@ -26,43 +26,49 @@ export class AuthorRepository {
     file: FileEntity,
     createAuthorDto: CreateAuthorDto,
   ): Promise<AuthorEntity> {
-    const album = this.authorRepositoy.create({
+    const album = this.authorRepository.create({
       ...createAuthorDto,
       file: file,
     });
-    return await this.authorRepositoy.save(album);
+    return await this.authorRepository.save(album);
   }
 
   async getTopArtists() {
-    return await this.authorRepositoy
+    return await this.authorRepository
       .createQueryBuilder('author')
       .leftJoinAndSelect('author.file', 'file')
       .orderBy('author.totalListenCount', 'DESC')
       .getMany();
   }
   async recentlyMusic() {
-    return await this.authorRepositoy
+    return await this.authorRepository
       .createQueryBuilder('author')
       .leftJoinAndSelect('author.file', 'file')
       .orderBy('author.createdAt', 'DESC')
       .getMany();
   }
 
-  async findAll(limit: number, offset: number, search: string) {
-    const limitNumber = Math.min(12, limit)
-    return await this.authorRepositoy
-      .createQueryBuilder('author')
-      .where('author.firstName LIKE :search OR author.lastName LIKE :search', { search: `%${search}%` })
+  async findAll(limit?: number, offset?: number) {
+    const query = this.authorRepository.createQueryBuilder('author')
       .leftJoinAndSelect('author.file', 'file')
-      .leftJoinAndSelect("author.musics", "musics")
-      .leftJoinAndSelect("author.albums", "albums")
-      .limit(limitNumber)
-      .offset(offset)
-      .getMany();
+      .leftJoinAndSelect('author.musics', 'musics')
+      .leftJoinAndSelect('author.albums', 'albums');
+  
+    if (limit !== undefined) {
+      const limitNumber = Math.min(12, limit);
+      query.limit(limitNumber);
+    }
+  
+    if (offset !== undefined) {
+      query.offset(offset);
+    }
+  
+    return await query.getMany();
   }
+  
 
   async findOne(id: number) {
-    return await this.authorRepositoy
+    return await this.authorRepository
       .createQueryBuilder('author')
       .leftJoinAndSelect('author.file', 'file')
       .leftJoinAndSelect('author.musics', 'musics')
@@ -75,7 +81,7 @@ export class AuthorRepository {
   }
 
   async update(id: number, updateAuthorDto: UpdateAuthorDto) {
-    return await this.authorRepositoy
+    return await this.authorRepository
       .createQueryBuilder('author')
       .update()
       .set(updateAuthorDto)
@@ -84,7 +90,7 @@ export class AuthorRepository {
   }
 
   async remove(id: number) {
-    const authorWithRelations = await this.authorRepositoy
+    const authorWithRelations = await this.authorRepository
       .createQueryBuilder('author')
       .leftJoinAndSelect('author.albums', 'albums')
       .leftJoinAndSelect('albums.musics', 'musics')
@@ -114,7 +120,7 @@ export class AuthorRepository {
       .where('authorId = :authorId', { authorId: id })
       .execute();
 
-    return await this.authorRepositoy
+    return await this.authorRepository
       .createQueryBuilder()
       .delete()
       .from(AuthorEntity)
@@ -123,7 +129,7 @@ export class AuthorRepository {
   }
 
   async findByName(search: string) {
-    return await this.authorRepositoy
+    return await this.authorRepository
       .createQueryBuilder('author')
       .leftJoinAndSelect('author.file', 'file')
       .leftJoinAndSelect('author.musics', 'musics')
@@ -132,7 +138,7 @@ export class AuthorRepository {
       .getMany();
   }
   async incrementListenCount(artistId: number) {
-    await this.authorRepositoy
+    await this.authorRepository
       .createQueryBuilder()
       .update(AuthorEntity)
       .set({ totalListenCount: () => 'totalListenCount + 1' })

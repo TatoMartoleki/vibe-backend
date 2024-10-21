@@ -21,6 +21,7 @@ import { FilesService } from 'src/files/files.service';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { RoleEnum } from 'src/auth/enums/roles.enum';
 import { ApiTags, ApiBearerAuth, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import { AuthorEntity } from './entities/author.entity';
 
 @Controller('author')
 @ApiTags("authors")
@@ -36,6 +37,7 @@ export class AuthorController {
   @ApiOperation({ summary: 'Upload an author' })
   @ApiResponse({ 
     status: 201, 
+    type: [AuthorEntity],
     description: 'Author created successfully.',
     example: {
       'application/json': {
@@ -60,6 +62,7 @@ export class AuthorController {
   @ApiOperation({ summary: 'Get recently added music' })
   @ApiResponse({ 
     status: 200, 
+    type: [AuthorEntity],
     description: 'Recently added music retrieved successfully.',
     example: {
       'application/json': [
@@ -77,6 +80,7 @@ export class AuthorController {
   @ApiOperation({ summary: 'Get top artists' })
   @ApiResponse({ 
     status: 200, 
+    type: [AuthorEntity],
     description: 'Top artists retrieved successfully.',
     example: {
       'application/json': [
@@ -92,11 +96,11 @@ export class AuthorController {
   @Roles(RoleEnum.admin, RoleEnum.user)
   @Get()
   @ApiOperation({ summary: 'Retrieve all authors' })
-  @ApiQuery({ name: 'limit', required: true, type: Number })
-  @ApiQuery({ name: 'offset', required: true, type: Number })
-  @ApiQuery({ name: 'search', required: false, type: String })
+  @ApiQuery({ name: 'limit', required: false, type: Number }) 
+  @ApiQuery({ name: 'offset', required: false, type: Number })
   @ApiResponse({ 
     status: 200, 
+    type: [AuthorEntity],
     description: 'List of authors retrieved successfully.',
     example: {
       'application/json': [
@@ -106,18 +110,25 @@ export class AuthorController {
     },
   })
   async findAll(
-    @Query("limit") limit: number, 
-    @Query("offset") offset: number,
-    @Query('search') search?: string
+    @Query("limit") limit?: string, 
+    @Query("offset") offset?: string, 
   ) {
-    return await this.authorService.findAll(limit, offset, search);
+    const limitNumber = limit ? parseInt(limit, 10) : undefined;
+    const offsetNumber = offset ? parseInt(offset, 10) : undefined; 
+  
+    const finalLimit = !isNaN(limitNumber) ? Math.min(12, limitNumber) : undefined;
+    const finalOffset = !isNaN(offsetNumber) ? offsetNumber : undefined; 
+  
+    return await this.authorService.findAll(finalLimit, finalOffset); 
   }
+  
 
   @Roles(RoleEnum.admin, RoleEnum.user)
   @Get(':id')
   @ApiOperation({ summary: 'Retrieve an author by ID' })
   @ApiResponse({ 
     status: 200, 
+    type: [AuthorEntity],
     description: 'Author retrieved successfully.',
     example: {
       'application/json': {
@@ -137,6 +148,7 @@ export class AuthorController {
   @ApiOperation({ summary: 'Update an author' })
   @ApiResponse({ 
     status: 200, 
+    type: [AuthorEntity],
     description: 'Author updated successfully.',
     example: {
       'application/json': {
@@ -157,6 +169,7 @@ export class AuthorController {
   @ApiOperation({ summary: 'Delete an author' })
   @ApiResponse({ 
     status: 200, 
+    type: [AuthorEntity],
     description: 'Author deleted successfully.',
     example: {
       'application/json': {

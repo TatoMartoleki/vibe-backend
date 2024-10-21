@@ -3,7 +3,7 @@ import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { AlbumRepository } from './repositories/album.repository';
 import { FileEntity } from 'src/files/entities/file.entity';
-import { AlbumEntity } from 'src/album/entities/album.entity'; // Add this import
+import { AlbumEntity } from 'src/album/entities/album.entity'; 
 
 
 @Injectable()
@@ -11,7 +11,6 @@ export class AlbumService {
   constructor(private readonly albumRepository: AlbumRepository) {}
 
   async create(file: FileEntity, createAlbumDto: CreateAlbumDto, artistId: number) {
-    //console.log('This is a file', file)
     return await this.albumRepository.create(file, createAlbumDto, artistId);
   }
 
@@ -23,8 +22,8 @@ export class AlbumService {
     return await this.albumRepository.getTopAlbum()
   }
 
-  async findAll(limit: number, offset: number, search?: string) {
-    return await this.albumRepository.findAll(limit, offset, search);
+  async findAll(limit?: number, offset?: number) {
+    return await this.albumRepository.findAll(limit, offset);
   }
 
   async findOne(id: number) {

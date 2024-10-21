@@ -18,6 +18,7 @@ import { FilesService } from 'src/files/files.service';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { RoleEnum } from 'src/auth/enums/roles.enum';
 import { ApiTags, ApiBearerAuth, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import { AlbumEntity } from './entities/album.entity';
 
 @Controller('album')
 @ApiTags('albums')
@@ -34,6 +35,7 @@ export class AlbumController {
   @ApiOperation({ summary: 'Upload an album' })
   @ApiResponse({ 
     status: 201, 
+    type: [AlbumEntity],
     description: 'Album created successfully.',
     example: {
       'application/json': {
@@ -59,6 +61,7 @@ export class AlbumController {
   @ApiOperation({ summary: 'Get music from an album' })
   @ApiResponse({ 
     status: 200, 
+    type: [AlbumEntity],
     description: 'Music retrieved successfully.',
     example:{
      
@@ -78,6 +81,7 @@ export class AlbumController {
   @ApiOperation({ summary: 'Get top albums' })
   @ApiResponse({ 
     status: 200, 
+    type: [AlbumEntity],
     description: 'Top albums retrieved successfully.',
     example: {
       'application/json': [
@@ -93,11 +97,11 @@ export class AlbumController {
   @Roles(RoleEnum.admin, RoleEnum.user)
   @Get()
   @ApiOperation({ summary: 'Retrieve all albums' })
-  @ApiQuery({ name: 'limit', required: true, type: Number })
-  @ApiQuery({ name: 'offset', required: true, type: Number })
-  @ApiQuery({ name: 'search', required: false, type: String })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
+  @ApiQuery({ name: 'offset', required: false, type: Number })
   @ApiResponse({ 
     status: 200, 
+    type: [AlbumEntity],
     description: 'List of albums retrieved successfully.',
     example: {
       'application/json': [
@@ -107,18 +111,22 @@ export class AlbumController {
     },
   })
   async findAll(
-    @Query("limit") limit: number, 
-    @Query("offset") offset: number,
-    @Query('search') search?: string
+    @Query("limit") limit?: string,
+    @Query("offset") offset?: string,
   ) {
-    return await this.albumService.findAll(limit, offset, search);
+    const limitNumber = limit ? parseInt(limit, 10) : undefined;
+    const offsetNumber = offset ? parseInt(offset, 10) : undefined;
+  
+    return await this.albumService.findAll(limitNumber, offsetNumber); 
   }
+  
 
   @Roles(RoleEnum.admin, RoleEnum.user)
   @Get(':id')
   @ApiOperation({ summary: 'Retrieve an album by ID' })
   @ApiResponse({ 
     status: 200, 
+    type: [AlbumEntity],
     description: 'Album retrieved successfully.',
     example: {
       'application/json': {
@@ -138,6 +146,7 @@ export class AlbumController {
   @ApiOperation({ summary: 'Update an album' })
   @ApiResponse({ 
     status: 200, 
+    type: [AlbumEntity],
     description: 'Album updated successfully.',
     example: {
       'application/json': {
@@ -159,6 +168,7 @@ export class AlbumController {
   @ApiOperation({ summary: 'Delete an album' })
   @ApiResponse({ 
     status: 200, 
+    type: [AlbumEntity],
     description: 'Album deleted successfully.',
     example: {
       'application/json': {

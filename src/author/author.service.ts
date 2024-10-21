@@ -24,8 +24,8 @@ export class AuthorService {
     return await this.authorRepository.recentlyMusic()
   }
 
-  async findAll(limit: number, offset: number, search?: string) {
-    return await this.authorRepository.findAll(limit, offset, search);
+  async findAll(limit?: number, offset?: number) {
+    return await this.authorRepository.findAll(limit, offset);
   }
 
   async findOne(id: number) {

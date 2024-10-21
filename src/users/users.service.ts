@@ -24,8 +24,8 @@ export class UsersService {
     return await this.usersRepository.findOne(myId) 
   }
 
-  async findAll(limit: number, offset: number, search: string) {
-    return await this.usersRepository.findAll(limit, offset, search);
+  async findAll(limit?: number, offset?: number) {
+    return await this.usersRepository.findAll(limit, offset);
   }
 
   async findOne(id: number) {

@@ -23,7 +23,7 @@ export class UsersController {
   @ApiOperation({summary: 'Created new user'})
   @ApiResponse({
     status: 200,
-    type: UserEntity,
+    type: [UserEntity],
     description: "Successfuly created a new user"
   })
   @Post()
@@ -35,36 +35,43 @@ export class UsersController {
   @ApiOperation({summary: 'Get your profile'})
   @ApiResponse({
     status: 200,
-    type: UserEntity,
+    type: [UserEntity],
     description: "Successfuly got your profile"
   })
   @Get('me')
   async findMe(@Req() request){    
     return await this.usersService.findMe(request.user.userId)
   }
+  
   @Roles(RoleEnum.admin)
-  @ApiOperation({summary: 'Get all user'})
+  @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({
     status: 200,
-    type: UserEntity,
-    description: "Successfuly got all user"
+    type: [UserEntity],
+    description: 'Successfully got all users',
   })
   @ApiQuery({ name: 'limit', required: true, type: Number })
   @ApiQuery({ name: 'offset', required: true, type: Number })
   @ApiQuery({ name: 'search', required: false, type: String })
   @Get()
   async findAll(
-    @Query("limit") limit: number, 
-    @Query("offset") offset: number,
-    @Query('search') search?: string
+    @Query('limit') limit?: string, 
+    @Query('offset') offset?: string 
   ) {
-    return await this.usersService.findAll(limit, offset, search);
+    const limitNumber = limit ? parseInt(limit, 10) : undefined;
+    const offsetNumber = offset ? parseInt(offset, 10) : undefined;
+  
+    const finalLimit = !isNaN(limitNumber) ? limitNumber : undefined;
+    const finalOffset = !isNaN(offsetNumber) ? offsetNumber : undefined;
+  
+    return await this.usersService.findAll(finalLimit, finalOffset);
   }
+  
 
   @ApiOperation({summary: 'Get an user by Id'})
   @ApiResponse({
     status: 200,
-    type: UserEntity,
+    type: [UserEntity],
     description: "Successfuly got an user by Id"
   })
   @Roles(RoleEnum.admin)
@@ -77,7 +84,7 @@ export class UsersController {
   @ApiOperation({summary: 'Change password by userId'})
   @ApiResponse({
     status: 200,
-    type: UserEntity,
+    type: [UserEntity],
     description: "Successfuly changed a password by userId"
   })
   @Patch(':userId/change-password')
@@ -91,7 +98,7 @@ export class UsersController {
   @ApiOperation({summary: 'Delete user by Id'})
   @ApiResponse({
     status: 200,
-    type: UserEntity,
+    type: [UserEntity],
     description: "Successfuly deleted an user by Id"
   })
   @Delete(':id')

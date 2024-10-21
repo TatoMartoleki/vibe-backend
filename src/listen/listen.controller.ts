@@ -17,7 +17,7 @@ export class ListenController {
   @ApiResponse({
     status: 200,
     description: 'Successfuly created listen info',
-    type: ListenEntity
+    type: [ListenEntity]
 
   })
   @Post()
@@ -29,7 +29,7 @@ export class ListenController {
   @ApiResponse({
     status: 200,
     description: 'Successfuly got all listen info',
-    type: ListenEntity
+    type: [ListenEntity]
 
   })
   @ApiOperation({summary: "Gets listening count info"})
@@ -41,7 +41,7 @@ export class ListenController {
   @ApiResponse({
     status: 200,
     description: 'Successfuly got a listen info',
-    type: ListenEntity
+    type: [ListenEntity]
 
   })
   @ApiOperation({summary: "Gets listening count info by Id"})
@@ -53,7 +53,7 @@ export class ListenController {
   @ApiResponse({
     status: 200,
     description: 'Successfuly updated a listen info',
-    type: ListenEntity
+    type: [ListenEntity]
 
   })
   @ApiOperation({summary: "Updates listening count info by Id"})
@@ -65,7 +65,7 @@ export class ListenController {
   @ApiResponse({
     status: 200,
     description: 'Successfuly deleted a listen info',
-    type: ListenEntity
+    type: [ListenEntity]
 
   })
   @ApiOperation({summary: "Delete listening count info by Id"})

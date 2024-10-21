@@ -21,7 +21,7 @@ export class PlaylistController {
   @ApiResponse({
     status: 200,
     description: 'Successfully created a playlist',
-    type: PlaylistEntity
+    type: [PlaylistEntity]
   })
   @Post()
   async create(@Body() createPlaylistDto: CreatePlaylistDto, @Req() request) {
@@ -34,7 +34,7 @@ export class PlaylistController {
   @ApiResponse({
     status: 200,
     description: 'Successfully got musics  by Id',
-    type: PlaylistEntity
+    type: [PlaylistEntity]
   })
   @ApiOperation({summary: 'Get a Playlst musics by Id'})
   @Get("musics/:id")
@@ -50,7 +50,7 @@ export class PlaylistController {
   @ApiResponse({
     status: 200,
     description: 'Successfully got all playlists',
-    type: PlaylistEntity
+    type: [PlaylistEntity]
   })
   @Get()
   async findAll(@Req() request) {
@@ -62,7 +62,7 @@ export class PlaylistController {
   @ApiResponse({
     status: 200,
     description: 'Successfully got all playlists of any user by userId',
-    type: PlaylistEntity
+    type: [PlaylistEntity]
   })
   @ApiOperation({summary: 'Get all playlists of any user by userId'})
   @Get('admin/:userId')
@@ -74,7 +74,7 @@ export class PlaylistController {
   @ApiResponse({
     status: 200,
     description: 'Successfully got a playlist by Id',
-    type: PlaylistEntity
+    type: [PlaylistEntity]
   })
   @ApiOperation({summary: 'Get a Playlst by Id'})
   @Get(':id')
@@ -87,7 +87,7 @@ export class PlaylistController {
   @ApiResponse({
     status: 200,
     description: 'Successfully Updated a playlist by Id',
-    type: PlaylistEntity
+    type: [PlaylistEntity]
   })
   @Patch(':playlistId')
   async update(@Param('playlistId') playlistId: string, @Body() updatePlaylistDto: UpdatePlaylistDto, @Req() request) {
@@ -100,7 +100,7 @@ export class PlaylistController {
   @ApiResponse({
     status: 200,
     description: 'Successfully updated a playlist by userId',
-    type: PlaylistEntity
+    type: [PlaylistEntity]
   })
   @Patch(':userId/edit/:playlistId')
   async editPlaylist(@Param('playlistId') playlistId: string, @Param('userId') userId: string, @Body() UpdatePlaylistDto: UpdatePlaylistDto){
@@ -112,7 +112,7 @@ export class PlaylistController {
   @ApiResponse({
     status: 200,
     description: 'Successfully added a music in a playlist by playlistId and musicId',
-    type: PlaylistEntity
+    type: [PlaylistEntity]
   })
   @Patch(':playlistId/add/:musicId')
   async addMusic(@Param('playlistId') playlistId: string, @Param('musicId') musicId: string, @Req() request) {
@@ -124,7 +124,7 @@ export class PlaylistController {
   @ApiResponse({
     status: 200,
     description: 'Successfully deleted a music from a playlist by playlistId and musicId',
-    type: PlaylistEntity
+    type: [PlaylistEntity]
   })
   @ApiOperation({summary: 'Delete a music from playlist by playlistId and musicId'})
   @Patch(':playlistId/remove/:musicId')
@@ -137,7 +137,7 @@ export class PlaylistController {
   @ApiResponse({
     status: 200,
     description: 'Successfully deleted a playlist by Id',
-    type: PlaylistEntity
+    type: [PlaylistEntity]
   })
   @ApiOperation({summary: 'Delete playlist By id'})
   @Delete(':id')
@@ -150,7 +150,7 @@ export class PlaylistController {
   @ApiResponse({
     status: 200,
     description: 'Successfully deleted a playlist by userId and playlistId',
-    type: PlaylistEntity
+    type: [PlaylistEntity]
   })
   @ApiOperation({summary: 'Delete playlist by userId and playlist Id'})
   @Delete(':userId/admin/:playlistId')

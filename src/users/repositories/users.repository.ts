@@ -31,11 +31,9 @@ export class UsersRepository {
 
   }
 
-  async findAll(limit: number, offset: number, search: string) {
-    const limitNumber = Math.min(12, limit)
-    return await this.userRepository
+  async findAll(limit?: number, offset?: number) {
+    const query = this.userRepository
       .createQueryBuilder('user')
-      .where('user.email LIKE :search', { search: `%${search}%` })
       .select([
         'user.id',
         'user.email',
@@ -43,11 +41,19 @@ export class UsersRepository {
         'user.deletedAt',
         'user.createdAt',
       ])
-      .withDeleted()
-      .limit(limitNumber)
-      .offset(offset)
-      .getMany();
+      .withDeleted();
+  
+    if (limit !== undefined) {
+      query.limit(Math.min(12, limit)); 
+    }
+  
+    if (offset !== undefined) {
+      query.offset(offset);
+    }
+  
+    return await query.getMany();
   }
+  
 
   async findOne(id: number) {
     return await this.userRepository.findOne({ where: { id } });

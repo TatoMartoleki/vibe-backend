@@ -1,11 +1,12 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserEntity } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import * as bcryptjs from 'bcryptjs' ; 
 import { UpdateUserDto } from './dto/userDtos/update-user.dto';
 import { CreateUserDto } from './dto/userDtos/create-user.dto';
 import { UpdateUserAdminDto } from './dto/adminDtos/update-admin.dto';
+import { off } from 'process';
 
 @Injectable()
 export class UsersRepository {
@@ -28,8 +29,15 @@ export class UsersRepository {
  
   }
 
-  async findAll() {
-    return await this.userRepository.find();
+  async findAll(limit: number, offset: number, search: string) {
+    const limitNumber = Math.min(12, limit)
+    return await this.userRepository.find({
+      where: {
+        email: search ? Like(`%${search}%`) : undefined
+      },
+      take: limitNumber,
+      skip: offset
+  });
   }
 
   async findOne(id: number) {
