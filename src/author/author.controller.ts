@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
   UploadedFile,
   UseInterceptors,
   Query,
@@ -14,9 +13,7 @@ import {
 import { AuthorService } from './author.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
-import { AuthGuard } from 'src/auth/guards/auth-guard.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CreateAlbumDto } from 'src/album/dto/create-album.dto';
 import { FilesService } from 'src/files/files.service';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { RoleEnum } from 'src/auth/enums/roles.enum';

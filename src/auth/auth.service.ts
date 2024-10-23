@@ -3,8 +3,6 @@ import { SignInDto } from './dto/signIn-user.dto';
 import { UsersRepository } from 'src/users/repositories/users.repository';
 import * as bcryptjs from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
-import { UserEntity } from 'src/users/entities/user.entity';
-
 
 @Injectable()
 export class AuthService {

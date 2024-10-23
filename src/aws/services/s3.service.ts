@@ -1,6 +1,5 @@
-import { Body, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import * as AWS from "aws-sdk"
-import { MimeType } from "aws-sdk/clients/kendra";
 
 @Injectable()
 export class S3Service{

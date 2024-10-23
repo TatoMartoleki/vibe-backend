@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { AuthorRepository } from './repositories/author.repository';
-import { CreateAlbumDto } from 'src/album/dto/create-album.dto';
 import { FileEntity } from 'src/files/entities/file.entity';
 
 @Injectable()

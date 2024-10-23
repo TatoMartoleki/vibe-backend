@@ -3,13 +3,10 @@ import { CreateAuthorDto } from '../dto/create-author.dto';
 import { UpdateAuthorDto } from '../dto/update-author.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthorEntity } from '../entities/author.entity';
-import { Like, Repository } from 'typeorm';
-import { CreateAlbumDto } from 'src/album/dto/create-album.dto';
+import {  Repository } from 'typeorm';
 import { AlbumEntity } from 'src/album/entities/album.entity';
 import { FileEntity } from 'src/files/entities/file.entity';
 import { MusicEntity } from 'src/music/entities/music.entity';
-import { AlbumRepository } from 'src/album/repositories/album.repository';
-import { off } from 'process';
 
 @Injectable()
 export class AuthorRepository {

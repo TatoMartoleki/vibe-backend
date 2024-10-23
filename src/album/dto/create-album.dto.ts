@@ -1,5 +1,4 @@
-import { Type } from 'class-transformer';
-import { IsArray, IsNumber, IsString, IsUrl } from 'class-validator';
+import { IsString, } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateAlbumDto {

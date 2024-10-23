@@ -1,15 +1,12 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/userDtos/create-user.dto';
-import { UpdateUserDto } from './dto/userDtos/update-user.dto';
-import { AuthGuard } from 'src/auth/guards/auth-guard.service';
 import { Public } from 'src/auth/decorators/public.decorator';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { RoleEnum } from 'src/auth/enums/roles.enum';
 import { UpdateUserAdminDto } from './dto/adminDtos/update-admin.dto';
 import { ApiBearerAuth, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from './entities/user.entity';
-import { off } from 'process';
 
 
 
@@ -39,7 +36,7 @@ export class UsersController {
     description: "Successfuly got your profile"
   })
   @Get('me')
-  async findMe(@Req() request){    
+  async findMe(@Req() request){        
     return await this.usersService.findMe(request.user.userId)
   }
   
@@ -56,7 +53,7 @@ export class UsersController {
   @Get()
   async findAll(
     @Query('limit') limit?: string, 
-    @Query('offset') offset?: string 
+    @Query('offset') offset?: string
   ) {
     const limitNumber = limit ? parseInt(limit, 10) : undefined;
     const offsetNumber = offset ? parseInt(offset, 10) : undefined;

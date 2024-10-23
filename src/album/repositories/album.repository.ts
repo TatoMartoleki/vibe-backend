@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AlbumEntity } from '../entities/album.entity';
-import { Like, Repository } from 'typeorm';
+import {  Repository } from 'typeorm';
 import { CreateAlbumDto } from '../dto/create-album.dto';
 import { UpdateAlbumDto } from '../dto/update-album.dto';
 import { FileEntity } from 'src/files/entities/file.entity';

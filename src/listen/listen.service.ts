@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateListenDto } from './dto/create-listen.dto';
 import { UpdateListenDto } from './dto/update-listen.dto';
 import { ListenRepository } from './repositories/listen.repository';
 

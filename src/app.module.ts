@@ -12,18 +12,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { ListenModule } from './listen/listen.module';
 import { PlaylistModule } from './playlist/playlist.module';
-import 'dotenv/config'
+import 'dotenv/config';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/guards/auth-guard.service';
 import { GenresModule } from './genres/genres.module';
 
-
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MusicModule,
-    AuthorModule,
-    AlbumModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DATABASE_HOST,
@@ -34,11 +30,10 @@ import { GenresModule } from './genres/genres.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    JwtModule.register(
-      {secret: process.env.JWT_SECRET,
-        global: true
-      }
-    ),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      global: true,
+    }),
     MusicModule,
     AuthorModule,
     AlbumModule,
@@ -47,11 +42,16 @@ import { GenresModule } from './genres/genres.module';
     AuthModule,
     ListenModule,
     PlaylistModule,
-    AuthModule,
-    GenresModule
+    GenresModule,
   ],
   controllers: [AppController],
-  providers: [AppService,
-    ]
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule {}
+

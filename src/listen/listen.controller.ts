@@ -1,9 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ListenService } from './listen.service';
-import { CreateListenDto } from './dto/create-listen.dto';
 import { UpdateListenDto } from './dto/update-listen.dto';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { RoleEnum } from 'src/auth/enums/roles.enum';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ListenEntity } from './entities/listen.entity';
 

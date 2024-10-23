@@ -9,27 +9,22 @@ export class FilesService {
     private readonly s3Service: S3Service,
   ) { }
 
-  // Generates a random name with the original file extension
   private randomName(originalName: string): string {
     const random1 = Math.random().toString(36).substring(2, 8);
     const random2 = Math.random().toString(36).substring(2, 8);
-    const fileExtension = originalName.split('.').pop(); // Extract file extension
+    const fileExtension = originalName.split('.').pop(); 
     return `file_${random1}_${random2}.${fileExtension}`;
   }
 
-  // Handles file upload
   async uploadFile(file: Express.Multer.File) {
     if (!file) {
       throw new BadRequestException("Upload the file please");
     }
 
-    // Generate a random file name with the correct extension
     const randomfile = this.randomName(file.originalname);
 
-    // Upload the file to S3
     const result = await this.s3Service.upload(file, randomfile);
 
-    // Save the file details to the repository
     const savedFile = await this.filesRepository.save(
       randomfile,
       result.Location,

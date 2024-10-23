@@ -10,9 +10,7 @@ import { Repository } from 'typeorm';
 import { CreatePlaylistDto } from '../dto/create-playlist.dto';
 import { MusicEntity } from 'src/music/entities/music.entity';
 import { MusicRepository } from 'src/music/repositories/music.repository';
-import { error } from 'console';
 import { UpdatePlaylistDto } from '../dto/update-playlist.dto';
-import { UsersRepository } from 'src/users/users.repository';
 import { UserEntity } from 'src/users/entities/user.entity';
 
 @Injectable()

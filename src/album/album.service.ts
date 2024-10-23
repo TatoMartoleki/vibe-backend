@@ -3,8 +3,6 @@ import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { AlbumRepository } from './repositories/album.repository';
 import { FileEntity } from 'src/files/entities/file.entity';
-import { AlbumEntity } from 'src/album/entities/album.entity'; 
-
 
 @Injectable()
 export class AlbumService {

@@ -1,4 +1,3 @@
-import { RoleEnum } from "src/auth/enums/roles.enum";
 import { ListenEntity } from "src/listen/entities/listen.entity";
 import { PlaylistEntity } from "src/playlist/entities/playlist.entity";
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from "typeorm";

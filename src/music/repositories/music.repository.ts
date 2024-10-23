@@ -6,12 +6,11 @@ import {
 import { CreateMusicDto } from '../dto/create-music.dto';
 import { UpdateMusicDto } from '../dto/update-music.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { MusicEntity } from '../entities/music.entity';
 import { FileEntity } from 'src/files/entities/file.entity';
 import { AlbumRepository } from 'src/album/repositories/album.repository';
 import { AuthorRepository } from 'src/author/repositories/author.repository';
-import { log } from 'console';
 
 @Injectable()
 export class MusicRepository {

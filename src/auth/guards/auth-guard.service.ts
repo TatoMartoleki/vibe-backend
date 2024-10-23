@@ -68,6 +68,6 @@ import { ROLES_KEY } from '../decorators/roles.decorator';
   
     private extractTokenFromHeader(request: Request): string | undefined {
       const [type, token] = request.headers.authorization?.split(' ') ?? [];
-      return type === 'Bearer' ? token : type;
+      return type === 'Bearer' ? token : undefined;
     }
   }

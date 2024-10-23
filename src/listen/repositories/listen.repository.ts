@@ -1,15 +1,11 @@
 import { Repository } from 'typeorm';
 import { ListenEntity } from '../entities/listen.entity';
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateListenDto } from '../dto/create-listen.dto';
 import { UpdateListenDto } from '../dto/update-listen.dto';
-import { UserEntity } from 'src/users/entities/user.entity';
 import { MusicEntity } from 'src/music/entities/music.entity';
-import { error } from 'console';
 import { AuthorRepository } from 'src/author/repositories/author.repository';
 import { AlbumRepository } from 'src/album/repositories/album.repository';
-import { AlbumEntity } from 'src/album/entities/album.entity';
 
 @Injectable()
 export class ListenRepository {

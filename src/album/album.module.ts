@@ -5,8 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AlbumEntity } from './entities/album.entity';
 import { AlbumRepository } from './repositories/album.repository';
 import { FilesModule } from 'src/files/files.module';
-import { FilesService } from 'src/files/files.service';
-import { FilesRepository } from 'src/files/files.repository';
 import { MusicEntity } from 'src/music/entities/music.entity';
 
 @Module({

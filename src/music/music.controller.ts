@@ -6,12 +6,9 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
   UseInterceptors,
   UploadedFiles,
   Req,
-  UnauthorizedException,
-  InternalServerErrorException,
   Query,
 } from '@nestjs/common';
 import { MusicService } from './music.service';
