@@ -16,13 +16,7 @@ import { UserEntity } from './entities/user.entity';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Public()
-  @ApiOperation({summary: 'Created new user'})
-  @ApiResponse({
-    status: 200,
-    type: [UserEntity],
-    description: "Successfuly created a new user"
-  })
+  @Public()  
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
@@ -35,6 +29,7 @@ export class UsersController {
     type: [UserEntity],
     description: "Successfuly got your profile"
   })
+
   @Get('me')
   async findMe(@Req() request){        
     return await this.usersService.findMe(request.user.userId)
