@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MusicModule } from './music/music.module';
 import { AuthorModule } from './author/author.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AlbumModule } from './album/album.module';
@@ -16,37 +15,40 @@ import 'dotenv/config';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/guards/auth-guard.service';
 import { GenresModule } from './genres/genres.module';
+import { MusicModule } from './music/music.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
+
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '60d' },
+    }),
+
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.DATABASE_HOST,
-      port: +process.env.DATABASE_PORT,
-      username: process.env.DATABASE_USERNAME,
-      password: process.env.DATABASE_PASSWORD,
-      database: process.env.DATABASE_NAME,
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'Data12$$',
+      database: 'vibe-database',
       autoLoadEntities: true,
       synchronize: true,
     }),
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      global: true,
-    }),
+
+    AuthModule,
+    UsersModule,
     MusicModule,
     AuthorModule,
     AlbumModule,
     SearchModule,
-    UsersModule,
-    AuthModule,
     ListenModule,
     PlaylistModule,
     GenresModule,
   ],
-  controllers: [AppController],
   providers: [
-    AppService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
@@ -54,4 +56,6 @@ import { GenresModule } from './genres/genres.module';
   ],
 })
 export class AppModule {}
+
+
 

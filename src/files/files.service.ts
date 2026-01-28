@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { FilesRepository } from './files.repository';
-import { S3Service } from 'src/aws/services/s3.service';
+import { S3Service } from '../aws/services/s3.service';
 
 @Injectable()
 export class FilesService {
