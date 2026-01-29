@@ -5,13 +5,13 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PlaylistEntity } from '../entities/playlist.entity';
 import { Repository } from 'typeorm';
 import { CreatePlaylistDto } from '../dto/create-playlist.dto';
 import { MusicEntity } from 'src/music/entities/music.entity';
 import { MusicRepository } from 'src/music/repositories/music.repository';
 import { UpdatePlaylistDto } from '../dto/update-playlist.dto';
 import { UserEntity } from 'src/users/entities/user.entity';
+import { PlaylistEntity } from '../entities/playlist.entity';
 
 @Injectable()
 export class PlaylistRepository {
@@ -44,7 +44,7 @@ export class PlaylistRepository {
       .getMany();
   }
 
-  async findAll(userId: number) {
+async findAll(userId: number) {
     const playlists = await this.playlistRepository
       .createQueryBuilder('playlist')
       .leftJoinAndSelect('playlist.users', 'users')
@@ -64,9 +64,6 @@ export class PlaylistRepository {
       };
     });
   }
-  
-
-  
 
   async adminFindAll(userId: number) {
     return await this.playlistRepository

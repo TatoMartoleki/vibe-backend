@@ -32,7 +32,7 @@ import { MusicModule } from './music/music.module';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'raime',
+      password: process.env.DATABASE_PASSWORD,
       database: 'vibe-database',
       autoLoadEntities: true,
       synchronize: true,
