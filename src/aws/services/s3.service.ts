@@ -9,7 +9,7 @@ export class S3Service{
         this.s3Client = new AWS.S3({
             accessKeyId: process.env.AWS_ACCESS_KEY,
             secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-            region: 'eu-north-1',
+            region: 'us-east-1',
             signatureVersion: 'v4'
         })
 
@@ -28,7 +28,7 @@ export class S3Service{
             ContentType: file.mimetype,
             ContentDisposition: 'inline',
             CreateBucketConfiguration: {
-                LocationConstraint: 'eu-north-1'
+                LocationConstraint: 'us-east-1'
             }
         }
 

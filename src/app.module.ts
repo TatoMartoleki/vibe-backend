@@ -29,11 +29,11 @@ import { MusicModule } from './music/music.module';
 
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
+      host: process.env.DATABASE_HOST,
+      port: +process.env.DATABASE_PORT,
+      username: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD,
-      database: 'vibe-database',
+      database: process.env.DATABASE_NAME,
       autoLoadEntities: true,
       synchronize: true,
     }),
@@ -56,6 +56,5 @@ import { MusicModule } from './music/music.module';
   ],
 })
 export class AppModule {}
-
 
 
